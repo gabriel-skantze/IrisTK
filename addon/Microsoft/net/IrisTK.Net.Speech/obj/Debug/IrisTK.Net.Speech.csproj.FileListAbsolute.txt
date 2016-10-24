@@ -1,0 +1,6 @@
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\bin\Debug\WindowsSpeech.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\bin\Debug\WindowsSpeech.pdb
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\bin\Debug\Microsoft.Speech.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\obj\Debug\ResolveAssemblyReference.cache
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\obj\Debug\WindowsSpeech.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\obj\Debug\WindowsSpeech.pdb

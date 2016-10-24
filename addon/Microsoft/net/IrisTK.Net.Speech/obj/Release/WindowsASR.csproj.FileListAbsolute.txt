@@ -1,0 +1,52 @@
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\bin\Release\MyCSharpDemoCalc.dll
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\bin\Release\MyCSharpDemoCalc.pdb
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\obj\Release\ResolveAssemblyReference.cache
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\obj\Release\MyCSharpDemoCalc.dll
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\obj\Release\MyCSharpDemoCalc.pdb
+C:\dropbox\dev\jni4net\test\WindowsASR\bin\Release\WindowsASR.dll
+C:\dropbox\dev\jni4net\test\WindowsASR\bin\Release\WindowsASR.pdb
+C:\dropbox\dev\jni4net\test\WindowsASR\obj\Release\ResolveAssemblyReference.cache
+C:\dropbox\dev\jni4net\test\WindowsASR\obj\Release\WindowsASR.dll
+C:\dropbox\dev\jni4net\test\WindowsASR\obj\Release\WindowsASR.pdb
+C:\gabriel\My Dropbox\indigo\external\WindowsASR\C#\obj\Release\ResolveAssemblyReference.cache
+C:\gabriel\My Dropbox\indigo\external\WindowsASR\C#\bin\Release\WindowsASR.dll
+C:\gabriel\My Dropbox\indigo\external\WindowsASR\C#\bin\Release\WindowsASR.pdb
+C:\gabriel\My Dropbox\indigo\external\WindowsASR\C#\obj\Release\WindowsASR.dll
+C:\gabriel\My Dropbox\indigo\external\WindowsASR\C#\obj\Release\WindowsASR.pdb
+C:\dropbox\indigo\external\WindowsASR\C#\bin\Release\WindowsASR.dll
+C:\dropbox\indigo\external\WindowsASR\C#\bin\Release\WindowsASR.pdb
+C:\dropbox\indigo\external\WindowsASR\C#\obj\Release\ResolveAssemblyReference.cache
+C:\dropbox\indigo\external\WindowsASR\C#\obj\Release\WindowsASR.dll
+C:\dropbox\indigo\external\WindowsASR\C#\obj\Release\WindowsASR.pdb
+C:\dropbox\indigo\external\WindowsASR\C#\obj\Release\WindowsASR.PushToTalkForm.resources
+C:\dropbox\indigo\external\WindowsASR\C#\obj\Release\GenerateResource.read.1.tlog
+C:\dropbox\indigo\external\WindowsASR\C#\obj\Release\GenerateResource.write.1.tlog
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\bin\Release\WindowsASR.dll
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\bin\Release\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\obj\Release\ResolveAssemblyReference.cache
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\obj\Release\WindowsASR.PushToTalkForm.resources
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\obj\Release\GenerateResource.read.1.tlog
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\obj\Release\GenerateResource.write.1.tlog
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\obj\Release\WindowsASR.dll
+C:\Dropbox\KTH\IURO\museum\WindowsASR\C#\obj\Release\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\bin\Release\WindowsASR.dll
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\bin\Release\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Release\ResolveAssemblyReference.cache
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Release\WindowsASR.PushToTalkForm.resources
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Release\GenerateResource.read.1.tlog
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Release\GenerateResource.write.1.tlog
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Release\WindowsASR.dll
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Release\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\obj\Release\ResolveAssemblyReference.cache
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\obj\Release\iristk.windowsasr.PushToTalkForm.resources
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\obj\Release\GenerateResource.read.1.tlog
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\obj\Release\GenerateResource.write.1.tlog
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\obj\Release\WindowsASR.dll
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\obj\Release\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\bin\Release\WindowsASR.dll
+C:\Dropbox\KTH\IURO\iristk\WindowsASR\C#\bin\Release\WindowsASR.pdb
+C:\dropbox\iristk\addons\WindowsASR\dev\C#\bin\Release\WindowsASR.dll
+C:\dropbox\iristk\addons\WindowsASR\dev\C#\bin\Release\WindowsASR.pdb
+C:\dropbox\iristk\addons\WindowsASR\dev\C#\obj\Release\ResolveAssemblyReference.cache
+C:\dropbox\iristk\addons\WindowsASR\dev\C#\obj\Release\WindowsASR.dll
+C:\dropbox\iristk\addons\WindowsASR\dev\C#\obj\Release\WindowsASR.pdb

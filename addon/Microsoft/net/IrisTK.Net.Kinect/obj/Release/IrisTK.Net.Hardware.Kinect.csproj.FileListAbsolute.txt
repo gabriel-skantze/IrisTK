@@ -1,0 +1,10 @@
+C:\Users\martin\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\bin\Release\IrisTK.Net.Hardware.Kinect.dll
+C:\Users\martin\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\bin\Release\IrisTK.Net.Hardware.Kinect.pdb
+C:\Users\martin\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\obj\Release\IrisTK.Net.Hardware.Kinect.dll
+C:\Users\martin\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\obj\Release\IrisTK.Net.Hardware.Kinect.pdb
+C:\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\bin\Release\IrisTK.Net.Hardware.Kinect.dll
+C:\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\bin\Release\IrisTK.Net.Hardware.Kinect.pdb
+C:\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\obj\Release\IrisTK.Net.Hardware.Kinect.dll
+C:\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\obj\Release\IrisTK.Net.Hardware.Kinect.pdb
+C:\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\obj\Release\IrisTK.Net.Hardware.Kinect.csprojResolveAssemblyReference.cache
+C:\Users\martin\Dropbox\KTH\svn\iristk-private\net\IrisTK.Net.Hardware.Kinect\obj\Release\IrisTK.Net.Hardware.Kinect.csprojResolveAssemblyReference.cache

@@ -1,0 +1,28 @@
+[	
+	{
+		"state": 1,
+		"position": [-1,-10,-3,0],
+		"ambient": [1,1,1,1],
+		"diffuse": [0.5,0.5,0.5,1],
+		"specular": [1.0,1.0,1.0,1.0],
+		"attenuation": [1,0,0,0]
+	},
+	{
+		"state": 1,
+		"position": [-5,-10,1,0],
+		"ambient": [1,1,1,1],
+		"diffuse": [0.5,0.5,0.5,1],
+		"specular": [1,1,1,1],
+		"attenuation": [1,0,0,0]
+	},
+	{
+		"state": 1,
+		"position": [5,-10,1,0],
+		"ambient": [1,1,1,1],
+		"diffuse": [0.5,0.5,0.5,1],
+		"specular": [1,1,1,1],
+		"attenuation": [1,0,0,0]
+	}
+]
+  
+  

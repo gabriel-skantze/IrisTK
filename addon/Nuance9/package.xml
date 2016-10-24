@@ -1,0 +1,8 @@
+<package name="Nuance9">
+	<provide>
+		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.nuance9.NuanceRecognizerFactory"/>
+	</provide>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

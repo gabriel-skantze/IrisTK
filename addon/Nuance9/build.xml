@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." name="IrisTK-Nuance9">
+
+	<target name="jaxb-nuance">
+		<exec executable="xjc" dir="src">
+			<arg value="..\xml\nuance.xsd"/>
+			<arg value="-p"/>
+			<arg value="iristk.speech.nuance9.xml"/>
+		</exec>
+	</target>
+
+</project>

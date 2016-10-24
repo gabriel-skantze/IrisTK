@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="$Simple_dialog$Flow" package="iristk.app.$simple_dialog$" 
+	initial="Start"	xmlns="iristk.flow" xmlns:p="iristk.flow.param" xmlns:dialog="iristk.flow.DialogFlow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="iristk.flow flow.xsd iristk.flow.DialogFlow DialogFlow.xsd">
+	
+	<var name="number" type="Integer"/>
+	<var name="guesses" type="Integer"/>
+	
+	<state id="Start">
+		<onentry>
+			<exec>number = new java.util.Random().nextInt(10) + 1</exec>
+			<exec>guesses = 0</exec>
+			<dialog:say>I am thinking of a number between 1 and 10, let's see if you can guess which one it is.</dialog:say>
+			<goto state="Guess"/>
+		</onentry>
+	</state>
+	
+	<state id="Guess" extends="Dialog">
+		<onentry>
+			<dialog:listen/>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:number">
+			<exec>guesses++</exec>
+			<if cond="asInteger(event:sem:number) == number">
+				<dialog:say>That was correct, you only needed <expr>guesses</expr> guesses.</dialog:say>
+				<goto state="CheckAgain"/>
+			<elseif cond="asInteger(event:sem:number) &gt; number"/>
+				<dialog:say>That was too high, let's try again.</dialog:say>
+				<reentry/>
+			<else/>
+				<dialog:say>That was too low, let's try again.</dialog:say>
+				<reentry/>
+			</if>
+		</onevent>
+	</state>
+	
+	<state id="CheckAgain" extends="Dialog">
+		<onentry>
+			<dialog:say>Do you want to play again?</dialog:say>
+			<dialog:listen/>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:yes">
+			<dialog:say>Okay, let's play again.</dialog:say>
+			<goto state="Start"/>
+		</onevent>
+		<onevent name="sense.user.speak" cond="event?:sem:no">
+			<dialog:say>Okay, goodbye</dialog:say>
+			<exec>System.exit(0)</exec>
+		</onevent>		
+	</state>
+	
+	<state id="Dialog">
+		<onevent name="sense.user.silence">
+			<dialog:say>I am sorry, I didn't hear anything.</dialog:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.speak">
+			<dialog:say>I am sorry, I didn't get that.</dialog:say>
+			<reentry/>
+		</onevent>
+	</state>
+	
+
+</flow>

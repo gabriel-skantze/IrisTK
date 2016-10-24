@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." name="IrisTK-Chess">
+	
+	<target name="build-flow">
+		<exec executable="cmd">
+			<arg value="/c"/>
+			<arg value="iristk"/>
+			<arg value="cflow"/>
+			<arg value="-b"/>
+			<arg value="ChessFlow.xml"/>
+		</exec>
+	</target>
+	
+</project>

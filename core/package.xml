@@ -1,0 +1,43 @@
+<package name="core">
+	<run>
+		<command name="packages" class="iristk.project.Launcher" method="listPackages" descr="List packages"/>
+		<command name="eclipse" class="iristk.project.Launcher" method="setupEclipse" descr="Set up the eclipse classpath"/>
+		<command name="zip" class="iristk.project.Launcher" method="zipPackage" descr="Zip a package"/>
+		<command name="depends" class="iristk.project.Launcher" method="checkDepends" descr="Check Java dependencies"/>	
+		<command name="javadoc" class="iristk.project.Launcher" method="javadoc" descr="Create Javadoc"/>	
+		<command name="install" class="iristk.project.Launcher" method="install" descr="Install the project"/>
+		<command name="cleantemp" class="iristk.system.IrisUtils" method="cleanTempFolder" descr="Clean the IrisTK temp folder"/>
+		<command name="cflow" class="iristk.system.IrisUtils" method="compileFlow" descr="Compile flow"/>
+		<command name="create" class="iristk.system.IrisUtils" method="createFromTemplate" descr="Create an IrisTK package based on a template"/>
+		<command name="broker" class="iristk.system.Broker" descr="Start a Broker server"/>
+		<command name="situation" class="iristk.situated.RemoteSituation" descr="Connect to a situated dialog system"/>
+		<command name="tts" class="iristk.speech.TestSynth" descr="Test installed synthesizers (GUI)"/>
+		<command name="asr" class="iristk.speech.TestRecognizer" descr="Test installed recognizers (GUI)"/>
+		<command name="mic" class="iristk.audio.TestMicrophone" descr="Test microphone (GUI)"/>
+		<command name="abnf2srgs" class="iristk.cfg.CfgUtils" method="abnf2srgs" descr="Convert ABNF grammar to SRGS"/>
+		<command name="srgs2abnf" class="iristk.cfg.CfgUtils" method="srgs2abnf" descr="Convert SRGS grammar to ABNF"/>
+		<command name="audiorecorder" class="iristk.audio.AudioRecordingGUI" descr="Start audio recording GUI"/>
+		<command name="hat" class="iristk.util.HAT" descr="Tools for Higgins Annotation Files"/>
+	</run>
+	<classpath>
+		<src path="src" output="bin"/>
+		<lib path="lib/commons.jar"/>
+		<lib path="lib/platform.jar"/>
+		<lib path="lib/jnaerator-0.9.5.jar"/>
+		<lib path="lib/jportaudio.jar"/>
+		<lib path="lib/json.jar"/>
+		<lib path="lib/jetty.jar"/>
+		<lib path="lib/js-14.jar"/>
+		<lib path="lib/JNativeHook.jar"/>
+		<lib path="lib/docking-frames-core.jar"/>
+		<lib path="lib/docking-frames-common.jar"/>
+		<lib path="lib/freemarker.jar"/>
+		<lib path="lib/hat.jar"/>
+		<lib path="lib/turbojpeg.jar"/>
+		<lib path="lib/batik-gui-util-1.8.jar"/>
+		<lib path="lib/xuggle-xuggler-5.4.jar"/>
+		<lib path="lib/webcam-capture-0.3.10.jar"/>
+		<lib path="lib/bridj-0.6.2.jar"/>		
+		<lib path="lib/furhat-proxy.jar"/>
+	</classpath>
+</package>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." name="IrisTK-Core">
+	
+	<fileset id="classpath" dir="lib" includes="*.jar"/>
+	
+	<pathconvert targetos="unix" property="classpath" refid="classpath"/>
+	
+	<target name="compile">
+		<javac srcdir="src" destdir="class" classpath="${classpath}"/>
+	</target>
+
+	<target name="make-jar">
+		<jar jarfile="lib/iristk-core.jar">
+			<fileset dir="bin" />
+		</jar>
+	</target>
+	
+	<target name="jaxb-flow">
+		<exec executable="xjc" dir="src">
+			<arg value="..\xml\flow.xsd"/>
+			<arg value="-p"/>
+			<arg value="iristk.xml.flow"/>
+			<arg value="-Xlocator"/>
+		</exec>
+	</target>
+	
+	<target name="jaxb-srgs">
+		<exec executable="xjc" dir="src">
+			<arg value="..\xml\srgs.xsd"/>
+			<arg value="-p"/>
+			<arg value="iristk.xml.srgs"/>
+		</exec>
+	</target>
+
+	<target name="jaxb-package">
+		<exec executable="xjc" dir="src">
+			<arg value="..\xml\package.xsd"/>
+			<arg value="-p"/>
+			<arg value="iristk.xml._package"/>
+		</exec>
+	</target>	
+	
+	<target name="build-flows">
+		<exec executable="cmd">
+			<arg value="/c"/>
+			<arg value="iristk"/>
+			<arg value="cflow"/>
+			<arg value="-b"/>
+			<arg value="-x"/>
+			<arg value="SimpleDialog.xml"/>
+		</exec>
+		<exec executable="cmd">
+			<arg value="/c"/>
+			<arg value="iristk"/>
+			<arg value="cflow"/>
+			<arg value="-b"/>
+			<arg value="-x"/>
+			<arg value="SituatedDialog.xml"/>
+		</exec>
+	</target>
+	
+</project>

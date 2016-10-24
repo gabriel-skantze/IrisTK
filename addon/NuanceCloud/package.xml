@@ -1,0 +1,9 @@
+<package name="NuanceCloud">
+	<provide>
+		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.nuancecloud.NuanceCloudRecognizerFactory"/>
+		<class type="iristk.speech.Synthesizer" name="iristk.speech.nuancecloud.NuanceCloudSynthesizer"/>
+	</provide>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

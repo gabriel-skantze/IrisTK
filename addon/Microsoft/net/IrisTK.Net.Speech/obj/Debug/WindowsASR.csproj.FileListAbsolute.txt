@@ -1,0 +1,13 @@
+C:\dropbox\dev\jni4net\test\WindowsASR\obj\Debug\ResolveAssemblyReference.cache
+C:\dropbox\dev\jni4net\test\WindowsASR\bin\Debug\WindowsASR.dll
+C:\dropbox\dev\jni4net\test\WindowsASR\bin\Debug\WindowsASR.pdb
+C:\dropbox\dev\jni4net\test\WindowsASR\obj\Debug\WindowsASR.dll
+C:\dropbox\dev\jni4net\test\WindowsASR\obj\Debug\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Debug\ResolveAssemblyReference.cache
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Debug\WindowsASR.PushToTalkForm.resources
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Debug\GenerateResource.read.1.tlog
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Debug\GenerateResource.write.1.tlog
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Debug\WindowsASR.dll
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\bin\Debug\WindowsASR.dll
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\bin\Debug\WindowsASR.pdb
+C:\Dropbox\KTH\IURO\route\WindowsASR\C#\obj\Debug\WindowsASR.pdb

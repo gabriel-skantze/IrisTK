@@ -1,0 +1,9 @@
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\bin\Release\IrisTK.Net.Speech.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\bin\Release\IrisTK.Net.Speech.pdb
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\obj\Release\IrisTK.Net.Speech.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\obj\Release\IrisTK.Net.Speech.pdb
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Speech\obj\Release\IrisTK.Net.Speech.csprojResolveAssemblyReference.cache
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Speech\bin\Release\IrisTK.Net.Speech.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Speech\bin\Release\IrisTK.Net.Speech.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Speech\obj\Release\IrisTK.Net.Speech.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Speech\obj\Release\IrisTK.Net.Speech.pdb

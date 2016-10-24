@@ -1,0 +1,5 @@
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\x86\Release\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\x86\Release\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\Microsoft.Kinect2.dll

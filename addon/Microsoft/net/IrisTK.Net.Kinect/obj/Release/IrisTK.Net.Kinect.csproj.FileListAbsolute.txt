@@ -1,0 +1,17 @@
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\IrisTK.Net.Kinect.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\IrisTK.Net.Kinect.pdb
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\obj\Release\IrisTK.Net.Kinect.csprojResolveAssemblyReference.cache
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\obj\Release\IrisTK.Net.Kinect.dll
+C:\dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\obj\Release\IrisTK.Net.Kinect.pdb
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\FaceTrackData.dll
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\FaceTrackLib.dll
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\Microsoft.Kinect.Toolkit.dll
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\Microsoft.Kinect.Toolkit.FaceTracking.dll
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\Microsoft.Kinect.Toolkit.FaceTracking.pdb
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\Microsoft.Kinect.Toolkit.pdb
+C:\Dropbox\iristk\addons\Microsoft\net\IrisTK.Net.Kinect\bin\Release\Microsoft.Kinect.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect\bin\Release\IrisTK.Net.Kinect.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect\bin\Release\IrisTK.Net.Kinect.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect\obj\Release\IrisTK.Net.Kinect.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect\obj\Release\IrisTK.Net.Kinect.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect\bin\Release\Microsoft.Kinect.dll

@@ -1,0 +1,5 @@
+<package name="$addon$">
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

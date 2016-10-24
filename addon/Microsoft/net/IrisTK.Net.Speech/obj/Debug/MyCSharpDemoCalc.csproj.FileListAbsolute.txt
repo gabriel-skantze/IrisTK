@@ -1,0 +1,5 @@
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\bin\Debug\MyCSharpDemoCalc.dll
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\bin\Debug\MyCSharpDemoCalc.pdb
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\obj\Debug\ResolveAssemblyReference.cache
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\obj\Debug\MyCSharpDemoCalc.dll
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\obj\Debug\MyCSharpDemoCalc.pdb

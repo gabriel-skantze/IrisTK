@@ -1,0 +1,74 @@
+<?xml version='1.0'?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema">
+	<element name="package">
+		<complexType>
+			<sequence>
+				<element name="run" minOccurs="0" maxOccurs="1">
+					<complexType>
+						<sequence>
+							<element name="command" minOccurs="0" maxOccurs="unbounded">
+								<complexType>
+									<attribute name="name" type="string"></attribute>
+									<attribute name="class" type="string"></attribute>
+									<attribute name="method" type="string"></attribute>
+									<attribute name="descr" type="string"></attribute>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="provide" minOccurs="0" maxOccurs="1">
+					<complexType>
+						<sequence>
+							<element name="class" minOccurs="0" maxOccurs="unbounded">
+								<complexType>
+									<attribute name="type" type="string"></attribute>
+									<attribute name="name" type="string"></attribute>
+								</complexType>
+							</element>
+						</sequence>
+					</complexType>
+				</element>
+				<element name="classpath" minOccurs="0" maxOccurs="1">
+					<complexType>
+						<choice minOccurs="0" maxOccurs="unbounded">
+							<element name="lib">
+								<complexType>
+									<attribute name="path" type="string"></attribute>
+								</complexType>
+							</element>
+							<element name="src">
+								<complexType>
+									<attribute name="path" type="string"></attribute>
+									<attribute name="output" type="string"></attribute>
+								</complexType>
+							</element>
+							<element name="dll">
+								<complexType>
+									<attribute name="path" type="string"></attribute>
+									<attribute name="arch" type="string"></attribute>
+								</complexType>
+							</element>
+						</choice>
+					</complexType>
+				</element>
+				<element name="services">
+			    	<complexType>
+			    		<sequence>
+			    			<element name="service" maxOccurs="unbounded" minOccurs="0">
+			    				<complexType>
+			    					<attribute name="name" type="string"></attribute>
+			    					<attribute name="class" type="string"></attribute>
+			    					<attribute name="autoStart" type="boolean"></attribute>
+			    					<attribute name="webServer" type="boolean"></attribute>
+			    					<attribute name="arch32" type="boolean" default="false" use="optional"></attribute>
+			    				</complexType>
+			    			</element>
+			    		</sequence>
+			    	</complexType>
+			    </element>
+			</sequence>
+			<attribute name="name" type="string"></attribute>
+		</complexType>
+	</element>
+</schema>

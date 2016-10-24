@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="DialogFlow" package="iristk.flow" xmlns="iristk.flow"
+	xmlns:p="iristk.flow.param" xmlns:this="iristk.flow.DialogFlow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="iristk.flow flow.xsd">
+	
+	<state id="say" public="true" static="true">
+		<param name="text" help="The text to speak (can also be provided as a text node)"/>
+		<param name="async" type="boolean" default="false" help="Whether to immediately return and produce speech asynchronous"/>
+		<param name="ifsilent" type="boolean" default="false" help="Only say this if the system is silent"/>
+		<param name="display" default="null" help="A nicely formatted text representation for display purposes"/>
+		<param name="audio" default="null" help="An audio file to play instead of synthesising"/>
+		<param name="abort" type="boolean" default="false" help="Whether to abort the current speech plan or just append to it"/>
+		<var name="action"/>
+		<onentry>
+			<send event="action.speech" 
+					p:text="text" 
+					p:audio="audio" 
+					p:display="display" 
+					p:abort="abort" 
+					p:ifsilent="ifsilent"
+					p:async="async" 
+					bindId="action"/>
+			<if cond="async">
+				<return/>
+			</if>
+		</onentry>
+		<onevent name="monitor.speech.done">
+			<return event="monitor.speech.done"/>
+		</onevent>
+	</state>
+		
+	<state id="listen" public="true" static="true">
+		<param name="timeout" type="int" default="8000"/>
+		<param name="endSil" type="int" default="500"/>
+		<param name="nbest" type="int" default="1"/>
+		<param name="context" type="String"/>
+		<var name="actionId"/>
+		<onentry>
+			<send event="action.listen" bindId="actionId" p:noSpeechTimeout="timeout" p:endSilTimeout="endSil" p:nbest="nbest" p:context="context"/>
+		</onentry>
+		<onevent name="sense.speech.rec" cond="eq(event:action,actionId)">
+			<return event="sense.user.speak" copy="event"/>
+		</onevent>
+			<onevent name="sense.speech.rec.silence" cond="eq(event:action,actionId)">
+			<return event="sense.user.silence" copy="event"/>
+		</onevent>
+		<onevent name="sense.speech.rec.*" cond="eq(event:action,actionId)">
+			<return event="sense.user.speak" copy="event" p:text="iristk.speech.RecResult.NOMATCH"/>
+		</onevent>
+		<onexit>
+			<send event="action.listen.stop"/>
+		</onexit>
+	</state>
+	
+	<state id="prompt" extends="listen" public="true" static="true">
+		<param name="text" />
+		<var name="sayActionId"/>
+		<onentry>
+			<send event="action.speech" bindId="sayActionId" p:text="text" />
+		</onentry>
+		<onevent name="monitor.speech.start" cond="eq(sayActionId,event:action)">
+			<send event="action.listen" bindId="actionId" p:noSpeechTimeout="timeout + asInteger(event:length)" p:endSilTimeout="endSil"/>
+		</onevent>
+		<onevent name="sense.speech.start" cond="eq(actionId,event:action)">
+			<send event="action.speech.stop" p:action="sayActionId"/>
+		</onevent>
+	</state>
+	
+	<state id="wait" public="true" static="true">
+		<param name="msec" type="Integer" default="1000"/>
+		<ontime afterentry="msec">
+			<return/>
+		</ontime>
+	</state>
+	
+	
+		
+</flow>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="ChessFlow" package="iristk.app.chess" initial="Start"
+	xmlns="iristk.flow" xmlns:p="iristk.flow.param" xmlns:this="iristk.app.chess.ChessFlow" xmlns:d="iristk.flow.DialogFlow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="iristk.flow flow.xsd iristk.flow.DialogFlow DialogFlow.xsd">
+
+	<param name="chess" type="ChessGame"/>
+
+	<var name="move" type="Record"/>
+	
+	<state id="Game">
+		<onevent name="chess.restart">
+			<d:say>Okay, let's restart</d:say>
+			<goto state="AwaitUser"/>
+		</onevent>
+	</state>
+
+	<state id="Start" extends="Game">
+		<onentry>
+			<d:say>Okay, let's start</d:say>
+			<goto state="AwaitUser"/>
+		</onentry>     
+	</state>
+
+	<state id="AwaitUser" extends="Game">
+		<onentry>
+			<random>
+				<this:ask>So, what is your move?</this:ask>
+				<this:ask>Your move</this:ask>
+				<this:ask>Your turn</this:ask>
+			</random>
+		</onentry>     
+		<onevent name="chess.move.user">
+			<exec>chess.identifyMoves(move)</exec>
+			<if cond="chess.availableMoves() == 1">
+				<goto state="PerformMove"/>
+			<elseif cond="chess.availableMoves() == 0" />
+				<d:say>Sorry, I can't do that</d:say>
+				<goto state="AwaitUser" /> 
+			<else />
+				<exec>chess.displayAvailableMoves();</exec>
+				<exec>Record clarify = chess.chooseClarification()</exec>
+				<if cond="clarify?:steps">
+					<goto state="ClarifySteps"/>
+				<elseif cond="clarify?:direction" />
+					<goto state="ClarifyDirection"/>
+				<elseif cond="clarify?:piece" />
+					<goto state="ClarifyPiece" p:piece="clarify:piece"/>
+				<elseif cond="clarify?:square" />
+					<goto state="ClarifySquare"/>
+				</if>
+			</if>   
+		</onevent>
+		<onevent name="sense.user.speak" cond="event?:sem:act_move">
+			<exec>chess.newMove()</exec>
+			<exec>move = asRecord(event:sem)</exec>
+			<raise event="chess.move.user"/>
+		</onevent>
+		<onevent name="sense.speech.partial" cond="event?:sem:act_move">
+			<exec>chess.displayAvailableMoves(asRecord(event:sem));</exec>
+		</onevent>
+		<onevent name="sense.user.silence">
+			<reentry />
+		</onevent>
+		<onevent name="sense.user.speak">
+			<d:say>Sorry</d:say>
+			<reentry />
+		</onevent>
+		<onevent name="dialog.repeat">
+			<reentry />
+		</onevent>
+	</state>
+	
+	<state id="PerformMove" extends="Game">
+		<onentry>
+			<d:say>Okay</d:say>
+			<exec>chess.performMove()</exec>
+			<goto state="AwaitSystem" />
+		</onentry>
+	</state>
+
+	<state id="ClarifySteps" extends="AwaitUser">
+		<onentry>
+			<this:ask>How many steps?</this:ask>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:number">
+		 	<exec>move:movement:steps = event:sem:number</exec>
+			<raise event="chess.move.user"/>
+		</onevent>
+	</state>
+
+	<state id="ClarifyDirection" extends="AwaitUser">
+		<onentry>
+			<this:ask>In which direction?</this:ask>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:direction">
+			<exec>move:movement:direction = event:sem:direction</exec>
+			<raise event="chess.move.user"/>
+		</onevent>
+	</state>
+
+	<state id="ClarifyPiece" extends="AwaitUser">
+		<param name="piece"/> 
+		<onentry>
+			<this:ask>Which <expr>piece</expr>?</this:ask>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:piece">
+			<exec>move:piece = event:sem:piece</exec>
+			<raise event="chess.move.user"/>
+		</onevent>
+	</state>
+	
+	<state id="ClarifySquare" extends="AwaitUser">
+		<onentry>
+			<this:ask>To which square?</this:ask>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:piece:square">
+			<exec>move:movement:square = event:sem:piece:square</exec>
+			<raise event="chess.move.user"/>
+		</onevent>
+	</state>
+
+	<state id="AwaitSystem" extends="Game">
+		<onevent name="chess.move.system">
+			<goto state="AwaitUser" />
+		</onevent>
+	</state>
+		
+	<state id="ask">
+		<param name="text"/>
+		<param name="threshold" type="Float" default="0.7"/>
+		<onentry>
+			<d:say text="text"/>
+			<d:listen/>
+		</onentry>
+		<onevent name="sense.user.speak" cond="threshold > asFloat(event:conf)">
+			<goto state="confirm" p:cevent="event"/>
+		</onevent>
+		<onevent name="sense.user.speak">
+			<return copy="event"/>
+		</onevent>
+		<onevent name="sense.user.silence">
+			<return copy="event"/>
+		</onevent>
+	</state>
+	
+	<state id="confirm">
+		<param name="cevent" type="Event"/>
+		<onentry>
+			<d:say>Did you say <expr>cevent:text</expr></d:say>
+			<d:listen/>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:yes">
+			<return copy="cevent"/>
+		</onevent>
+		<onevent name="sense.user.speak" cond="event?:sem:no">
+			<return event="dialog.repeat"/>
+		</onevent>
+		<onevent name="sense.user.speak sense.user.silence">
+			<return copy="event"/>
+		</onevent>
+	</state>
+
+</flow>

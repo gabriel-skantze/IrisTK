@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:g="iristk.agent.face.gestures"
+	elementFormDefault="qualified" targetNamespace="iristk.agent.face.gestures">
+
+	<element name="gestures">
+		<complexType>
+			<sequence>
+				<element ref="g:gesture" minOccurs="0" maxOccurs="unbounded"/>
+			</sequence>
+			<attribute name="framerate" use="optional" default="50" type="int" />
+		</complexType>
+	</element>
+
+	<element name="gesture">
+		<complexType>
+			<sequence>
+				<element name="param" minOccurs="0" maxOccurs="unbounded">
+					<complexType mixed="true">
+						<attribute name="name" use="required" type="string" />
+					</complexType>
+				</element>
+			</sequence>
+			<attribute name="name" use="required" type="string" />
+		</complexType>
+	</element>
+
+</schema>

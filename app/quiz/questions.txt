@@ -1,0 +1,49 @@
+Question;CorrectAnswer;Answer2;Answer3;Answer4;Category;Difficulty
+With how many countries does the US share a land border?;2;3;4;1;Geography;1
+How many faces has the clock on Big Ben's tower?;4;2;3;1;Geography;1
+How many hours behind Greenwich Mean Time is California?;8;6;10;12;Geography;1
+In which European city is Schiphol airport?;Amsterdam;Budapest;Warsaw;Athens;Geography;1
+In which city can one visit the Palace of the Popes?;Avignon;Rome;Nancy;Madrid;Geography;1
+Since 1981, Mumbai is the official name for which Indian city?;Bombay;Calcutta;Delhi;Bangalore;Geography;1
+Where in London can one view the Magna Carta and the Rosetta Stone?;British Museum;Tate Gallery;National Gallery;Tower of London;Geography;1
+In which city can one board the luxurious 'Blue Train'?;Cape Town;Edinburgh;Vancouver;Istanbul;Geography;1
+Which metal was used to construct the outside hull of the Statue of Liberty?;copper;brass;silver;iron;Geography;1
+The Royal Mile is a famous street in which capital city?;Edinburgh;Ottawa;London;Dublin;Geography;1
+In which city is the world famous Chrysler Building skyscraper located?;New York;Chicago;San Francisco;Detroit;Geography;1
+Angel Falls, the worlds highest waterfall is located in which country?;Venezuela;Zambia;Canada;Switzerland;Geography;1
+How many wives did Henry VIII have?;6;5;8;4;History;1
+Which country did the Soviet Union invade in 1979?;Afghanistan;Iraq;Iran;China;History;1
+Of which country was Greenland a colony until 1981?;Denmark;Sweden;Russia;Iceland;History;1
+Who shot Lee Harvey Oswald?;Jack Ruby;Jack Diamond;Jack Emerald;Jack Sapphire;History;1
+What was the first name of the US President known by the nickname JFK?;John;Joe;Jerry;Jack;History;1
+What species were Benjy and Laska, who were sent into space in 1958?;Mice;Rats;Monkeys;Cats;History;1
+What nationality was Roald Amundsen, the first man to reach the South Pole?;Norwegian;Swedish;Dutch;Belgian;History;1
+In what industry did John Davidson Rockefeller get rich?;Oil;Motor;Music;Movie;History;1
+Where did Napoleon Bonaparte suffer his last defeat?;Waterloo;Rome;Elba;Leipzig;History;1
+Who wrote 'a clockwork orange'?;Anthony Burgess;Arnold Burgess;Anthony Hopkins;Arnold Hopkins;Literature;1
+At which railway station does one board the 'Hogwarts Express'?;Kings Cross;Waterloo;Victoria;Charing Cross;Literature;1
+Whose nose grew when he told a lie?;Pinocchio;Dumbo;Jeffrey Archer;Peter Pan;Literature;1
+Where was William Shakespeare born?;Stratford Upon Avon;Bath;Bradford;Kingston Upon Thames;Literature;1
+Which of the following is the best-selling fiction author of all time?;William Shakespeare;Agatha Christie;Barbara Cartland;Harold Robbins;Literature;1
+How many atoms are there in a molecule of water?;3;2;4;1;Science;1
+Cows have how many stomachs?;4;1;2;3;Science;1
+How many legs does a spider have?;8;6;10;12;Science;1
+What lives in a Formicarium?;Ants;Turtles;Apes;Butterflies;Science;1
+Who first argued that the world was not flat?;Aristotle;Columbus;Archimedes;Magellan;Science;1
+What is the loudest animal on earth?;Blue whale;Cricket;Human;Howler monkey;Science;1
+What was the name of the supercomputer that defeated chess master Garri Kasparov in 1997?;Deep Blue;Deep Thought;Deep Waters;Deep End;Science;1
+Which of the following animals is believed to be the first to be domesticated?;Dog;Cat;Cow;Rabbit;Science;1
+Pyrophobia is the fear of what?;Fire;Thunder;Skyscrapers;Plastic;Science;1
+According to Newton, mass times acceleration is equal to what?;Force;Power;Velocity;Torque;Science;1
+What does a Hertz unit measure?;Frequency;Energy;Pressure;Radioactivity;Science;1
+Which country introduced the worlds first diesel locomotive in 1912?;Germany;United Kingdom;Unites States;France;Science;1
+Which of the following is a metal that will not rust?;Gold;Silver;Nickel;Zinc;Science;1
+Which is the most common gas in the atmosphere?;Nitrogen;Oxygen;Helium;Carbon Dioxide;Science;1
+What is not a primary colour?;orange;red;yellow;blue;Science;1
+What does a Pascal unit measure?;Pressure;Light;Radioactivity;Heat;Science;1
+What is the hottest planet in our solar system?;Venus;Mercury;Mars;Earth;Science;1
+How many holes are there on a ten pin bowling ball?;3;4;2;5;Sport;1
+How many rings on the Olympic flag?;5;4;6;7;Sport;1
+How many lanes does an Olympic swimming pool have?;8;6;10;12;Sport;1
+How many rounds are there in a professional boxing title contest?;12;10;20;8;Sport;1
+Which superstar was named 'The Great One'?;Wayne Gretsky;Rod Laver;Eddie Edwards;Dixie Dean;Sport;1

@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="SystemAgentFlow" package="iristk.situated"  
+	initial="Idle" xmlns="iristk.flow" xmlns:p="iristk.flow.param"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:this="iristk.situated.SystemAgentFlow"
+	xsi:schemaLocation="iristk.flow flow.xsd">
+	
+	<param name="systemAgent" type="SystemAgent"/>
+	
+	<var name="agent" type="String" value="systemAgent.id"/>
+	<var name="gestures" type="Record" value="new Record()"/>
+	<var name="speechTextProcessor" type="iristk.speech.SpeechTextProcessor"/>
+			
+	<state id="Base">
+		<onevent name="action.attend" cond="eq(event:target,'nobody') and eq(event:agent, agent)">
+			<goto state="Idle"/>
+		</onevent>
+		<onevent name="action.attend.nobody">
+			<goto state="Idle"/>
+		</onevent>
+		<onevent name="action.attend.think">
+			<goto state="Think"/>
+		</onevent>
+		<onevent name="action.attend.asleep" cond="eq(event:agent, agent)">
+			<goto state="Asleep"/>
+		</onevent>
+		<onevent name="action.attend.all" cond="eq(event:agent, agent)">
+			<goto state="AttendingAll"/>
+		</onevent>
+		<onevent name="action.attend" cond="event?:location and eq(event:agent, agent)">
+			<goto state="AttendingLocation" p:location="event:location" p:mode="event:mode" p:speed="event:speed"/>
+		</onevent>
+		<onevent name="action.attend" cond="event?:target and systemAgent.hasUser(asString(event:target)) and eq(event:agent, agent)">
+			<goto state="AttendingAgent" p:target="event:target" p:mode="event:mode" p:speed="event:speed"/>
+		</onevent>
+		<onevent name="action.attend" cond="systemAgent.hasItem(asString(event:target))">
+			<goto state="AttendingItem" p:target="event:target" p:mode="event:mode" p:speed="event:speed"/>
+		</onevent>
+	 	<onevent name="monitor.speech.prominence">
+			<if cond="gestures?:(event:action)">
+				<send event="action.gesture" p:name="gestures:(event:action)"/>
+			</if>
+		</onevent>
+		<ontime interval="1000-5000">
+			<raise event="blink"/>
+		</ontime>
+		<onevent name="blink">
+			<send event="action.gesture" p:agent="agent" p:name="'blink'"/>
+		</onevent>
+	</state> 
+	 
+	<state id="Idle" extends="Base">
+		<onentry>
+			<send event="action.gaze" p:agent="agent" p:location="systemAgent.getRelative(systemAgent.getNobody().getHeadLocation())" p:mode="'headpose'"/>
+			<send event="monitor.attend" p:agent="agent" p:target="'nobody'"/>
+		</onentry>
+	</state> 
+	
+	<state id="Think" extends="Base">
+		<var name="dir" type="Integer" value="1"/>
+		<var name="nobody" type="Location" value="systemAgent.getRelative(systemAgent.getNobody().getHeadLocation())"/> 
+		<onentry>
+			<send event="action.gaze" p:agent="agent" p:location="nobody" p:mode="'headpose'"/>
+		</onentry>
+		<ontime interval="500">
+			<exec>dir = -dir</exec>
+			<send event="action.gaze" p:location="nobody.add(new Location(0.3 * dir, 0, 0))" p:mode="'eyes'"/>
+		</ontime>
+	</state> 
+	
+	<state id="AttendingAll" extends="Base">
+		<var name="gazeTarget" type="Agent" value="systemAgent.getRandomUser()"/>
+		<var name="middle" type="Location"/>
+		<onentry>
+			<raise event="adjustHeadPose"/>
+			<send event="monitor.attend.all"/>
+		</onentry>
+		<onevent name="adjustHeadPose">
+			<exec>Location newMiddle = systemAgent.getUsersMiddleLocation();</exec>
+			<if cond="middle == null or newMiddle.distance(middle) > 0.2">
+				<exec>middle = newMiddle</exec>
+				<send event="action.gaze" p:location="systemAgent.getRelative(middle)" p:mode="'headpose'"/>
+			</if>
+		</onevent>
+		<ontime interval="1000">
+			<raise event="adjustHeadPose"/>
+			<exec>gazeTarget = systemAgent.getOtherUser(gazeTarget.id)</exec>
+			<send event="action.gaze" p:location="systemAgent.getRelative(gazeTarget.getHeadLocation())" p:mode="'eyes'"/>
+		</ontime>
+	</state> 
+	 
+	<state id="AttendingAgent" extends="Base">
+		<param name="target"/>
+		<param name="mode" default="'headpose'"/>
+		<param name="speed" default="'medium'"/>
+		<var name="user" type="Agent"/>
+		<onentry>
+			<exec>user = systemAgent.getUser(target)</exec>
+			<send event="action.gaze" p:location="systemAgent.getRelative(user.getHeadLocation())" p:mode="mode" p:agent="agent" p:speed="speed"/>
+			<if cond="eq(mode,'headpose')">
+				<exec>mode = "default"</exec>
+			</if>
+			<send event="monitor.attend" p:target="target" p:agent="agent"/>
+		</onentry>
+		<onevent name="sense.user.move" cond="eq(event:agent, agent) and event?:(user.id):head:location">
+			<send event="action.gaze" p:location="systemAgent.getRelative((Location)event:(user.id):head:location)" p:mode="mode" p:agent="agent"/>
+		</onevent>
+	</state>
+	
+	<state id="AttendingItem" extends="Base">
+		<param name="target"/>
+		<param name="mode" default="'default'"/>
+		<param name="speed" default="'medium'"/>
+		<onentry>
+			<if cond="systemAgent.hasItem(target)">
+				<send event="action.gaze" p:location="systemAgent.getRelative(systemAgent.getItem(target).location)" p:mode="mode" p:speed="speed"/>
+			</if>
+			<send event="monitor.attend" p:target="target"/>
+		</onentry>
+		<onevent name="sense.item.move" cond="systemAgent.hasItem(target)">
+			<send event="action.gaze" p:location="systemAgent.getRelative(systemAgent.getItem(target).location)"/>
+		</onevent>
+	</state>
+	
+	<state id="AttendingLocation" extends="Base">
+		<param name="location" type="Location"/>
+		<param name="mode" default="'default'"/>
+		<param name="speed" default="'medium'"/>
+		<onentry>
+			<exec>systemAgent.setAttending(systemAgent.getNobody().id)</exec>
+			<send event="action.gaze" p:location="systemAgent.getRelative(location)" p:agent="agent" p:mode="mode" p:speed="speed"/>
+		</onentry>
+	</state>
+	 
+	<state id="Asleep" extends="Base">
+		<onentry>
+			<send event="action.gaze" p:location="systemAgent.getRelative(systemAgent.getNobody().getHeadLocation())" p:mode="'headpose'" p:agent="agent"/>
+			<send event="action.gesture" p:name="'sleep'" p:agent="agent"/>
+		</onentry>
+		<onexit>
+			<send event="action.gesture" p:name="'blink'" p:agent="agent"/>
+		</onexit>
+		<onevent name="blink"/>
+	</state>
+	
+	<state id="gesture" public="true">
+		<param name="async" type="boolean" default="true" help="Whether to immediately return and produce gesture asynchronously"/>
+		<param name="name" default="'smile'" help="The name of the gesture"/>
+		<param name="text"/>
+		<var name="actionId"/>
+		<onentry>
+			<send event="action.gesture" p:name="name" p:agent="agent" p:text="text" bindId="actionId"/>
+			<if cond="async">
+				<return/>
+			</if>
+		</onentry>
+		<onevent name="monitor.gesture.end" cond="eq(actionId,event:action)">
+			<return/>
+		</onevent>
+	</state>
+	
+	<state id="voice" public="true">
+		<param name="name" default="null" help="The name of the voice"/>
+		<param name="gender" default="null" help="The gender of the voice"/>
+		<onentry>
+			<send event="action.voice" p:name="name" p:gender="gender" p:agent="agent"/>
+			<return/>
+		</onentry>
+	</state>
+
+	<state id="texture" public="true">
+		<param name="name" default="null" help="The face texture name"/>
+		<onentry>
+			<send event="action.face.texture" p:name="name" p:agent="agent"/>
+			<return/>
+		</onentry>
+	</state>
+
+	<state id="attend" public="true">
+		<param name="mode" default="'headpose'"/>
+		<param name="target" default="'nobody'"/>
+		<param name="location" type="Location" default="null"/>
+		<param name="x" type="Double" default="null"/>
+		<param name="y" type="Double" default="null"/>
+		<param name="z" type="Double" default="null"/>
+		<param name="part" default="'head'"/>
+		<param name="speed" default="'medium'"/>
+		<onentry>
+			<exec>systemAgent.setAttending(target)</exec>
+			<if cond="location != null">
+				<send event="action.attend" p:location="location" p:mode="mode" p:agent="agent" p:speed="speed"/>
+			<elseif cond="x != null and y != null and z != null"/>
+				<send event="action.attend" p:location="new Location(x, y, z)" p:mode="mode" p:agent="agent" p:speed="speed"/>
+			<else/>
+				<send event="action.attend" p:target="target" p:mode="mode" p:part="part" p:agent="agent" p:speed="speed"/>
+			</if>
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="attendNobody" public="true">
+		<onentry>
+			<exec>systemAgent.setAttending("nobody")</exec>
+			<send event="action.attend" p:target="'nobody'" p:agent="agent"/>
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="attendRandom" public="true">
+		<param name="mode" default="'headpose'"/>
+		<param name="speed" default="'medium'"/>
+		<var name="random" value="systemAgent.getRandomUser().id"/>
+		<onentry>
+			<exec>systemAgent.setAttending(random)</exec>
+			<send event="action.attend" p:target="random" p:agent="agent" p:mode="mode" p:speed="speed"/> 
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="attendOther" public="true">
+		<param name="mode" default="'headpose'"/>
+		<param name="speed" default="'medium'"/>
+		<var name="other" value="systemAgent.getOtherUser().id"/>
+		<onentry>
+			<exec>systemAgent.setAttending(other)</exec>
+			<send event="action.attend" p:target="other" p:agent="agent" p:mode="mode" p:speed="speed"/>
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="attendAll" public="true">
+		<onentry>
+			<if cond="systemAgent.hasManyUsers()">
+				<exec>systemAgent.setAttendingAll()</exec>
+				<send event="action.attend.all" p:agent="agent"/>
+			</if>
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="fallAsleep" public="true">
+		<onentry>
+			<exec>systemAgent.setAttending("nobody")</exec>
+			<send event="action.attend.asleep" p:agent="agent"/>
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="prompt" extends="listen" public="true">
+		<param name="text" />
+		<onentry>
+			<send event="action.speech" p:text="text" p:agent="agent" />
+		</onentry>
+		<onevent name="monitor.speech.start">
+			<send event="action.listen" bindId="listenActionId" p:noSpeechTimeout="timeout + asInteger(event:length)" p:endSilTimeout="endSil" p:context="context"/>
+		</onevent>
+		<onevent name="sense.user.speech.start" cond="eq(event:speakers, 1)">
+			<send event="action.speech.stop"/>
+			<propagate/>
+		</onevent>
+	</state>
+	
+	<state id="stopSpeaking" public="true">
+		<onentry>
+			<send event="action.speech.stop" p:agent="agent"/>
+			<return/>
+		</onentry>
+	</state>
+	
+	<state id="say" public="true">
+		<param name="text" help="The text to speak (can also be provided as a text node)"/>
+		<param name="async" type="boolean" default="false" help="Whether to immediately return and produce speech asynchronous"/>
+		<param name="ifsilent" type="boolean" default="false" help="Only say this if the system is silent"/>
+		<param name="gesture" default="'brow_raise'" help="A gesture to produce at the prominence of the utterance"/>
+		<param name="display" default="null" help="A nicely formatted text representation for display purposes"/>
+		<param name="audio" default="null" help="An audio file to play instead of synthesising"/>
+		<param name="abort" type="boolean" default="false" help="Whether to abort the current speech plan or just append to it"/>
+		<var name="action"/>
+		<onentry>
+			<if cond="speechTextProcessor != null">
+				<exec>
+					text = speechTextProcessor.process(text);
+					display = speechTextProcessor.process(display);
+				</exec>
+			</if>
+			<exec>display = SystemAgent.processDisplay(text, display);</exec>
+			<send event="action.speech" 
+					p:text="text" 
+					p:agent="agent" 
+					p:audio="audio" 
+					p:display="display" 
+					p:abort="abort" 
+					p:ifsilent="ifsilent"
+					p:async="async" 
+					bindId="action"/>
+			<exec>gestures:(action) = gesture</exec>
+			<if cond="async">
+				<return/>
+			</if>
+		</onentry>
+		<onevent name="monitor.speech.done" cond="eq(event:agent, agent)">
+			<return event="monitor.speech.done" p:agent="agent"/>
+		</onevent>
+	</state>
+	
+	<state id="listen" public="true">
+		<param name="timeout" type="int" default="8000" help="The amount of silence (msec) to wait for if no speech is detected"/>
+		<param name="endSil" type="int" default="700" help="The amount of silence (msec) to wait for at the end of speech"/>
+		<param name="nbest" type="int" default="1" help="The number of hypotheses to return"/>
+		<param name="context" type="String" help="The context to use for speech recognition"/>
+		
+		<var name="multispeech" type="MultiSpeech" value="new MultiSpeech(systemAgent)"/>
+		<var name="listenActionId" type="String" value="''"/>
+		
+		<onentry>
+			<send event="action.listen" bindId="listenActionId" p:noSpeechTimeout="timeout" p:endSilTimeout="endSil" p:context="context" p:nbest="nbest"/>
+		</onentry>
+		<onevent name="sense.speech.start" cond="eq(event:action, listenActionId)">
+			<exec>String agent = systemAgent.getUserId(event)</exec>
+			<exec>boolean isAttendingSystem = systemAgent.getUser(agent).isAttending(systemAgent.id)</exec>
+			<exec>multispeech.addStart(agent, isAttendingSystem)</exec>
+			<send event="sense.user.speech.start" p:attsys="isAttendingSystem" p:agent="systemAgent.id" p:sensor="event:sensor" p:user="agent" p:speakers="multispeech.speakers" p:action="listenActionId"/>
+		</onevent>
+		<onevent name="sense.user.attend" cond="eq(event:target, systemAgent.id) and multispeech.hasStarted(asString(event:user))">
+			<exec>multispeech.attendingSystem(asString(event:agent))</exec>
+		</onevent>
+		<onevent name="sense.speech.end" cond="eq(event:action, listenActionId)">
+			<exec>String agent = systemAgent.getUserId(event)</exec>
+			<exec>multispeech.speakers--</exec>
+			<send event="sense.user.speech.end" p:attsys="multispeech.someAttendingSystem()" p:agent="systemAgent.id" p:sensor="event:sensor" p:user="agent" p:speakers="multispeech.speakers" p:action="listenActionId"/>
+		</onevent>
+		<onevent name="sense.speech.rec**" cond="eq(event:action, listenActionId)">
+			<exec>multispeech.addRec(systemAgent.getUserId(event), event)</exec>
+			<if cond="multispeech.runningRecognizers == 0">
+				<exec>Event result = multispeech.getEvent()</exec>
+				<return copy="result"/> 
+			</if>
+		</onevent>
+		<onexit>
+			<send event="action.listen.stop" p:action="listenActionId"/>
+		</onexit>
+	</state> 
+	 
+</flow>

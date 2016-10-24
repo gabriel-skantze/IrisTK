@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gestures framerate="50" xmlns="iristk.agent.face.gestures" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="iristk.agent.face.gestures gestures.xsd">
+	<gesture name="nod">
+		<param name="NECK_TILT">16(10) 16(0)</param>
+	</gesture>
+	<gesture name="shake">
+		<param name="NECK_PAN">16(10) 32(-10) 16(0)</param>
+	</gesture>
+	<gesture name="smile">
+		<param name="SMILE_CLOSED">16(0.5) 16(0.5) 16(0)</param>
+		<param name="BROW_UP_LEFT">16(1) 16(1) 16(0)</param>		
+		<param name="BROW_UP_RIGHT">16(1) 16(1) 16(0)</param>
+	</gesture>
+	<gesture name="brow_up">
+		<param name="BROW_UP_LEFT">16(1)</param>		
+		<param name="BROW_UP_RIGHT">16(1)</param>
+	</gesture>
+	<gesture name="brow_down">
+		<param name="BROW_UP_LEFT">16(0)</param>		
+		<param name="BROW_UP_RIGHT">16(0)</param>
+	</gesture>
+	<gesture name="brow_raise">
+		<param name="BROW_UP_LEFT">16(1) 16(1) 16(0)</param>		
+		<param name="BROW_UP_RIGHT">16(1) 16(1) 16(0)</param>
+	</gesture>
+	<gesture name="brow_frown">
+		<param name="BROW_DOWN_RIGHT">16(1) 16(1) 16(0)</param>
+		<param name="BROW_DOWN_LEFT">16(1) 16(1) 16(0)</param>		
+		<param name="BROW_IN_RIGHT">16(1) 16(1) 16(0)</param>
+		<param name="BROW_IN_LEFT">16(1) 16(1) 16(0)</param>
+		<param name="EYE_SQUINT_LEFT">16(0.6) 16(0.6) 16(0)</param>
+		<param name="EYE_SQUINT_RIGHT">16(0.6) 16(0.6) 16(0)</param>
+	</gesture>
+	<gesture name="sleep">
+		<param name="BLINK_LEFT">40(1)</param>
+		<param name="BLINK_RIGHT">40(1)</param>
+	</gesture>
+	<gesture name="wake_up">
+		<param name="BLINK_LEFT">40(0)</param>
+		<param name="BLINK_RIGHT">40(0)</param>
+	</gesture>
+	<gesture name="blink">
+		<param name="BLINK_LEFT">8(1) 8(0)</param>
+		<param name="BLINK_RIGHT">8(1) 8(0)</param>
+	</gesture>
+	<gesture name="gaze_away">
+		<param name="GAZE_PAN">16(20) 32(20) 16(0)</param>
+		<param name="GAZE_TILT">16(20) 32(20) 16(0)</param>
+	</gesture>
+	<gesture name="express_disgust">
+		<param name="EXPR_ANGER">16(0)</param>		
+		<param name="EXPR_DISGUST">16(1) 32(1) 16(0)</param>
+		<param name="EXPR_FEAR">16(0)</param>
+		<param name="EXPR_SAD">16(0)</param>
+	</gesture>
+	<gesture name="express_sad">
+		<param name="EXPR_ANGER">16(0)</param>		
+		<param name="EXPR_DISGUST">16(0)</param>
+		<param name="EXPR_FEAR">16(0)</param>
+		<param name="EXPR_SAD">16(1) 32(1) 16(0)</param>
+	</gesture>
+	<gesture name="emotion_anger">
+		<param name="EXPR_ANGER">16(1)</param>		
+		<param name="EXPR_DISGUST">16(0)</param>
+		<param name="EXPR_FEAR">16(0)</param>
+		<param name="EXPR_SAD">16(0)</param>
+	</gesture>
+	<gesture name="emotion_disgust">
+		<param name="EXPR_ANGER">16(0)</param>		
+		<param name="EXPR_DISGUST">16(1)</param>
+		<param name="EXPR_FEAR">16(0)</param>
+		<param name="EXPR_SAD">16(0)</param>
+	</gesture>
+	<gesture name="emotion_fear">
+		<param name="EXPR_ANGER">16(0)</param>		
+		<param name="EXPR_DISGUST">16(0)</param>
+		<param name="EXPR_FEAR">16(1)</param>
+		<param name="EXPR_SAD">16(0)</param>
+	</gesture>
+	<gesture name="emotion_sad">
+		<param name="EXPR_ANGER">16(0)</param>		
+		<param name="EXPR_DISGUST">16(0)</param>
+		<param name="EXPR_FEAR">16(0)</param>
+		<param name="EXPR_SAD">16(1)</param>
+	</gesture>
+	<gesture name="emotion_neutral">
+		<param name="EXPR_ANGER">16(0)</param>		
+		<param name="EXPR_DISGUST">16(0)</param>
+		<param name="EXPR_FEAR">16(0)</param>
+		<param name="EXPR_SAD">16(0)</param>
+	</gesture>
+</gestures>
+
+ 

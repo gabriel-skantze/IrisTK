@@ -1,0 +1,11 @@
+<package name="$situated_dialog$">
+	<run>
+		<command name="$situated_dialog$" class="iristk.app.$situated_dialog$.$Situated_dialog$System"/>
+	</run>
+	<provide>
+		<class type="iristk.furhat.skill.Skill" name="iristk.app.$situated_dialog$.$Situated_dialog$Skill" />
+	</provide>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

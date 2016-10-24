@@ -1,0 +1,8 @@
+<package name="quiz">
+	<run>
+		<command name="quiz" class="iristk.app.quiz.QuizSystem" descr="Run the Quiz example application"/>
+	</run>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

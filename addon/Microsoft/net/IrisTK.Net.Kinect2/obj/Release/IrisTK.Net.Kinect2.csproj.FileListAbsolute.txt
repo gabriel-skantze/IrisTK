@@ -1,0 +1,16 @@
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\Release\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\Release\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\Release\Microsoft.Kinect.Face.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\Release\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\Release\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\x64\Release\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\x64\Release\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\x64\Release\Microsoft.Kinect.Face.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\bin\x64\Release\Microsoft.Kinect.Face.xml
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\Release\IrisTK.Net.Kinect2.csprojResolveAssemblyReference.cache
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x64\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x64\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x64\Microsoft.Kinect.Face.xml
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\Microsoft.Kinect.Face.xml

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="$Situated_dialog$Flow" package="iristk.app.$situated_dialog$" 
+	initial="Idle" xmlns:this="iristk.app.$situated_dialog$.$Situated_dialog$Flow" xmlns="iristk.flow" 
+	xmlns:p="iristk.flow.param" xmlns:agent="iristk.situated.SystemAgentFlow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="iristk.flow flow.xsd iristk.situated.SystemAgentFlow SystemAgentFlow.xsd">
+	
+	<param name="agent" type="iristk.situated.SystemAgentFlow"/>
+	
+	<var name="system" type="iristk.situated.SystemAgent" value="agent.getSystemAgent()"/> 
+	 
+	<var name="number" type="Integer"/>
+	
+	<state id="Idle" extends="Dialog">
+		<onentry>
+			<if cond="system.hasUsers()">
+				<agent:attendRandom/>
+				<goto state="Greeting"/>
+			<else/>
+				<agent:attendNobody/>
+			</if>
+		</onentry>
+		<onevent name="sense.user.enter">
+			<agent:attend target="event:user"/>
+			<goto state="Greeting"/>
+		</onevent>
+	</state>
+	
+	<state id="Greeting" extends="Dialog">
+		<onentry>
+			<agent:say>Hi there, let's play a game</agent:say>
+			<goto state="Start"/>
+		</onentry>
+	</state>
+	
+	<state id="Start" extends="Dialog">
+		<onentry>
+			<exec>number = new java.util.Random().nextInt(10) + 1</exec>
+			<exec>system.putUsers("guesses", 0)</exec>
+			<agent:say>I am thinking of a number between 1 and 10.</agent:say>
+			<goto state="Guess"/>
+		</onentry>
+	</state>
+	
+	<state id="Guess" extends="Dialog">
+		<onentry>
+			<agent:say>What is your guess?</agent:say>
+			<agent:listen/>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:number">
+			<if cond="system.isAttendingAll()">
+				<agent:attend target="event:user"/>
+			</if>
+			<exec>system.getCurrentUser().incrInteger("guesses")</exec>
+			<if cond="asInteger(event:sem:number) == number">
+				<agent:say>
+					<expr>event:sem:number</expr> 
+					is correct, you only needed 
+					<expr>system.getCurrentUser():guesses</expr>
+					guesses.
+				</agent:say>
+				<goto state="CheckAgain"/>
+			<else/>	
+				<if cond="asInteger(event:sem:number) &gt; number">
+					<agent:say><expr>event:sem:number</expr> is too high.</agent:say>
+					<else/>
+					<agent:say><expr>event:sem:number</expr> is too low.</agent:say>
+				</if>
+				<if cond="system.hasManyUsers()">	
+					<random>
+						<agent:attendOther/>
+						<agent:attendAll/>
+					</random>
+				</if>
+				<reentry/>
+			</if>
+		</onevent>
+	</state>
+	
+	<state id="CheckAgain" extends="Dialog">
+		<onentry>
+			<agent:say>Do you want to play again?</agent:say>
+			<agent:listen/>
+		</onentry>
+		<onevent name="sense.user.speak" cond="event?:sem:yes">
+			<agent:say>Okay, let's play again.</agent:say>
+			<goto state="Start"/>
+		</onevent>
+		<onevent name="sense.user.speak" cond="event?:sem:no">
+			<agent:say>Okay, goodbye</agent:say>
+			<goto state="Idle"/>
+		</onevent>		
+	</state>
+	
+	<state id="Dialog">
+		<onevent name="sense.user.speech.start" cond="system.isAttending(event) and eq(event:speakers, 1)">
+			<agent:gesture name="'smile'"/>
+		</onevent>
+		<onevent name="sense.user.speak">
+			<agent:say>Sorry, I didn't get that.</agent:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.speak.side">
+			<agent:attendOther mode="'eyes'" />
+			<agent:say>I didn't ask you.</agent:say>
+			<agent:attendOther mode="'eyes'" />
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.speak.multi">
+			<agent:say>Don't speak at the same time.</agent:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.silence">
+			<agent:say>Sorry, I didn't hear anything.</agent:say>
+			<reentry/>
+		</onevent>
+		<onevent name="sense.user.leave" cond="system.isAttending(event)">
+			<if cond="system.hasUsers()">
+				<agent:attendRandom/>
+				<goto state="Guess" />
+			<else />
+				<goto state="Idle"/>
+			</if>
+		</onevent>
+		<onevent name="repeat">
+			<reentry/>
+		</onevent>
+	</state>
+	
+</flow>

@@ -1,0 +1,8 @@
+<package name="$simple_dialog$">
+	<run>
+		<command name="$simple_dialog$" class="iristk.app.$simple_dialog$.$Simple_dialog$System"/>
+	</run>
+	<classpath>
+		<src path="src" output="bin"/>
+	</classpath>
+</package>

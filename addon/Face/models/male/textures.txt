@@ -1,0 +1,7 @@
+skin_hi:FaceGen	skin
+eyeL_hi:FaceGen	eyeL
+eyeR_hi:FaceGen	eyeR
+sock:FaceGen	sock
+teethLower:FaceGen	teethLower
+teethUpper:FaceGen	teethUpper
+tongue:FaceGen	tongue

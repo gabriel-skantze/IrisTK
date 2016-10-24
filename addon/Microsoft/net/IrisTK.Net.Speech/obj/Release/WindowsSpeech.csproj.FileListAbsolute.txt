@@ -1,0 +1,11 @@
+C:\dropbox\iristk\addons\WindowsSpeech\dev\C#\obj\Release\ResolveAssemblyReference.cache
+C:\dropbox\iristk\addons\WindowsSpeech\dev\C#\bin\Release\WindowsSpeech.dll
+C:\dropbox\iristk\addons\WindowsSpeech\dev\C#\bin\Release\WindowsSpeech.pdb
+C:\dropbox\iristk\addons\WindowsSpeech\dev\C#\obj\Release\WindowsSpeech.dll
+C:\dropbox\iristk\addons\WindowsSpeech\dev\C#\obj\Release\WindowsSpeech.pdb
+D:\Dropbox\iristk\addons\WindowsSpeech\dev\C#\bin\Release\WindowsSpeech.dll
+D:\Dropbox\iristk\addons\WindowsSpeech\dev\C#\bin\Release\WindowsSpeech.pdb
+D:\Dropbox\iristk\addons\WindowsSpeech\dev\C#\obj\Release\ResolveAssemblyReference.cache
+D:\Dropbox\iristk\addons\WindowsSpeech\dev\C#\obj\Release\WindowsSpeech.dll
+D:\Dropbox\iristk\addons\WindowsSpeech\dev\C#\obj\Release\WindowsSpeech.pdb
+C:\dropbox\iristk\addons\WindowsSpeech\dev\C#\bin\Release\Microsoft.Speech.dll

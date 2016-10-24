@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:element name="result">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="interpretation" minOccurs="0"
+					maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="interpretation">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="text">
+					<xsd:complexType mixed="true">
+						<xsd:attribute name="mode" type="xsd:string" />
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="instance">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="SWI_literal" type="xsd:string" />
+							<xsd:element name="SWI_grammarName" type="xsd:string" />
+							<xsd:element name="SWI_meaning" type="xsd:string" />
+							<xsd:element name="SWI_literalTimings">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="alignment">
+											<xsd:complexType>
+												<xsd:sequence>
+													<xsd:element ref="word" minOccurs="0" maxOccurs="unbounded"/>
+												</xsd:sequence>
+												<xsd:attribute name="type" type="xsd:string" />
+												<xsd:attribute name="unit_msecs" type="xsd:int" />
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+						<xsd:attribute name="grammar" type="xsd:string" />
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+			<xsd:attribute name="conf" type="xsd:float" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="word">
+		<xsd:complexType mixed="true">
+			<xsd:attribute name="start" type="xsd:int" />
+			<xsd:attribute name="end" type="xsd:int" />
+			<xsd:attribute name="confidence" type="xsd:float" />
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

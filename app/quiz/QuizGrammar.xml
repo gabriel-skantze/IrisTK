@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grammar xml:lang="en-US" version="1.0" root="srgs_root"
+	xmlns="http://www.w3.org/2001/06/grammar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3.org/2001/06/grammar srgs.xsd" tag-format="semantics/1.0">
+	
+	<rule id="srgs_root" scope="public">
+		<one-of>
+			<item>
+				<one-of>
+					<item>yes</item>
+				</one-of>
+				<tag>out.yes=1</tag>
+			</item>
+			<item>
+				<one-of>
+					<item>no</item>
+				</one-of>
+				<tag>out.no=1</tag>
+			</item>
+		</one-of>
+	</rule> 
+	
+</grammar>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow name="QuizFlow" package="iristk.app.quiz" 
+	initial="Idle" xmlns="iristk.flow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="iristk.flow.param"
+	xmlns:agent="iristk.situated.SystemAgentFlow"
+	xsi:schemaLocation="iristk.flow flow.xsd iristk.situated.SystemAgentFlow SystemAgentFlow.xsd">
+	
+	<param name="questions" type="QuestionSet"/>
+	<param name="agent" type="iristk.situated.SystemAgentFlow"/>
+	
+	<var name="system" type="iristk.situated.SystemAgent" value="agent.getSystemAgent()"/>
+	<var name="question" type="Question"/>
+	<var name="guess" type="int" value="0"/>
+	<var name="winningScore" type="int" value="3"/>
+	
+	<state id="Idle">
+		<onentry>
+			<agent:attendNobody />
+		</onentry>
+		<onevent name="sense.user.enter">
+			<agent:attend target="event:user"/>
+			<goto state="Greeting"/> 
+		</onevent>
+	</state>
+		
+	<state id="Dialog">
+		<onevent name="sense.user.leave"  cond="system.isAttending(event)">
+			<if cond="system.hasUsers()">
+				<agent:attendRandom/>
+				<reentry/>
+			<else />
+				<goto state="Goodbye"/>
+			</if>
+		</onevent>
+		<onevent name="sense.user.speech.start" cond="system.isAttending(event) and eq(event:speakers, 1)">
+			<send event="action.gesture" p:name="'smile'"/>
+		</onevent>
+	</state>
+	
+	<state id="Greeting" extends="Dialog">
+		<onentry>
+			<agent:say>Hi there</agent:say>
+			<goto state="RequestGame"/> 
+		</onentry>
+	</state> 
+		
+	<state id="RequestGame" extends="Dialog">
+		<onentry>
+			<if cond="system.hasManyUsers()">
+				<agent:attendAll/>
+			</if>
+			<agent:say>Do you want to play a game?</agent:say>
+			<agent:listen/>
+		</onentry>
+		<onevent name="sense.user.speak**" cond="event?:sem:yes">
+			<goto state="StartGame"/>
+		</onevent>
+		<onevent name="sense.user.speak**" cond="event?:sem:no">
+			<agent:say>Okay, maybe another time then</agent:say>
+			<goto state="Goodbye"/>
+		</onevent>
+		<onevent name="sense.user.silence sense.user.speak**">
+			<reentry/>
+		</onevent>
+	</state>
+	
+	<state id="StartGame" extends="Dialog">
+		<onentry>
+			<if cond="system.hasManyUsers()">
+				<agent:say>Okay, let's play a game of quiz. The first to reach <expr>winningScore</expr> points is the winner.</agent:say>
+			<else/>
+				<agent:say>Okay, let's play a game of quiz. Let's try to see if you can get <expr>winningScore</expr> points.</agent:say>
+			</if>
+			<goto state="NextQuestion"/>
+		</onentry>
+	</state>
+	
+	<state id="Goodbye">
+		<onentry>
+			<agent:say>Goodbye</agent:say>
+			<goto state="Idle"/>
+		</onentry>
+	</state>
+	
+	<state id="NextQuestion" extends="Dialog">
+		<onentry>
+			<exec>question = questions.next(); guess = 0</exec>
+			<if cond="system.hasManyUsers()">
+				<random>
+					<block>
+						<agent:attendOther/>
+						<agent:say>The next one is for you</agent:say>
+					</block>
+					<block>
+						<agent:attendAll/>
+						<agent:say>Let's see who answers first</agent:say>
+					</block>
+				</random>
+			<else/>
+				<agent:say>Here comes the next question</agent:say>
+			</if>
+			<goto state="ReadQuestion"/>
+		</onentry>
+	</state>
+	
+	<state id="ReadQuestion" extends="AwaitAnswer">
+		<onentry>
+			<agent:say text="question.getFullQuestion()"/>
+			<agent:listen context="'default ' + question.getId()"/>
+		</onentry>
+	</state>
+	
+	<state id="ReadOptions" extends="AwaitAnswer">
+		<onentry>
+			<agent:say text="question.getOptions()"/>
+			<agent:listen context="'default ' + question.getId()"/>
+		</onentry>
+	</state>
+	
+	<state id="AwaitAnswer" extends="Dialog">
+		<onentry>
+			<agent:listen context="'default ' + question.getId()"/>
+		</onentry>
+		<onevent name="sense.user.speak.multi">
+			<if cond="question.isCorrect(event:all:0:sem:answer)">
+				<agent:attend target="event:all:0:user"/>
+				<goto state="CorrectAnswer"/>
+			<elseif cond="question.isCorrect(event:all:1:sem:answer)"/>
+				<agent:attend target="event:all:1:user"/>
+				<goto state="CorrectAnswer"/>
+			<else/>
+				<agent:say>None of you were correct, let's try another question.</agent:say>
+				<goto state="NextQuestion"/>
+			</if>
+		</onevent>
+		<onevent name="sense.user.speak">
+			<if cond="system.isAttendingAll()">
+				<agent:attend target="event:user"/>
+			</if>
+			<if cond="question.isCorrect(event:sem:answer)">
+				<goto state="CorrectAnswer"/>
+				<else/>
+				<goto state="IncorrectAnswer"/>
+			</if>
+		</onevent>
+		<onevent name="sense.user.speak.side">
+			<agent:attendOther mode="'eyes'"/>
+			<agent:say>You were not supposed to answer that</agent:say>
+			<agent:attendOther mode="'eyes'"/>
+			<agent:say>So, what is your answer?</agent:say>
+			<goto state="AwaitAnswer"/>
+		</onevent>
+		<onevent name="sense.user.silence">
+			<raise event="skip"/>
+		</onevent>
+		<onevent name="skip">
+			<agent:say>Give me your best guess</agent:say>
+			<goto state="AwaitAnswer"/>
+		</onevent>
+	</state>
+	
+	<state id="CorrectAnswer" extends="Dialog">
+		<onentry>
+			<exec>system.getCurrentUser().incrInteger("score")</exec>
+			<agent:say>That is correct, you now have a score of <expr>system.getCurrentUser():score</expr></agent:say>
+			<if cond="asInteger(system.getCurrentUser():score, 0) &gt;= winningScore">
+				<goto state="Winner"/>
+			<else/>
+				<goto state="NextQuestion"/>
+			</if>
+		</onentry>
+	</state>
+	
+	<state id="IncorrectAnswer" extends="Dialog">
+		<onentry>
+			<agent:say>That was wrong</agent:say>
+			<if cond="system.hasManyUsers() and guess == 0">
+				<exec>guess++</exec>
+				<agent:attendOther/>
+				<agent:say>Maybe you know the answer?</agent:say>
+				<goto state="AwaitAnswer"/>
+			</if>
+			<agent:say>The correct answer was <expr>question.getCorrectAnswer()</expr></agent:say>
+			<goto state="NextQuestion"/>
+		</onentry>
+	</state>
+	
+	<state id="Winner" extends="Dialog">
+		<onentry>
+			<exec>system.putUsers("score", 0)</exec>
+			<agent:say>Congratulations, you are the winner</agent:say>
+			<if cond="system.hasManyUsers()">
+				<agent:attendOther/>
+				<agent:say>I am sorry, but you lost.</agent:say>
+			</if>
+			<goto state="Goodbye"/>
+		</onentry>
+	</state>
+
+</flow>

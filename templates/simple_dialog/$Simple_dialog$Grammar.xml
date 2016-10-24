@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grammar xml:lang="en-US" version="1.0" root="root"
+	xmlns="http://www.w3.org/2001/06/grammar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.w3.org/2001/06/grammar http://www.iristk.net/xml/srgs.xsd" tag-format="semantics/1.0">
+
+  <rule id="root" scope="public">
+      <one-of>
+          <item>one<tag>out.number=1</tag></item>
+          <item>two<tag>out.number=2</tag></item>
+          <item>three<tag>out.number=3</tag></item>
+          <item>four<tag>out.number=4</tag></item>
+          <item>five<tag>out.number=5</tag></item>
+          <item>six<tag>out.number=6</tag></item>
+          <item>seven<tag>out.number=7</tag></item>
+          <item>eight<tag>out.number=8</tag></item>
+          <item>nine<tag>out.number=9</tag></item>
+          <item>ten<tag>out.number=10</tag></item>
+          <item>yes<tag>out.yes=1</tag></item>
+          <item>no<tag>out.no=1</tag></item>
+      </one-of>
+  </rule>
+  
+</grammar>

@@ -1,0 +1,12 @@
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x64\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x64\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\x64\Release\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\obj\x64\Release\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\${Platform}\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\${Platform}\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\${Platform}\Microsoft.Kinect.Face.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\${Platform}\Microsoft.Kinect.Face.xml
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\IrisTK.Net.Kinect2.dll
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\IrisTK.Net.Kinect2.pdb
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x86\Microsoft.Kinect.Face.xml
+C:\Dropbox\iristk\addon\Microsoft\net\IrisTK.Net.Kinect2\x64\Microsoft.Kinect2.dll

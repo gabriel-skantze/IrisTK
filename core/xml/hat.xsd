@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 sp1 U (http://www.altova.com) by Gabriel Skantze (KTH/TMH) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:a="http://www.speech.kth.se/higgins/2005/annotation/" targetNamespace="http://www.speech.kth.se/higgins/2005/annotation/" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="annotations">
+		<xs:annotation>
+			<xs:documentation>A collections of annotations</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="a:features" minOccurs="0"/>
+				<xs:element name="annotation" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="href" type="xs:anyURI"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="annotation">
+		<xs:annotation>
+			<xs:documentation>Root element for the annotation.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="a:features" minOccurs="0"/>
+				<xs:element name="tracks">
+					<xs:annotation>
+						<xs:documentation>A set of parallel tracks that are annotated.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="track" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A track with one or more non-overlapping sources.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="a:features" minOccurs="0"/>
+										<xs:element name="sources">
+											<xs:annotation>
+												<xs:documentation>A set of sources for annotating.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="source" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>A source for annotating, e.g. a reference to an audio file.</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element ref="a:features" minOccurs="0"/>
+															</xs:sequence>
+															<xs:attribute name="href" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>A reference to a source file.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="id" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>The id of the source.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="channel" type="xs:int" use="optional" default="0">
+																<xs:annotation>
+																	<xs:documentation>If the referenced file has multiple channels, this attribute denotes which channel the source points to (counting from 0).</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="offset" type="xs:float" use="optional" default="0.0">
+																<xs:annotation>
+																	<xs:documentation>Offset time (in seconds) for this source relative to an arbitrary absolute reference point. Treated as 0.0 if omitted.</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="id" type="xs:string"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="segments" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>A set of top segments.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="segment" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>A top segment in the annotation, referring to a source with optional start and end timings. If start and/or end is omitted, the beginning and/or end of the source is assumed.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="a:features" minOccurs="0"/>
+										<xs:element ref="a:transcription" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="track" type="xs:string" use="required"/>
+									<xs:attribute name="id" type="xs:ID" use="required"/>
+									<xs:attribute name="source" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>A reference to a source.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attributeGroup ref="a:startend"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="offset" type="xs:float" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:string" use="required"/>
+		</xs:complexType>
+		<xs:key name="trackKey">
+			<xs:selector xpath="a:tracks/a:track"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+		<xs:keyref name="trackRef" refer="a:trackKey">
+			<xs:selector xpath="a:segments/a:segment"/>
+			<xs:field xpath="@track"/>
+		</xs:keyref>
+		<xs:key name="sourceKey">
+			<xs:selector xpath="a:tracks/a:track/a:sources/a:source"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+		<xs:keyref name="sourceRef" refer="a:sourceKey">
+			<xs:selector xpath="a:segments/a:segment"/>
+			<xs:field xpath="@source"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="transcription">
+		<xs:annotation>
+			<xs:documentation>The transcription of the segment.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element ref="a:segment"/>
+				<xs:element name="t" nillable="false">
+					<xs:annotation>
+						<xs:documentation>A token (e.g. a word).</xs:documentation>
+					</xs:annotation>
+					<xs:complexType mixed="true">
+						<xs:attributeGroup ref="a:startend"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="segment">
+		<xs:annotation>
+			<xs:documentation>A sub segment, i.e. a segment within a top segment.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="a:features" minOccurs="0"/>
+				<xs:element ref="a:transcription" minOccurs="0"/>
+			</xs:sequence>
+			<xs:attributeGroup ref="a:startend"/>
+			<xs:attribute name="id" type="xs:ID" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="features">
+		<xs:annotation>
+			<xs:documentation>A set of features describing this unit.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="feature" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>A feature with a name and an optional value.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType mixed="true">
+						<xs:choice>
+							<xs:any processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:choice>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="startend">
+		<xs:attribute name="start" type="xs:float" use="optional">
+			<xs:annotation>
+				<xs:documentation>Start time in seconds.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="end" type="xs:float" use="optional">
+			<xs:annotation>
+				<xs:documentation>End time in seconds.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+</xs:schema>

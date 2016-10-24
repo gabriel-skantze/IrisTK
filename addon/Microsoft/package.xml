@@ -1,0 +1,13 @@
+<package name="Microsoft">
+	<provide>
+		<class type="iristk.speech.Synthesizer" name="iristk.speech.windows.WindowsSynthesizer"/>
+		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.windows.WindowsRecognizerFactory"/>
+	</provide>
+	<classpath>
+		<src path="src" output="bin"/>
+		<lib path="lib/jni4net.j-0.8.8.0.jar"/>
+		<lib path="lib/IrisTK.Net.Speech.j4n.jar"/>
+		<lib path="lib/IrisTK.Net.Kinect.j4n.jar"/>
+		<lib path="lib/IrisTK.Net.Kinect2.j4n.jar"/>
+	</classpath>
+</package>

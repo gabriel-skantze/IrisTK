@@ -1,0 +1,55 @@
+#ABNF 1.0 ISO-8859-1;
+
+language en-US;
+root $srgs_root;
+
+public $srgs_root = ($ellipse {out=rules.ellipse}) | ($command {out=rules.command});
+
+$command = (($move $np_piece_ref {out.act_move=true;out.piece=rules.np_piece_ref}) | ($move $np_piece_ref $aux_again {out.act_move=true;out.piece=rules.np_piece_ref}) | ($move $np_piece_ref $movement {out.act_move=true;out.piece=rules.np_piece_ref;out.movement=rules.movement}) | ($capture $np_piece_ref {out.act_move=true;out.capture=rules.np_piece_ref}) | ($capture $np_piece_ref $aux_with $np_piece {out.act_move=true;out.capture=rules.np_piece_ref;out.piece=rules.np_piece}) | (yes {out.act_yes=true}) | (no {out.act_no=true}));
+
+$ellipse = (($number {out.number=rules.number}) | ($direction {out.direction=rules.direction}) | ($np_piece {out.piece=rules.np_piece})) {out.ellipse=true};
+
+$movement = (($number $aux_steps {out.steps=rules.number}) | ($direction {out.direction=rules.direction}) | ($number $aux_steps $direction {out.steps=rules.number;out.direction=rules.direction}) | ($aux_to $square {out.square=rules.square}));
+
+$relPiecePos = $direction_relative $np_piece {out.rel=rules.direction_relative;out.piece=rules.np_piece};
+
+$relPiecePosSimp = ($direction_relative $np_piece_simp {out.rel=rules.direction_relative;out.piece=rules.np_piece_simp});
+
+$np_piece_simp = (($determiner $piece {out.type=rules.piece}));
+
+$np_piece = (($determiner $piece {out.type=rules.piece}) | ($determiner $piece [$aux_standing] $relPiecePosSimp {out.type=rules.piece;out.relPiecePos=rules.relPiecePosSimp}) | ($determiner $direction_extreme $piece {out.type=rules.piece;out.relPos=rules.direction_extreme}) | ($square {out.square=rules.square}));
+
+$np_piece_ref = (($np_piece {out=rules.np_piece}) | ($pron));
+
+$square = ($column $number {out.column=rules.column;out.row=rules.number});
+
+$aux_again = (again | (once more));
+
+$aux_standing = ((standing) | (that stands) | (that is standing) | (that is));
+
+$aux_steps = (step | steps);
+
+$aux_to = (to);
+
+$aux_with = (with);
+
+$capture = take | capture;
+
+$column = ((a {A}) | (alpha {A}) | (b {B}) | (bravo {B}) | (c {C}) | (charlie {C}) | (d {D}) | (delta {D}) | (e {E}) | (echo {E}) | (f {F}) | (foxtrot {F}) | (g {G}) | (golf {G}) | (h {H}) | (hotel {H}));
+
+$determiner = ((the) | (the same));
+
+$direction = ((forward {Forward}) | (ahead {Forward}) | (backwards {Backward}) | (to the left {Left}) | (left {Left}) | (to the right {Right}) | (right {Right}));
+
+$direction_extreme = ((left {Left}) | (right {Right}) | (front {Front}) | (back {Back}) | (middle {Middle}));
+
+$direction_relative = ((on the left side of {LeftOf}) | (on the right side of {RightOf}) | (in front of {FrontOf}) | (behind {Behind}) | (next to {NextTo}));
+ 
+$move = move;
+
+$number = ((one {1}) | (two {2}) | (three {3}) | (four {4}) | (five {5}) | (six {6}) | (seven {7}) | (eight {8}) | (1) | (2) | (3) | (4) | (5) | (6) | (7) | (8));
+
+$piece = ((king {King}) | (queen {Queen}) | (pawn {Pawn}) | (knight {Knight}) | (horse {Knight}) | (rook {Rook}) | (bishop {Bishop}) | (piece {Piece}) | (one {Piece}));
+
+$pron = it;
+

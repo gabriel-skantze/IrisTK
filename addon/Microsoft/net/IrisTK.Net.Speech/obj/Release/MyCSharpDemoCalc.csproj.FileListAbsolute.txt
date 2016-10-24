@@ -1,0 +1,10 @@
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\bin\Release\MyCSharpDemoCalc.dll
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\bin\Release\MyCSharpDemoCalc.pdb
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\obj\Release\ResolveAssemblyReference.cache
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\obj\Release\MyCSharpDemoCalc.dll
+C:\gabriel\My Dropbox\dev\jni4net\samples\myCSharpDemoCalc\MyCSharpDemoCalc\obj\Release\MyCSharpDemoCalc.pdb
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\bin\Release\MyCSharpDemoCalc.dll
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\bin\Release\MyCSharpDemoCalc.pdb
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\obj\Release\ResolveAssemblyReference.cache
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\obj\Release\MyCSharpDemoCalc.dll
+C:\dropbox\dev\jni4net\test\MyCSharpDemoCalc\obj\Release\MyCSharpDemoCalc.pdb
