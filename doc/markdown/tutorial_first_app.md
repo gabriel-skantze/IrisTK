@@ -95,7 +95,7 @@ Then two flow-level variables are defined: **number** (the number that the syste
 The initial state **Start** contains one event handler called \<onentry\>, which is triggered when the state is entered. The event handler does in turn contain a set of actions that will be executed:
 
 * \<exec\>: Executes Java code
-* \<dialog:say\>: Calls the state **say** in the linked flow iristk.flow.SimpleFlow with the contents of the element (the text to speak) as a parameter. The called state will send an event to the synthesizer to synthesize the text, and then return when the synthesizer is done. If you want to see what SimpleFlow.xml looks like, you can find it in the folder core/src/iristk/flow.
+* \<dialog:say\>: Calls the state **say** in the linked flow iristk.flow.SimpleFlow with the contents of the element (the text to speak) as a parameter. The called state will send an event to the synthesizer to synthesize the text, and then return when the synthesizer is done. If you want to see what DialogFlow.xml looks like, you can find it in the folder core/src/iristk/flow.
 * \<goto\>: Will make a transition to the state **Guess**. This is what the state looks like:
 
 ```xml
