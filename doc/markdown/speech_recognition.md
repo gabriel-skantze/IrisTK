@@ -120,44 +120,9 @@ SRGSGrammar travelGrammar = new SRGSGrammar(system.getPackageFile("TravelGrammar
 travelGrammar.addRules(new ListGrammar(system.getPackageFile("cities.txt"), Language.ENGLISH_US, "CITY"));
 ```
 
-### Open vocabulary recognizers
+### Open vocabulary recognizers and semantic grammars
 
-Whereas a speech grammar needs to match exactly what the user said, you can also use an open vocabulary recognizer that does not rely on a speech grammar. In most cases, the speech recognition will not be perfect with such a recognizer, and as long as the user speaks in-grammar, grammar-based speech recognition will often perform better. But in many cases it is simply impossible to write a grammar that covers everything the user might say.
-
-Although the WindowsRecognizer supports open vocabulary recognition, the accuracy is very poor. IrisTK also comes with the NuanceCloudRecognizer, which supports open vocabulary recognition (but not SpeechGrammars), and has a relatively high accuracy. As the name indicates, it does the recognition in the cloud, so you need a relatively fast Internet connection. You will also need to [sign up for a developer account](http://developer.nuance.com/public/index.php?task=register), and get your APP_ID and APP_KEY. Create a file called license.properties in the addon/NuanceCloud folder under the IrisTK installation. Enter your credentials like this:
-
-```
-APP_ID = NMDPTRIAL...
-APP_KEY = 8e26ad5...
-```
-
-For this recognizer, you should add an [OpenVocabularyContext](http://www.iristk.net/javadoc/iristk/speech/OpenVocabularyContext.html). You have to specify which language should be used for the context:
-
-```java
-system.loadContext("default", new OpenVocabularyContext(Language.US);
-```
-
-### Semantic grammars
-
-Whereas the SpeechGrammar describes both what the recognizer should listen for, and how this should be interpreted into semantics, an open vocabulary recognizer does not produce any semantic interpretation by itself. Thus we should provide it with a Semantic Grammar. The semantic grammar uses the same format as the speech grammar (SRGS), but the parsing is more relaxed. Thus, there is no requirement that the "root" rule must match the whole input. Instead, the grammar can match individual phrases in the input with "garbage" words in between. The parser tries to match all rules that are marked with the attribute public="true", to cover as many words as possible with as high-level rules as possible. 
-
-<!--
-In our grammar example, only the "root" rule is marked as public. However, this rule is designed so that it can also match short key phrases such as "a cheese burger" and "a large coke". Thus, even if the user says something that is not covered by the root rule, such as "I'm gonna have a cheese burger and then I want a large coke", the parser will match these phrases, and then combine the semantics.
-
-To try this out, choose the Nuance Cloud recognizer from the drop-down. Open BurgerGrammar.xml into the Semantic Grammar window (bottom right), and press Load. Then you can press Listen and say something to see the result. Be aware that since the recognition is cloud-based, the result will take a little bit more time than with the Windows recognizer. You can also try to write a text string in the bottom of the Semantic Grammar window and press Parse. Then you will also see how the individual phrases match.
--->
-
-The semantic grammar also allows for some more tricks that are not supported by the speech grammar. You can use the "_" symbol in words to match zero to many characters. Thus "\_burger\_" would match both "burger", "hamburger" and "cheeseburgers". (In fact you can use any [regular expression](https://en.wikipedia.org/wiki/Regular_expression), but "\_" is interpreted as ".*").       
-
-Here is an example of you setup Nuance Cloud recognizer together with a semantic grammar in a dialog system. As you can see, we associate both an open vocabulary grammar and a semantic grammar to the context "default":
-
-```java
-system.setupRecognizer(new NuanceCloudRecognizerFactory());
-system.loadContext("default", new OpenVocabularyContext(system.getLanguage()));
-system.loadContext("default", new SemanticGrammarContext(new SRGSGrammar(getClass().getResource("BurgerGrammar.xml").toURI())));
-```
-
-Note that it is also possible to combine speech grammars with semantic grammars in recognizers that use speech grammars, such as the Windows recognizer (using both SpeechGrammarContext and SemanticGrammarContext). In this case, the speech grammar will define what can be said (but the \<tag\> elements will be ignored), and the resulting text string will be parsed and interpreted with the semantic grammar.
+Please refer to [Tutorial 3](tutorial_semantics.html) for a description of how to use open vocabulary recognizers and semantic grammars. 
 
 ### Implementing your own semantic context
 

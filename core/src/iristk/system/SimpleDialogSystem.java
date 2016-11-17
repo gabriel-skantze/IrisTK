@@ -13,7 +13,6 @@ import iristk.speech.Voice.Gender;
 
 public class SimpleDialogSystem extends AbstractDialogSystem {
 
-	private IrisGUI gui;
 	private RecognizerModule recognizerModule;
 	private SynthesizerModule synthesizerModule;
 	private Console console;
@@ -74,11 +73,6 @@ public class SimpleDialogSystem extends AbstractDialogSystem {
 		setupSynthesizer(synthesizer, null);
 	}
 
-	@Override
-	public IrisGUI getGUI() {
-		return gui;
-	}
-	
 	public Console getConsole() {
 		return console;
 	}

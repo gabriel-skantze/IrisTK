@@ -89,6 +89,16 @@
 		<param name="EXPR_FEAR">16(0)</param>
 		<param name="EXPR_SAD">16(0)</param>
 	</gesture>
+	
+	<!-- Gestures used in Birthday Skill -->
+	<gesture name="smile_on">
+		<param name="SMILE_CLOSED">16(1.5)</param>
+		<param name="BROW_UP_LEFT">16(1) 16(1) 16(1) 16(1) 16(0)</param>		
+	</gesture>
+	<gesture name="smile_off">
+		<param name="SMILE_CLOSED">16(0)</param>		
+	</gesture>
+	<!-- End of gestures used in Birthday Skill -->
 </gestures>
 
  

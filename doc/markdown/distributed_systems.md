@@ -27,7 +27,7 @@ subscribe("action.listen**");
 If you want to communicate with the IrisBroker from another programming language, you have to follow the broker protocol.
  
 1.	Connect to the broker using a socket on the right port. Create two threads, one for writing to the socket and one for reading from it.
-2.	Write "CONNECT [ticket]\\n" on the socket, where [ticket] is the name of the ticket you want to share events with.
+2.	Write "CONNECT \[ticket\] \[myname\]\\n" on the socket, where [ticket] is the name of the ticket you want to share events with, and [myname] is the name of your client.
 3.	Read on the socket and wait for "CONNECTED\\n". 
 4.	Write "SUBSCRIBE [filter]\\n" to tell the broker which events you are interested in (e.g., "\*\*" for all events).
 5.	Accept messages from the broker:

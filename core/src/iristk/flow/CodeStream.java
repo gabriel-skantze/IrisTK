@@ -11,15 +11,18 @@
 package iristk.flow;
 
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
-public class CodeStream extends PrintStream {
+public class CodeStream extends PrintWriter {
 
 	private int indent = 0;
 	private String lastLine;
 	
 	public CodeStream(OutputStream out) {
-		super(out);
+		super(new OutputStreamWriter(out, StandardCharsets.UTF_8), true);
 	}
 	
 	@Override

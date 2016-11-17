@@ -9,9 +9,9 @@
 * For development, you are advised to use the [Eclipse IDE](develop_in_eclipse.html)
 * IrisTK comes with support for Nuance Recognizer 9 speech recognition system. However, if you want to use Nuance 9, it must first be properly installed on your system together with at least a US English language pack. This also requires 32-bit Java. 
 
-###	Install 
+###	Using the Installer 
 
-[Download](download.html) and run the basic installer (an exe-file). The installation procedure will ask you in which directory you want IrisTK to be installed. To make life easier, try to avoid paths that include spaces.  
+To install, you can [download](download.html) and run the basic installer (an exe-file). The installation procedure will ask you in which directory you want IrisTK to be installed. To make life easier, try to avoid paths that include spaces.  
 
 If you have problems with the installer, you can also [download](download.html) IrisTK as a zip file. In that case, unzip IrisTK to a folder of your choice. Then open a command window, go to the installation directory, and type:
 
@@ -19,9 +19,17 @@ If you have problems with the installer, you can also [download](download.html) 
 iristk install
 ``` 
 
-### Upgarding from an older version
+### Upgrading from an older version
 
 To upgrade an old version of IrisTK, you can just install the new version in the same location is the old one. This will completely replace the core, addon and apps that comes with IrisTK, but any apps or addons you have created will remain. Note that there might be compatibility issues between your old apps and addons and the updated IrisTK packages. [Check the changelog](changelog.html) for important changes to the API.
+
+### Using the GitHub repository
+
+Instead of using the installer, it is also possible to get the IrisTK repository from GitHub. This allows you to get continuous updates to the code. If you are interested in contributing to the repository, contact [Gabriel Skantze](http://www.speech.kth.se/~gabriel/contact.html).
+
+[https://github.com/gabriel-skantze/IrisTK](https://github.com/gabriel-skantze/IrisTK)
+
+Remember that if you do this, you also have to run "iristk install" as instructed above, after pulling the repository. 
 
 ### Test
 

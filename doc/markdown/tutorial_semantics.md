@@ -1,11 +1,10 @@
-## Tutorial 3: Grammars, Semantics and Slot-filling
+## Tutorial 3: Semantics and dialog
 
 In the previous tutorials, the dialog was very simple, and the utterances contained barely any semantics (just simple numbers). In this tutorial, we will look at more complex grammars, semantics and dialog. More specifically, you will learn the following things:
 
-* How to create semantic interpretations with deeper and more complex structures
 * How to use an open vocabulary recognizer together with a semantic grammar
+* How to create semantic interpretations with deeper and more complex structures
 * How to write more complex flows, that work in a slot-filling fashion 
-* How to extend this to multi-party dialog, allowing two users to fill out different forms
 
 Note: The first part of this tutorial only assumes that you have taken [Tutorial 1](tutorial_first_app.html), and know how to create a new application. The last part also assumes that you have taken [Tutorial 2](tutorial_sitint.html) on situated interaction.  
 
@@ -20,155 +19,120 @@ iristk create simple_dialog burger
 iristk eclipse
 ```
 
-### Speech and semantics
+### Open vocabulary recognizers
 
-To start with, we will create a grammar for the application. Replace the contents of BurgerGrammar.xml with this: 
+Whereas a speech grammar needs to match exactly what the user said, you can also use an open vocabulary recognizer that does not rely on a speech grammar. IrisTK comes with two such recognizers: NuanceCloud and Google. Both of them are cloud-based, which means that you have to create an account, and have an Internet connection when the recognizer is running.  
+
+To use NuanceCloud, you need to [sign up for a developer account](http://developer.nuance.com/public/index.php?task=register), and get your APP_ID and APP_KEY. Create a file called license.properties in the addon/NuanceCloud folder under the IrisTK installation. Enter your credentials like this:
+
+```
+APP_ID = NMDPTRIAL...
+APP_KEY = 8e26ad5...
+```
+
+If you want to use Google, you need to [sign up for a developer account here](https://cloud.google.com/speech/). You then need to create a [Service Account](https://cloud.google.com/speech/docs/common/auth) and download the JSON key file. This file should be named credentials.json and placed in the addon/Google folder.   
+
+To test if the recognizer is working, we will use a tool called TestRecognizer, which will also allow you to experiment with grammars. Start the tool from the command line like this:
+
+```
+iristk asr
+```
+
+![](img/asr_tool.jpg)
+
+On the top left, you can choose a recognizer to test. If you choose one of the open vocabulary recognizers (NuanceCloud or Google), you should be able to press the Listen button. Talk into the microphone and you will see the result in the Output window. 
+
+### Semantic grammars
+
+Whereas a SpeechGrammar (which was used in Tutorial 1) describes both what the recognizer should listen for, and how this should be interpreted into semantics, an open vocabulary recognizer does not produce any semantic interpretation by itself. Thus we should provide it with a Semantic Grammar. The semantic grammar uses the same format as the speech grammar (SRGS), but the parsing is more relaxed. 
+
+We will now create a semantic grammar for the application. Replace the contents of BurgerGrammar.xml with this: 
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<grammar xml:lang="en-US" version="1.0" root="root"
+<grammar xml:lang="en-US" version="1.0"
 	xmlns="http://www.w3.org/2001/06/grammar" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.w3.org/2001/06/grammar http://www.iristk.net/xml/srgs.xsd"
 	tag-format="semantics/1.0">
 
-	<rule id="root" scope="public">
-		<one-of>
-			<item>
-				<item repeat="0-1">
-					<one-of>
-						<item>i would like</item>
-						<item>i would like to order</item>
-						<item>i would like to have</item>
-						<item>i want</item>
-						<item>i want to order</item>
-						<item>i want to have</item>
-						<item>could i have</item>
-						<item><ruleref uri="#yes"/></item>
-					</one-of>
-				</item>
-				<ruleref uri="#order"/>
-				<tag>out.order = rules.order</tag>
-				<item repeat="0-1">please</item>
-			</item>
-			<item>
-				<ruleref uri="#yes"/>
-				<tag>out.yes=1</tag>
-			</item>
-			<item>
-				<ruleref uri="#no"/>
-				<tag>out.no=1</tag>
-			</item>
-			<item>
-				<ruleref uri="#flavor"/>
-				<tag>out.flavor = rules.flavor</tag>
-			</item>
-		</one-of>
-	</rule>
-
-	<rule id="order">
-		<item repeat="1-3">
-			<one-of>
-				<item>
-					<ruleref uri="#main" />
-					<tag>out.main = rules.main</tag>
-				</item>
-				<item>
-					<ruleref uri="#drink" />
-					<tag>out.drink = rules.drink</tag>
-				</item>
-				<item>
-					<ruleref uri="#side" />
-					<tag>out.side = rules.side</tag>
-				</item>
-			</one-of>
-			<item repeat="0-1">and</item>
+	<rule id="main" scope="public">
+		<tag>out.order={};out.order.main={}</tag>
+		<item repeat="0-1">
+			<ruleref uri="#count" />
+			<tag>out.order.main.count = rules.count</tag>
 		</item>
-	</rule>
-
-	<rule id="main">
+		<item repeat="0-1">
+			<ruleref uri="#size" />
+			<tag>out.order.main.size = rules.size</tag>
+		</item>
 		<one-of>
 			<item>
-				<item repeat="0-1">
-					<ruleref uri="#count" />
-					<tag>out.count = rules.count</tag>
-				</item>
-				<item repeat="0-1">
-					<ruleref uri="#size" />
-					<tag>out.size = rules.size</tag>
-				</item>
 				<one-of>
-					<item>
-						<one-of>
-							<item>burger</item>
-							<item>hamburger</item>
-							<item>hamburgers</item>
-						</one-of>
-						<tag>out.type="hamburger"</tag>
-					</item>
-					<item>
-						<one-of>
-							<item>cheeseburger</item>
-							<item>cheeseburgers</item>
-						</one-of>
-						<tag>out.type="hamburger"; out.topping="cheese"</tag>
-					</item>
+					<item>burger_</item>
+					<item>hamburger_</item>
 				</one-of>
+				<tag>out.order.main.type="hamburger"</tag>
+			</item>
+			<item>
+				<one-of>
+					<item>cheeseburger_</item>
+				</one-of>
+				<tag>out.order.main.type="hamburger"; out.order.main.topping="cheese"</tag>
 			</item>
 		</one-of>
 	</rule>
 
 	<rule id="drink" scope="public">
+		<tag>out.order={};out.order.drink={}</tag>
+		<item repeat="0-1">
+			<ruleref uri="#count" />
+			<tag>out.order.drink.count = rules.count</tag>
+		</item>
+		<item repeat="0-1">
+			<ruleref uri="#size" />
+			<tag>out.order.drink.size = rules.size</tag>
+		</item>
 		<one-of>
 			<item>
 				<item repeat="0-1">
-					<ruleref uri="#count" />
-					<tag>out.count = rules.count</tag>
+					<ruleref uri="#flavor"/>
+					<tag>out.order.drink.flavor = rules.flavor</tag>
 				</item>
-				<item repeat="0-1">
-					<ruleref uri="#size" />
-					<tag>out.size = rules.size</tag>
-				</item>
-				<one-of>
-					<item>
-						<item repeat="0-1">
-							<ruleref uri="#flavor"/>
-							<tag>out.flavor = rules.flavor</tag>
-						</item>
-						<item>milkshake</item>
-						<tag>out.type="milkshake"</tag>
-					</item>
-					<item>coke<tag>out.type="coke"</tag></item>
-					<item>sprite<tag>out.type="sprite"</tag></item>
-					<item>fanta<tag>out.type="fanta"</tag></item>
-				</one-of>
+				<item>milkshake</item>
+				<tag>out.order.drink.type="milkshake"</tag>
 			</item>
+			<item>coke<tag>out.order.drink.type="coke"</tag></item>
+			<item>sprite<tag>out.order.drink.type="sprite"</tag></item>
+			<item>fanta<tag>out.order.drink.type="fanta"</tag></item>
 		</one-of>
 	</rule>
 
 	<rule id="side" scope="public">
+		<tag>out.order={};out.order.side={}</tag>
+		<item repeat="0-1">
+			<ruleref uri="#count" />
+			<tag>out.order.side.count = rules.count</tag>
+		</item>
+		<item repeat="0-1">
+			<ruleref uri="#size" />
+			<tag>out.order.side.size = rules.size</tag>
+		</item>
 		<one-of>
 			<item>
-				<item repeat="0-1">
-					<ruleref uri="#count" />
-					<tag>out.count = rules.count</tag>
-				</item>
-				<item repeat="0-1">
-					<ruleref uri="#size" />
-					<tag>out.size = rules.size</tag>
-				</item>
 				<one-of>
-					<item>
-						<one-of>
-							<item>fries</item>
-							<item>some fries</item>
-							<item>bag of fries</item>
-						</one-of>
-						<tag>out.type="fries"</tag>
-					</item>
-					<item>sallad<tag>out.type="sallad"</tag></item>
+					<item>fries</item>
+					<item>some fries</item>
+					<item>bag of fries</item>
 				</one-of>
+				<tag>out.order.side.type="fries"</tag>
 			</item>
+			<item>sallad<tag>out.order.side.type="sallad"</tag></item>
 		</one-of>
+	</rule>
+
+	<rule id="flavor_answer" scope="public">
+		<ruleref uri="#flavor"/>
+		<tag>out.flavor = rules.flavor</tag>
 	</rule>
 
 	<rule id="flavor">
@@ -196,7 +160,7 @@ To start with, we will create a grammar for the application. Replace the content
 		</one-of>
 	</rule>
 	
-	<rule id="yes">
+	<rule id="yes" scope="public">
 		<one-of>
 			<item>yes</item>
 			<item>yes I do</item>
@@ -205,9 +169,10 @@ To start with, we will create a grammar for the application. Replace the content
 			<item>of course</item>
 			<item>okay</item>
 		</one-of>
+		<tag>out.yes=1</tag>
 	</rule>
 
-	<rule id="no">
+	<rule id="no" scope="public">
 		<one-of>
 			<item>no</item>
 			<item>no way</item>
@@ -215,24 +180,17 @@ To start with, we will create a grammar for the application. Replace the content
 			<item>not really</item>
 			<item>I don't think so</item>
 		</one-of>
+		<tag>out.no=1</tag>
 	</rule>
 
 </grammar>
 ```
 
-We will now introduce a useful tool called TestRecognizer for experimenting with grammars and speech recognition. Start the tool like this:
+This grammar does not contain any root rule. Instead, we mark all rules that will match a fragment and return a semantic structure as "public". This includes fragments such as "a cheeseburger" and "a large coke". Thus, if the user says something like "I'm gonna have a cheeseburger and then I want a large coke", the parser will match these phrases, and then combine the semantics. The parser tries to match all rules that are marked as public, to cover as many words as possible with as high-level rules as possible. 
 
-```
-iristk asr
-```
+We will now try our semantic grammar out in the TestRecognizer tool. Either you can copy and paste the BurgerGrammar.xml into the Semantic Grammar window, or you can drag-and-drop the file from Eclipse. If you choose the latter, you can then save any changes you make directly from the tool. In order to use the grammar, we must load it into the recognizer. Press the Load button to do so. It is important to remember that you have to do this every time you change the grammar for the changes to take effect. If everything works fine, you will see a positive message in the Output window on the upper right, otherwise you will get an error message (for example if the grammar is ill-formed).
 
-![](img/asr_tool.jpg)
-
-On the top left, you can choose a recognizer to test. Choose WindowsRecognizer. Below, you can see two grammar windows: a Speech Grammar and a Semantic Grammar. In this tutorial, we will only use the Speech Grammar. 
-
-Either you can copy and paste the BurgerGrammar.xml into the Speech Grammar window, or you can drag-and-drop the file from Eclipse. If you choose the latter, you can then save any changes you make directly from the tool. In order to use the grammar, we must load it into the recognizer. Press the Load button to do so. It is important to remember that you have to do this every time you change the grammar for the changes to take effect. If everything works fine, you will see a positive message in the Output window on the upper right, otherwise you will get an error message (for example if the grammar is ill-formed). 
-
-When you have loaded the grammar, you can test the recognizer by pressing the Listen button (have your microphone ready). If you say "I would like a cheese burger and a large coke", the resulting semantics (shown in the Output window) should look like this:
+Once the grammar is loaded, you can press Listen and say something to see the result, which will now include the semantic interpretation. Try to say for example "I would like a cheeseburger and a large coke". The semantic output should look like this: 
 
 ```
 {order: 
@@ -254,6 +212,25 @@ Examine the grammar and try to understand what it allows. Remember that the Spee
 * "banana"
 * "yes"
 
+You can also try to write a text string in the bottom of the Semantic Grammar window and press Parse. Then you will also see how the individual phrases match.
+    
+The semantic grammar also allows for some more tricks that are not supported by the speech grammar. You can use the "_" symbol in words to match zero to many characters. Thus "\burger\_"  matches both "burger" and "burgers". In fact you can use any [regular expression](https://en.wikipedia.org/wiki/Regular_expression), but "\_" is interpreted as ".*".  
+
+Note that it is also possible to combine speech grammars with semantic grammars in recognizers that use speech grammars, such as the Windows recognizer (using both SpeechGrammarContext and SemanticGrammarContext). In this case, the speech grammar will define what can be said (but the \<tag\> elements will be ignored), and the resulting text string will be parsed and interpreted with the semantic grammar.
+
+To use the recognizer in your system, you must replace the recognizer setup in the BurgerSystem class with this:
+
+```java
+// Here we use Google, but you can instead use the NuanceCloudRecognizerFactory if you want
+system.setupRecognizer(new GoogleRecognizerFactory());
+system.loadContext("default", new OpenVocabularyContext(system.getLanguage()));
+system.loadContext("default", new SemanticGrammarContext(new SRGSGrammar(getClass().getResource("BurgerGrammar.xml").toURI())));
+```
+
+As you can see, we associate both an open vocabulary grammar and a semantic grammar to the context "default".
+
+### Understanding the grammar
+
 The basic elements of the grammar are: 
 
 * **\<rule\>** defines a rule. The "root" rule must cover the whole utterance. Each rule contains a list of elements that should match.
@@ -267,9 +244,9 @@ The basic elements of the grammar are:
 	* Not all rules gives a Javascript object as output. If no \<tag\> is specified, the result will be a string with the matching words of the rule (see for example the "flavor" rule). But you can also specify a string output like this: out="banana", or an integer output like this: out=1.
 	* In IrisTK, the Javascript object is transformed into a Java-object of type [iristk.util.Record](http://www.iristk.net/javadoc/iristk/util/Record.html).
 
-If you want to understand how the grammar works in more depth, you can read the official [W3C SRGS specification](http://www.w3.org/TR/speech-grammar/). 
+If you want to understand how the grammar works in more depth, you can read the official [W3C SRGS specification](http://www.w3.org/TR/speech-grammar/), as well as the [W3C SISR specification](https://www.w3.org/TR/semantic-interpretation/) (for how to use the semantic tags).  
 
-**NB**: If you want to read more about how speech recognition and grammars are used in IrisTK, including how to use Open Vocabulary recognizers and Semantic grammars, please refer to the [Speech recognition reference](speech_recognition.html).
+**NB**: If you want to read more about how speech recognition is done in IrisTK, please refer to the [Speech recognition reference](speech_recognition.html).
 
 ### A slot-filling dialog flow
 
@@ -501,88 +478,6 @@ with this:
 Similarly, you can do this at all places where you have a \<dialog:say\> and \<dialog:listen\>. Now, you should be able to interrupt the system while it is speaking.  
 
 *Note*: there is currently no echo cancellation built into IrisTK. Thus, if you have an open microphone and an open speaker, the system may interrupt itself. However, if you are using a headset or a laptop with built-in echo cancellation, you should be fine.
-
-### Adding a resusable confirmation dialog
-
-So far, the system has simply accepted all speech recognition results without any confirmation (such as "did you say a large coke?"). This may lead to misunderstandings. However, confirming everything the user says is very tedious, so a common strategy is to look at the confidence score from the recognizer to determine whether to confirm or not. 
-
-It would not be very elegant to add such a check for confirmation and implement a confirmation dialog after each request the system makes. The confirmation pattern is also similar regardless of what the system requested. Thus, the best thing would be if we could create a behavior that could be reused between different applications. The \<dialog:say\>, \<dialog:listen\> and \<dialog:prompt\> are already examples of such reusable behaviors. So, let's create such a behavior for requests that can be confirmed. In IrisTK, reusable behaviors are implemented as states, and then we _call_ these states. There are two important differences between "call" and "goto": (1) When a state is called, the event handlers of the calling state are still checked for (after the event handlers of the called state), (2) The called state can make a \<return\> to the calling state. If that state was in the middle of a series of executing actions, this execution will continue from where it was. You can read more about the difference between _call_ and _goto_ in [IrisFlow overview](irisflow_overview.html).
-
-We will name this new behavior "ask". It also needs another help-state "confirm":
-
-```xml
-<state id="ask">
-	<param name="text"/>
-	<param name="threshold" type="Float" default="0.7"/>
-	<onentry>
-		<dialog:prompt text="text"/>
-	</onentry>
-	<onevent name="sense.user.speak" cond="threshold > asFloat(event:conf)">
-		<goto state="confirm" p:cevent="event"/>
-	</onevent>
-	<onevent name="sense.user.speak sense.user.silence">
-		<return copy="event"/>
-	</onevent>
-</state>
-
-<state id="confirm">
-	<param name="cevent" type="Event"/>
-	<onentry>
-		<if cond="cevent?:sem:confirm">
-			<dialog:prompt>Did you say <expr>cevent:sem:confirm</expr></dialog:prompt>
-		<else/>
-			<dialog:prompt>Did you say <expr>cevent:text</expr></dialog:prompt>
-		</if>
-	</onentry>
-	<onevent name="sense.user.speak" cond="event?:sem:yes">
-		<return copy="cevent"/>
-	</onevent>
-	<onevent name="sense.user.speak" cond="event?:sem:no">
-		<return event="sense.user.speak"/>
-	</onevent>
-	<onevent name="sense.user.speak sense.user.silence">
-		<return copy="event"/>
-	</onevent>
-</state>
-```
-   
-The state "ask" takes two parameters: "text" (what to ask) and a "threshold". The threshold is used to determine whether the input from the user should be confirmed or not, based on the confidence score. This is 0.7 by default, but by having it as a parameter, it can be set differently for different questions. You should be aware that different recognizers provides different typical scores. The Nuance Cloud recognizer always returns 1, so it will never engage in confirmation. 
-
-On entry, the "ask" state prompts the user with the question (note that the value of the "text" parameter here is the provided parameter). If a speech recognition result is returned (sense.user.speak), the system checks whether the confidence is below the threshold and it should be confirmed. Otherwise, the called state returns and the speech event is raised in the calling state. 
-
-Note that if a transition to the "confirm" state takes place, the flow still keeps the calling state. This means that the calling states event handlers are still active (but not the event handlers of "ask"). Thus, if we make a "return" from the "confirm" state, we end up in the state that called the "ask" state (as seen on the left in the picture below). However, if an event handler in the calling state issues a "goto", the called states is aborted (as illustrated on the right).      
-
-![](img/transitions2.png)
-   
-The "confirm" state takes the original event (cevent) as a parameter. It then asks a yes/no question to the user using the recognized text. However, we have added an extra trick here to avoid very tedious wordings. For example, it would not be very elegant if the system would say "Did you say I want to order a hamburger and a coke please"?. We would rather want it to say "Did you say a hamburger and a milkshake?". To make this possible, we add an extra (optional) field to the semantics called "confirm" that collects the words that should be used in case of a confirmation. In the root rule, change the semantic instruction \<tag\>out.order = rules.order\</tag\> into:   
-   
-```xml
-<tag>out.order = rules.order; out.confirm = meta.order.text</tag>
-```   
-
-The "meta.order.text" returns the text that matched the "order" rule, and this is now placed int the "confirm" field of the output. If this field is present, it will be used by the "confirm" state, otherwise the whole text will be used. Now if the user confirms with a "yes", the state will return, and the original speech event will be raised in the calling state. If the user says "no", a new "sense.user.speak" state will be raised, which will trigger a non-understanding in the calling state (since it doesn't contain any text or semantics). If the user is silent or says simething else, the corresponding event will be raised in the calling state. Thus, if the user says something like "I want a coke" instead of replying to the yes/no question, it will be handled appropriately.  
-   
-Now, we can call this "ask" state with this constuction:
-
-```xml  
-<call state="ask">May I please take your order</call>
-``` 
-
-However, it is more elegant to call it with a custom tag. To do this, add the following attribute to the \<flow\> tag:
-
-```xml
-xmlns:this="iristk.app.burger.BurgerFlow"
-```  
-
-You can now replace all \<dialog:prompt\> tags with \<this:ask\> tags like this:
-
-```xml  
-<this:ask>May I please take your order</this:ask>
-``` 
-
-If you reply to any of these question in a "sloppy" way, the system should engage in a confirmation. Try to respond in different ways to the confirmation and see what happens. You might have to adjust the default threshold for this to happen. 
-
-If you open core/src/flow/DialogFlow.xml, you could actually add this new behavior there, so that it could be reused from other flows (with \<dialog:ask\>). It would then need to be declared "static" and "public". To read more about this, please refer to [IrisFlow: Advanced topics](irisflow_advanced.html).  
 
 ### Situated interaction: Handling multiple customers
 

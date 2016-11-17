@@ -34,7 +34,7 @@ public class Body extends Item {
 		if (gaze != null && head != null && head.location != null) {
 			return gaze.subtract(getHeadLocation()).toRotation().angleTo(loc.subtract(getHeadLocation()).toRotation());
 		} else if (head != null && head.location != null && head.rotation != null) {
-			return head.rotation.angleTo(loc.subtract(getHeadLocation()).toRotation());
+			return getHeadRotation().angleTo(loc.subtract(getHeadLocation()).toRotation());
 		}
 		return -1;
 	}

@@ -1,11 +1,13 @@
 package iristk.app.chess;
 
+import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import iristk.system.Event;
 import iristk.flow.*;
 import iristk.util.Record;
 import static iristk.util.Converters.*;
+import static iristk.flow.State.*;
 
 public class ChessFlow extends iristk.flow.Flow {
 
@@ -66,20 +68,22 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 11
 			try {
-				count = getCount(399573350) + 1;
+				count = getCount(997608398) + 1;
 				if (event.triggers("chess.restart")) {
-					incrCount(399573350);
+					incrCount(997608398);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						iristk.flow.DialogFlow.say state0 = new iristk.flow.DialogFlow.say();
-						state0.setText("Okay, let's restart");
+						StringCreator string1 = new StringCreator();
+						string1.append("Okay, let's restart");
+						state0.setText(string1.toString());
 						if (!flowThread.callState(state0, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 11, 33)))) {
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
 						// Line: 13
-						AwaitUser state1 = new AwaitUser();
-						flowThread.gotoState(state1, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 13, 29)));
+						AwaitUser state2 = new AwaitUser();
+						flowThread.gotoState(state2, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 13, 29)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -98,7 +102,7 @@ public class ChessFlow extends iristk.flow.Flow {
 	}
 
 
-	public class Start extends Game {
+	public class Start extends Game implements Initial {
 
 		final State currentState = this;
 
@@ -115,17 +119,19 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 18
 			try {
 				EXECUTION: {
-					int count = getCount(1347137144) + 1;
-					incrCount(1347137144);
-					iristk.flow.DialogFlow.say state2 = new iristk.flow.DialogFlow.say();
-					state2.setText("Okay, let's start");
-					if (!flowThread.callState(state2, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 18, 12)))) {
+					int count = getCount(1289696681) + 1;
+					incrCount(1289696681);
+					iristk.flow.DialogFlow.say state3 = new iristk.flow.DialogFlow.say();
+					StringCreator string4 = new StringCreator();
+					string4.append("Okay, let's start");
+					state3.setText(string4.toString());
+					if (!flowThread.callState(state3, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 18, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
 					// Line: 20
-					AwaitUser state3 = new AwaitUser();
-					flowThread.gotoState(state3, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 20, 29)));
+					AwaitUser state5 = new AwaitUser();
+					flowThread.gotoState(state5, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 20, 29)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
@@ -165,45 +171,51 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 25
 			try {
 				EXECUTION: {
-					int count = getCount(1212899836) + 1;
-					incrCount(1212899836);
+					int count = getCount(1811075214) + 1;
+					incrCount(1811075214);
 					// Line: 26
-					boolean chosen4 = false;
-					boolean matching5 = true;
-					while (!chosen4 && matching5) {
-						int rand6 = random(1174290147, 3, iristk.util.RandomList.RandomModel.DECK_RESHUFFLE_NOREPEAT);
-						matching5 = false;
+					boolean chosen6 = false;
+					boolean matching7 = true;
+					while (!chosen6 && matching7) {
+						int rand8 = random(1588970020, 3, iristk.util.RandomList.RandomModel.DECK_RESHUFFLE_NOREPEAT);
+						matching7 = false;
 						if (true) {
-							matching5 = true;
-							if (rand6 >= 0 && rand6 < 1) {
-								chosen4 = true;
-								iristk.app.chess.ChessFlow.ask state7 = new ask();
-								state7.setText("So, what is your move?");
-								if (!flowThread.callState(state7, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 26, 12)))) {
-									eventResult = EVENT_ABORTED;
-									break EXECUTION;
-								}
-							}
-						}
-						if (true) {
-							matching5 = true;
-							if (rand6 >= 1 && rand6 < 2) {
-								chosen4 = true;
-								iristk.app.chess.ChessFlow.ask state8 = new ask();
-								state8.setText("Your move");
-								if (!flowThread.callState(state8, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 26, 12)))) {
-									eventResult = EVENT_ABORTED;
-									break EXECUTION;
-								}
-							}
-						}
-						if (true) {
-							matching5 = true;
-							if (rand6 >= 2 && rand6 < 3) {
-								chosen4 = true;
+							matching7 = true;
+							if (rand8 >= 0 && rand8 < 1) {
+								chosen6 = true;
 								iristk.app.chess.ChessFlow.ask state9 = new ask();
-								state9.setText("Your turn");
+								StringCreator string10 = new StringCreator();
+								string10.append("So, what is your move?");
+								state9.setText(string10.toString());
 								if (!flowThread.callState(state9, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 26, 12)))) {
+									eventResult = EVENT_ABORTED;
+									break EXECUTION;
+								}
+							}
+						}
+						if (true) {
+							matching7 = true;
+							if (rand8 >= 1 && rand8 < 2) {
+								chosen6 = true;
+								iristk.app.chess.ChessFlow.ask state11 = new ask();
+								StringCreator string12 = new StringCreator();
+								string12.append("Your move");
+								state11.setText(string12.toString());
+								if (!flowThread.callState(state11, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 26, 12)))) {
+									eventResult = EVENT_ABORTED;
+									break EXECUTION;
+								}
+							}
+						}
+						if (true) {
+							matching7 = true;
+							if (rand8 >= 2 && rand8 < 3) {
+								chosen6 = true;
+								iristk.app.chess.ChessFlow.ask state13 = new ask();
+								StringCreator string14 = new StringCreator();
+								string14.append("Your turn");
+								state13.setText(string14.toString());
+								if (!flowThread.callState(state13, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 26, 12)))) {
 									eventResult = EVENT_ABORTED;
 									break EXECUTION;
 								}
@@ -222,9 +234,9 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 32
 			try {
-				count = getCount(1289696681) + 1;
+				count = getCount(1407343478) + 1;
 				if (event.triggers("chess.move.user")) {
-					incrCount(1289696681);
+					incrCount(1407343478);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 33
@@ -232,21 +244,23 @@ public class ChessFlow extends iristk.flow.Flow {
 						// Line: 34
 						if (chess.availableMoves() == 1) {
 							// Line: 35
-							PerformMove state10 = new PerformMove();
-							flowThread.gotoState(state10, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 35, 32)));
+							PerformMove state15 = new PerformMove();
+							flowThread.gotoState(state15, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 35, 32)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 							// Line: 36
 						} else if (chess.availableMoves() == 0) {
-							iristk.flow.DialogFlow.say state11 = new iristk.flow.DialogFlow.say();
-							state11.setText("Sorry, I can't do that");
-							if (!flowThread.callState(state11, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 34, 43)))) {
+							iristk.flow.DialogFlow.say state16 = new iristk.flow.DialogFlow.say();
+							StringCreator string17 = new StringCreator();
+							string17.append("Sorry, I can't do that");
+							state16.setText(string17.toString());
+							if (!flowThread.callState(state16, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 34, 43)))) {
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
 							// Line: 38
-							AwaitUser state12 = new AwaitUser();
-							flowThread.gotoState(state12, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 38, 31)));
+							AwaitUser state18 = new AwaitUser();
+							flowThread.gotoState(state18, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 38, 31)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 							// Line: 39
@@ -258,30 +272,30 @@ public class ChessFlow extends iristk.flow.Flow {
 							// Line: 42
 							if (clarify.has("steps")) {
 								// Line: 43
-								ClarifySteps state13 = new ClarifySteps();
-								flowThread.gotoState(state13, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 43, 34)));
+								ClarifySteps state19 = new ClarifySteps();
+								flowThread.gotoState(state19, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 43, 34)));
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 								// Line: 44
 							} else if (clarify.has("direction")) {
 								// Line: 45
-								ClarifyDirection state14 = new ClarifyDirection();
-								flowThread.gotoState(state14, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 45, 38)));
+								ClarifyDirection state20 = new ClarifyDirection();
+								flowThread.gotoState(state20, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 45, 38)));
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 								// Line: 46
 							} else if (clarify.has("piece")) {
 								// Line: 47
-								ClarifyPiece state15 = new ClarifyPiece();
-								state15.setPiece(clarify.get("piece"));
-								flowThread.gotoState(state15, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 47, 58)));
+								ClarifyPiece state21 = new ClarifyPiece();
+								state21.setPiece(clarify.get("piece"));
+								flowThread.gotoState(state21, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 47, 58)));
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 								// Line: 48
 							} else if (clarify.has("square")) {
 								// Line: 49
-								ClarifySquare state16 = new ClarifySquare();
-								flowThread.gotoState(state16, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 49, 35)));
+								ClarifySquare state22 = new ClarifySquare();
+								flowThread.gotoState(state22, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 49, 35)));
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -294,10 +308,10 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 53
 			try {
-				count = getCount(358699161) + 1;
+				count = getCount(2143192188) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:act_move")) {
-						incrCount(358699161);
+						incrCount(2143192188);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 54
@@ -305,8 +319,8 @@ public class ChessFlow extends iristk.flow.Flow {
 							// Line: 55
 							move = asRecord(event.get("sem"));
 							// Line: 56
-							Event raiseEvent17 = new Event("chess.move.user");
-							if (flowThread.raiseEvent(raiseEvent17, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 56, 36))) == State.EVENT_ABORTED) {
+							Event raiseEvent23 = new Event("chess.move.user");
+							if (flowThread.raiseEvent(raiseEvent23, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 56, 36))) == State.EVENT_ABORTED) {
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -319,10 +333,10 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 58
 			try {
-				count = getCount(425918570) + 1;
+				count = getCount(114935352) + 1;
 				if (event.triggers("sense.speech.partial")) {
 					if (event.has("sem:act_move")) {
-						incrCount(425918570);
+						incrCount(114935352);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 59
@@ -336,9 +350,9 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 61
 			try {
-				count = getCount(1100439041) + 1;
+				count = getCount(32374789) + 1;
 				if (event.triggers("sense.user.silence")) {
-					incrCount(1100439041);
+					incrCount(32374789);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 62
@@ -353,14 +367,16 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 64
 			try {
-				count = getCount(114935352) + 1;
+				count = getCount(1865127310) + 1;
 				if (event.triggers("sense.user.speak")) {
-					incrCount(114935352);
+					incrCount(1865127310);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
-						iristk.flow.DialogFlow.say state18 = new iristk.flow.DialogFlow.say();
-						state18.setText("Sorry");
-						if (!flowThread.callState(state18, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 64, 36)))) {
+						iristk.flow.DialogFlow.say state24 = new iristk.flow.DialogFlow.say();
+						StringCreator string25 = new StringCreator();
+						string25.append("Sorry");
+						state24.setText(string25.toString());
+						if (!flowThread.callState(state24, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 64, 36)))) {
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -376,9 +392,9 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 68
 			try {
-				count = getCount(32374789) + 1;
+				count = getCount(1694819250) + 1;
 				if (event.triggers("dialog.repeat")) {
-					incrCount(32374789);
+					incrCount(1694819250);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 69
@@ -418,19 +434,21 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 74
 			try {
 				EXECUTION: {
-					int count = getCount(1865127310) + 1;
-					incrCount(1865127310);
-					iristk.flow.DialogFlow.say state19 = new iristk.flow.DialogFlow.say();
-					state19.setText("Okay");
-					if (!flowThread.callState(state19, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 74, 12)))) {
+					int count = getCount(1586600255) + 1;
+					incrCount(1586600255);
+					iristk.flow.DialogFlow.say state26 = new iristk.flow.DialogFlow.say();
+					StringCreator string27 = new StringCreator();
+					string27.append("Okay");
+					state26.setText(string27.toString());
+					if (!flowThread.callState(state26, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 74, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
 					// Line: 76
 					chess.performMove();
 					// Line: 77
-					AwaitSystem state20 = new AwaitSystem();
-					flowThread.gotoState(state20, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 77, 32)));
+					AwaitSystem state28 = new AwaitSystem();
+					flowThread.gotoState(state28, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 77, 32)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
@@ -470,11 +488,13 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 82
 			try {
 				EXECUTION: {
-					int count = getCount(1651191114) + 1;
-					incrCount(1651191114);
-					iristk.app.chess.ChessFlow.ask state21 = new ask();
-					state21.setText("How many steps?");
-					if (!flowThread.callState(state21, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 82, 12)))) {
+					int count = getCount(1579572132) + 1;
+					incrCount(1579572132);
+					iristk.app.chess.ChessFlow.ask state29 = new ask();
+					StringCreator string30 = new StringCreator();
+					string30.append("How many steps?");
+					state29.setText(string30.toString());
+					if (!flowThread.callState(state29, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 82, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -490,17 +510,17 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 85
 			try {
-				count = getCount(1586600255) + 1;
+				count = getCount(359023572) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:number")) {
-						incrCount(1586600255);
+						incrCount(359023572);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 86
 							move.putIfNotNull("movement:steps", event.get("sem:number"));
 							// Line: 87
-							Event raiseEvent22 = new Event("chess.move.user");
-							if (flowThread.raiseEvent(raiseEvent22, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 87, 36))) == State.EVENT_ABORTED) {
+							Event raiseEvent31 = new Event("chess.move.user");
+							if (flowThread.raiseEvent(raiseEvent31, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 87, 36))) == State.EVENT_ABORTED) {
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -538,11 +558,13 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 92
 			try {
 				EXECUTION: {
-					int count = getCount(1579572132) + 1;
-					incrCount(1579572132);
-					iristk.app.chess.ChessFlow.ask state23 = new ask();
-					state23.setText("In which direction?");
-					if (!flowThread.callState(state23, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 92, 12)))) {
+					int count = getCount(917142466) + 1;
+					incrCount(917142466);
+					iristk.app.chess.ChessFlow.ask state32 = new ask();
+					StringCreator string33 = new StringCreator();
+					string33.append("In which direction?");
+					state32.setText(string33.toString());
+					if (!flowThread.callState(state32, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 92, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -558,17 +580,17 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 95
 			try {
-				count = getCount(359023572) + 1;
+				count = getCount(1993134103) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:direction")) {
-						incrCount(359023572);
+						incrCount(1993134103);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 96
 							move.putIfNotNull("movement:direction", event.get("sem:direction"));
 							// Line: 97
-							Event raiseEvent24 = new Event("chess.move.user");
-							if (flowThread.raiseEvent(raiseEvent24, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 97, 36))) == State.EVENT_ABORTED) {
+							Event raiseEvent34 = new Event("chess.move.user");
+							if (flowThread.raiseEvent(raiseEvent34, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 97, 36))) == State.EVENT_ABORTED) {
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -614,11 +636,16 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 103
 			try {
 				EXECUTION: {
-					int count = getCount(1993134103) + 1;
-					incrCount(1993134103);
-					iristk.app.chess.ChessFlow.ask state25 = new ask();
-					state25.setText(concat("Which", piece, "?"));
-					if (!flowThread.callState(state25, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 103, 12)))) {
+					int count = getCount(604107971) + 1;
+					incrCount(604107971);
+					iristk.app.chess.ChessFlow.ask state35 = new ask();
+					StringCreator string36 = new StringCreator();
+					string36.append("Which");
+					// Line: 103
+					string36.append(piece);
+					string36.append("?");
+					state35.setText(string36.toString());
+					if (!flowThread.callState(state35, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 103, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -634,17 +661,17 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 106
 			try {
-				count = getCount(405662939) + 1;
+				count = getCount(123961122) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:piece")) {
-						incrCount(405662939);
+						incrCount(123961122);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 107
 							move.putIfNotNull("piece", event.get("sem:piece"));
 							// Line: 108
-							Event raiseEvent26 = new Event("chess.move.user");
-							if (flowThread.raiseEvent(raiseEvent26, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 108, 36))) == State.EVENT_ABORTED) {
+							Event raiseEvent37 = new Event("chess.move.user");
+							if (flowThread.raiseEvent(raiseEvent37, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 108, 36))) == State.EVENT_ABORTED) {
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -682,11 +709,13 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 113
 			try {
 				EXECUTION: {
-					int count = getCount(604107971) + 1;
-					incrCount(604107971);
-					iristk.app.chess.ChessFlow.ask state27 = new ask();
-					state27.setText("To which square?");
-					if (!flowThread.callState(state27, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 113, 12)))) {
+					int count = getCount(1101288798) + 1;
+					incrCount(1101288798);
+					iristk.app.chess.ChessFlow.ask state38 = new ask();
+					StringCreator string39 = new StringCreator();
+					string39.append("To which square?");
+					state38.setText(string39.toString());
+					if (!flowThread.callState(state38, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 113, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -702,17 +731,17 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 116
 			try {
-				count = getCount(1227229563) + 1;
+				count = getCount(942731712) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:piece:square")) {
-						incrCount(1227229563);
+						incrCount(942731712);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 117
 							move.putIfNotNull("movement:square", event.get("sem:piece:square"));
 							// Line: 118
-							Event raiseEvent28 = new Event("chess.move.user");
-							if (flowThread.raiseEvent(raiseEvent28, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 118, 36))) == State.EVENT_ABORTED) {
+							Event raiseEvent40 = new Event("chess.move.user");
+							if (flowThread.raiseEvent(raiseEvent40, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 118, 36))) == State.EVENT_ABORTED) {
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -755,14 +784,14 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 123
 			try {
-				count = getCount(942731712) + 1;
+				count = getCount(758529971) + 1;
 				if (event.triggers("chess.move.system")) {
-					incrCount(942731712);
+					incrCount(758529971);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 124
-						AwaitUser state29 = new AwaitUser();
-						flowThread.gotoState(state29, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 124, 30)));
+						AwaitUser state41 = new AwaitUser();
+						flowThread.gotoState(state41, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 124, 30)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -814,16 +843,16 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 131
 			try {
 				EXECUTION: {
-					int count = getCount(2104457164) + 1;
-					incrCount(2104457164);
-					iristk.flow.DialogFlow.say state30 = new iristk.flow.DialogFlow.say();
-					state30.setText(text);
-					if (!flowThread.callState(state30, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 131, 12)))) {
+					int count = getCount(1763847188) + 1;
+					incrCount(1763847188);
+					iristk.flow.DialogFlow.say state42 = new iristk.flow.DialogFlow.say();
+					state42.setText(text);
+					if (!flowThread.callState(state42, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 131, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
-					iristk.flow.DialogFlow.listen state31 = new iristk.flow.DialogFlow.listen();
-					if (!flowThread.callState(state31, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 131, 12)))) {
+					iristk.flow.DialogFlow.listen state43 = new iristk.flow.DialogFlow.listen();
+					if (!flowThread.callState(state43, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 131, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -839,16 +868,16 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 135
 			try {
-				count = getCount(1521118594) + 1;
+				count = getCount(1617791695) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (threshold > asFloat(event.get("conf"))) {
-						incrCount(1521118594);
+						incrCount(1617791695);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 136
-							confirm state32 = new confirm();
-							state32.setCevent(event);
-							flowThread.gotoState(state32, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 136, 44)));
+							confirm state44 = new confirm();
+							state44.setCevent(event);
+							flowThread.gotoState(state44, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 136, 44)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -860,15 +889,15 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 138
 			try {
-				count = getCount(1869997857) + 1;
+				count = getCount(1192108080) + 1;
 				if (event.triggers("sense.user.speak")) {
-					incrCount(1869997857);
+					incrCount(1192108080);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 139
-						Event returnEvent33 = new Event(event.getName());
-						returnEvent33.copyParams(event);
-						flowThread.returnFromCall(this, returnEvent33, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 139, 26)));
+						Event returnEvent45 = new Event(event.getName());
+						returnEvent45.copyParams(event);
+						flowThread.returnFromCall(this, returnEvent45, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 139, 26)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -879,15 +908,15 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 141
 			try {
-				count = getCount(1617791695) + 1;
+				count = getCount(864237698) + 1;
 				if (event.triggers("sense.user.silence")) {
-					incrCount(1617791695);
+					incrCount(864237698);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 142
-						Event returnEvent34 = new Event(event.getName());
-						returnEvent34.copyParams(event);
-						flowThread.returnFromCall(this, returnEvent34, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 142, 26)));
+						Event returnEvent46 = new Event(event.getName());
+						returnEvent46.copyParams(event);
+						flowThread.returnFromCall(this, returnEvent46, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 142, 26)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -931,16 +960,20 @@ public class ChessFlow extends iristk.flow.Flow {
 			// Line: 148
 			try {
 				EXECUTION: {
-					int count = getCount(864237698) + 1;
-					incrCount(864237698);
-					iristk.flow.DialogFlow.say state35 = new iristk.flow.DialogFlow.say();
-					state35.setText(concat("Did you say", cevent.get("text")));
-					if (!flowThread.callState(state35, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 148, 12)))) {
+					int count = getCount(608188624) + 1;
+					incrCount(608188624);
+					iristk.flow.DialogFlow.say state47 = new iristk.flow.DialogFlow.say();
+					StringCreator string48 = new StringCreator();
+					string48.append("Did you say");
+					// Line: 148
+					string48.append(cevent.get("text"));
+					state47.setText(string48.toString());
+					if (!flowThread.callState(state47, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 148, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
-					iristk.flow.DialogFlow.listen state36 = new iristk.flow.DialogFlow.listen();
-					if (!flowThread.callState(state36, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 148, 12)))) {
+					iristk.flow.DialogFlow.listen state49 = new iristk.flow.DialogFlow.listen();
+					if (!flowThread.callState(state49, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 148, 12)))) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
@@ -956,16 +989,16 @@ public class ChessFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 152
 			try {
-				count = getCount(608188624) + 1;
+				count = getCount(511833308) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:yes")) {
-						incrCount(608188624);
+						incrCount(511833308);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 153
-							Event returnEvent37 = new Event(cevent.getName());
-							returnEvent37.copyParams(cevent);
-							flowThread.returnFromCall(this, returnEvent37, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 153, 27)));
+							Event returnEvent50 = new Event(cevent.getName());
+							returnEvent50.copyParams(cevent);
+							flowThread.returnFromCall(this, returnEvent50, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 153, 27)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -977,15 +1010,15 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 155
 			try {
-				count = getCount(1608446010) + 1;
+				count = getCount(1705929636) + 1;
 				if (event.triggers("sense.user.speak")) {
 					if (event.has("sem:no")) {
-						incrCount(1608446010);
+						incrCount(1705929636);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 156
-							Event returnEvent38 = new Event("dialog.repeat");
-							flowThread.returnFromCall(this, returnEvent38, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 156, 35)));
+							Event returnEvent51 = new Event("dialog.repeat");
+							flowThread.returnFromCall(this, returnEvent51, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 156, 35)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -997,15 +1030,15 @@ public class ChessFlow extends iristk.flow.Flow {
 			}
 			// Line: 158
 			try {
-				count = getCount(511833308) + 1;
+				count = getCount(1509514333) + 1;
 				if (event.triggers("sense.user.speak sense.user.silence")) {
-					incrCount(511833308);
+					incrCount(1509514333);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 159
-						Event returnEvent39 = new Event(event.getName());
-						returnEvent39.copyParams(event);
-						flowThread.returnFromCall(this, returnEvent39, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 159, 26)));
+						Event returnEvent52 = new Event(event.getName());
+						returnEvent52.copyParams(event);
+						flowThread.returnFromCall(this, returnEvent52, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\chess\\src\\iristk\\app\\chess\\ChessFlow.xml"), 159, 26)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}

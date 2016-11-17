@@ -231,6 +231,9 @@ public class Language extends Record {
 		}
 	}
 	
+	/**
+	 * @return The main part of the code (such as "en")
+	 */
 	public String getMain() {
 		return getCode().substring(0, 2);
 	}

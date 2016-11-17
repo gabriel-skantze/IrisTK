@@ -20,12 +20,18 @@ The basic package includes the core package, plus addons for:
 * Facial animation
 * Chess and Quiz example applications
 
-Latest version (**2016-10-24**):
+Latest version (**2016-11-11**):
 
-<a href="download/iristk-basic-2016-10-24.exe" class="button radius success"  onClick="ga('send', 'event', 'download', 'click');" target="_blank">Download IrisTK basic installer</a>
+<a href="download/iristk-basic-2016-11-11.exe" class="button radius success"  onClick="ga('send', 'event', 'download', 'click');" target="_blank">Download IrisTK basic installer</a>
 
-You can also <a href="download/iristk-basic-2016-10-24.zip" onClick="ga('send', 'event', 'download_zip', 'click');" target="_blank">download it as a zip file</a>, if you have problems with the installer, or want to explore the source code on a non-Windows computer.
+You can also <a href="download/iristk-basic-2016-11-11.zip" onClick="ga('send', 'event', 'download_zip', 'click');" target="_blank">download it as a zip file</a>, if you have problems with the installer, or want to explore the source code on a non-Windows computer.
 
 ### Older versions
 
 Looking for older versions? [You can find them here](/download).
+
+## GitHub
+
+IrisTK is now also on GitHub, if you want to get continuous updates.
+
+[https://github.com/gabriel-skantze/IrisTK](https://github.com/gabriel-skantze/IrisTK) 

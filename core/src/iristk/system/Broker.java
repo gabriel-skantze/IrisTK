@@ -43,7 +43,7 @@ import org.slf4j.Logger;
  */
 
 public class Broker extends Thread {
-	
+
 	private static Logger logger = IrisUtils.getLogger(Broker.class);
 
 	private ServerSocket socket;
@@ -54,7 +54,7 @@ public class Broker extends Thread {
 	public Broker(int port) {
 		this.port = port;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -77,7 +77,7 @@ public class Broker extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Map<String,BrokerSystem> getSystems() {
 		return systems;
 	}
@@ -137,9 +137,9 @@ public class Broker extends Thread {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public static String getIpAddress(InetAddress inetAddress) {
 		String result = "";
 		for (byte b : inetAddress.getAddress()) {
@@ -150,19 +150,27 @@ public class Broker extends Thread {
 		}
 		return result;
 	}
-	
+
 	public static interface BrokerListener {
 
 		void clientDisconnected(ServerClient client);
 
 		void clientConnected(ServerClient client);
-		
+
 	}
-	
+
 	public class BrokerSystem extends ArrayList<ServerClient> {
-		
+
 	}
-	
+
+	private class IllegalBrokerCommandException extends Exception {
+
+		public IllegalBrokerCommandException(String msg) {
+			super(msg);
+		}
+
+	}
+
 	public class ServerClient implements Runnable {
 
 		private Socket socket;
@@ -211,16 +219,19 @@ public class Broker extends Thread {
 					while (true) {
 						String line = inFromClient.readLine();
 						//System.out.println(line);
-						if (line != null) {
-							if (line.startsWith("CONNECT")) {
-								String[] cols = line.substring(8).trim().split(" ");
-								this.ticket = cols[0];
-								this.clientName = cols[1];
-								logger.info("Connection to " + this.ticket + " from " + clientName + "@" + getIpAddress(socket.getInetAddress()));
-								addClient(this);
-								updateSubscriptions(ticket);
-								outToClient.writeBytes("CONNECTED\n");
-								/*
+						try {
+							if (line != null) {
+								if (line.startsWith("CONNECT ")) {
+									String[] cols = line.substring(8).trim().split(" ");
+									if (cols.length != 2 || cols[0].length() == 0 || cols[1].length() == 0) 
+										throw new IllegalBrokerCommandException(line);
+									this.ticket = cols[0];
+									this.clientName = cols[1];
+									logger.info("Connection to " + this.ticket + " from " + clientName + "@" + getIpAddress(socket.getInetAddress()));
+									addClient(this);
+									updateSubscriptions(ticket);
+									outToClient.writeBytes("CONNECTED\n");
+									/*
 								for (ServerClient toClient : systems.get(ticket)) {
 									if (toClient != this) {
 										Event event = new Event("monitor.system.connected");
@@ -228,28 +239,48 @@ public class Broker extends Thread {
 										toClient.sendEvent(event.getName(), event.toJSON().toString().getBytes());
 									}
 								}
-								*/
-							} else if (line.startsWith("EVENT")) {
-								String cols[] = line.split(" ");
-								String label = cols[1];
-								int length = Integer.parseInt(cols[2]);
-								byte[] message = new byte[length];
-								int pos = 0;
-								do {
-									pos = inFromClient.read(message, pos, length - pos) + pos;
-								} while (pos < length);
-								Broker.this.send(this, label, message);
-							} else if (line.startsWith("CLOSE")) {
-								logger.info("Disconnection from " + this.ticket + " from " + clientName + "@" + getIpAddress(socket.getInetAddress()));
-								disconnect();
-								break HANDLE;
-							} else if (line.startsWith("SUBSCRIBE")) {
-								String pattern = line.substring(10).trim();
-								this.subscribes = NameFilter.compile(pattern);
-								updateSubscriptions(ticket);
-								//subscribe = subscribe.replaceAll(".", "\\.");
-								//subscribe = subscribe.replaceAll("*", ".*"); 
+									 */
+								} else if (line.startsWith("EVENT ")) {
+									String cols[] = line.substring(6).trim().split(" ");
+									if (cols.length != 2 || cols[0].length() == 0 || cols[1].length() == 0) 
+										throw new IllegalBrokerCommandException(line);
+									String label = cols[1];
+									int length;
+									try {
+										length = Integer.parseInt(cols[2]);
+									} catch (NumberFormatException e) {
+										throw new IllegalBrokerCommandException(line);
+									}
+									byte[] message = new byte[length];
+									int pos = 0;
+									try {
+										do {
+											pos = inFromClient.read(message, pos, length - pos) + pos;
+										} while (pos < length);
+										Broker.this.send(this, label, message);
+									} catch (IOException e) {
+										throw new IllegalBrokerCommandException("Could not read " + length + " bytes for event " + label);
+									}
+								} else if (line.startsWith("CLOSE")) {
+									logger.info("Disconnection from " + this.ticket + " from " + clientName + "@" + getIpAddress(socket.getInetAddress()));
+									disconnect();
+									break HANDLE;
+								} else if (line.startsWith("SUBSCRIBE ")) {
+									String pattern = line.substring(10).trim();
+									if (pattern.length() == 0)
+										pattern = "**";
+									try {
+										this.subscribes = NameFilter.compile(pattern);
+										updateSubscriptions(ticket);
+									} catch (IllegalArgumentException e) {
+										throw new IllegalBrokerCommandException(e.getMessage());
+									}
+									//subscribe = subscribe.replaceAll(".", "\\.");
+									//subscribe = subscribe.replaceAll("*", ".*"); 
+								}
 							}
+						} catch (IllegalBrokerCommandException e) {
+							logger.error("Illegal Broker command: " + e.getMessage());
 						}
 					}
 			}  catch (SocketException e) {
@@ -268,7 +299,7 @@ public class Broker extends Thread {
 		public NameFilter getSubscribes() {
 			return subscribes;
 		}
-		
+
 		public String getName() {
 			return clientName;
 		}

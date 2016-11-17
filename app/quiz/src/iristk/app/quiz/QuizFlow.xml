@@ -34,7 +34,7 @@
 			</if>
 		</onevent>
 		<onevent name="sense.user.speech.start" cond="system.isAttending(event) and eq(event:speakers, 1)">
-			<send event="action.gesture" p:name="'smile'"/>
+			<agent:gesture name="'smile'"/>
 		</onevent>
 	</state>
 	

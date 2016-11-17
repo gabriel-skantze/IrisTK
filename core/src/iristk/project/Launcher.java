@@ -223,7 +223,6 @@ public class Launcher {
 		pw.println("<classpathentry kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>");
 		String root = proj.getPath().getAbsolutePath();
 		for (Package pack : proj.getPackages()) {
-			//System.out.println(pack.getName());
 			if (pack.getSpec().getClasspath() != null) {
 				if (!pack.getPath().getAbsolutePath().startsWith(root)) {
 					//System.out.println("Skipping " + IrisUtils.getPackagePath(pack.getName()).getAbsolutePath());
