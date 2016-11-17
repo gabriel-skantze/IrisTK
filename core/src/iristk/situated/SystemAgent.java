@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class SystemAgent extends Agent {
-
+	/** Maximum number of users the system will interact with.*/
 	private int maxUsers = 2;
 	
 	@RecordField
@@ -61,15 +61,26 @@ public class SystemAgent extends Agent {
 		}
 		return false;
 	}
-	
+	/**
+	 * Verifies if agent exists in SystemAgens users database.
+	 * @param agent 
+	 * @return true if the agent is in SystemAgent's 'users' database.
+	 */
 	public boolean isUser(Agent agent) {
 		return users.containsKey(agent.id);
 	}
-	
+	/**
+	 * Verifies if agentId matches an agentID in the {@link users} database.
+	 * @param agentId String identification of the agent. Usually agent.id
+	 * @return true if the agent is in SystemAgent's 'users' database.
+	 */
 	public boolean isUser(String agentId) {
 		return users.containsKey(agentId);
 	}
-
+	/**
+	 * Checks if current amount of {@link users} exceeds  {@link #maxUsers} 
+	 * @return 
+	 */
 	public boolean hasMaxUsers() {
 		return users.size() >= maxUsers;
 	}
