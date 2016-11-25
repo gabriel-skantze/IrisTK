@@ -32,6 +32,10 @@ public class Package {
 		return spec.getName();
 	}
 	
+	public String getVersion() {
+		return spec.getVersion();
+	}
+	
 	public File getPath() {
 		return path;
 	}

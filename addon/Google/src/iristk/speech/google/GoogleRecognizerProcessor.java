@@ -108,24 +108,23 @@ public class GoogleRecognizerProcessor extends RecognizerProcessor {
 
 
 	public GoogleRecognizerProcessor(File credentials) throws RecognizerException {
+		GoogleCredentials creds;
 		try {
-			GoogleCredentials creds;
 			creds = GoogleCredentials.fromStream(new FileInputStream(credentials));
+		} catch (IOException e) {
+			throw new RecognizerException("Could not read Google credentials: " + credentials.getAbsolutePath());
+		}
+		try {
 			creds = creds.createScoped(Arrays.asList("https://www.googleapis.com/auth/cloud-platform"));
 			channel =
 					ManagedChannelBuilder.forAddress("speech.googleapis.com", 443)
 					.intercept(new ClientAuthInterceptor(creds, Executors.newSingleThreadExecutor()))
 					.build();
-
 			speechClient = SpeechGrpc.newStub(channel);
-
 			// We do this once here because it takes time the first time it is done
 			dummyRequest();
-
-		} catch (IOException e) {
-			throw new RecognizerException("Could not read Google credentials: " + credentials.getAbsolutePath());
 		} catch (Exception e) {
-			throw new RecognizerException("Problem initializing Google recognizer");
+			throw new RecognizerException("Problem initializing Google recognizer: " + e.getMessage());
 		}
 
 		//TODO: should we shut down at some point?

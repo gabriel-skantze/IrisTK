@@ -120,30 +120,35 @@ You can then control Furhat by sending the following JSON instructions:
 {
   "class" : "iristk.system.Event",
   "event_name" : "action.speech",
+  "event_id" : "my_unique_id_123",
   "text" : "Hello there"
 }
 // Make Furhat perform a gesture
 {
   "class" : "iristk.system.Event",
   "event_name" : "action.gesture",
+  "event_id" : "my_unique_id_123",
   "name" : "smile"
 }
 // Make Furhat gaze in a certain direction
 {
   "class" : "iristk.system.Event",
   "event_name" : "action.gaze",
+  "event_id" : "my_unique_id_123",
   "location" : {"x": 1, "y" : 1, "z" : 2}
 }
 // Make Furhat gaze using eyes only
 {
   "class" : "iristk.system.Event",
   "event_name" : "action.gaze",
+  "event_id" : "my_unique_id_123",
   "location" : {"x": 1, "y" : 1, "z" : 2},
   "mode" : "eyes"
 }
 // Make Furhat move the lips
 { "class" : "iristk.system.Event",
   "event_name" : "action.lipsync",
+  "event_id" : "my_unique_id_123",
   "phones" : 
 	{"class" : "iristk.speech.Transcription",
 	 "phones" : [

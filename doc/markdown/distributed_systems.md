@@ -45,12 +45,14 @@ The events are serialized into JSON like this:
 {
   "class" : "iristk.system.Event",
   "event_name" : "action.speech",
+  "event_id" : "my_unique_id_123",
   "text" : "Hello there"
 }
 
 {
   "class" : "iristk.system.Event",
   "event_name" : "action.listen",
+  "event_id" : "my_unique_id_123",
   "timeout" : 4000
 }
 ``` 
