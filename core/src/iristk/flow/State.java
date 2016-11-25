@@ -10,6 +10,8 @@
  ******************************************************************************/
 package iristk.flow;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,6 +82,23 @@ public abstract class State  {
 	
 	protected void incrCount(int key) {
 		countHash.put(key, getCount(key) + 1);
+	}
+	
+	public void setParam(String name, Object value) {
+		for (Method method : getClass().getMethods()) {
+			if (method.getName().equalsIgnoreCase("set" + name) && method.getParameterCount() == 1) {
+				try {
+					method.invoke(this, value);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				return;
+			}
+		}
 	}
 	
 }
