@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
 
 public class Package {
 
@@ -23,7 +24,7 @@ public class Package {
 	//	this.path = path;
 	//}
 
-	public Package(File f) throws JAXBException, IOException {
+	public Package(File f) throws JAXBException, IOException, XMLStreamException {
 		spec = packageReader.unmarshal(new File(f, "package.xml"));
 		path = f.getCanonicalFile();
 	}

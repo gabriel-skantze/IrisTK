@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -118,38 +119,15 @@ public class XmlMarshaller<T> extends XmlUtils {
 		}
 	}
 	
-	public T unmarshal(File file) throws JAXBException, FileNotFoundException {
+	public T unmarshal(File file) throws JAXBException, FileNotFoundException, XMLStreamException {
 		synchronized (unmarshaller) {
-			//return (T) unmarshaller.unmarshal(new FileInputStream(file));
-			
-			try {
-				this.file = file;
-				XMLInputFactory xif = XMLInputFactory.newFactory();
-		        FileInputStream xml = new FileInputStream(file);
-		        xsr = new MyXmlReader(xif.createXMLStreamReader(xml));
-				T result = (T) unmarshaller.unmarshal(xsr);
-				xsr = null;
-				return result;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				return null;
-			} catch (XMLStreamException e) {
-				e.printStackTrace();
-				return null;
-			}
-			/*
-			try {
-				Document doc = PositionalXMLReader.readXML(new FileInputStream(file));
-				return (T) unmarshal(doc.getDocumentElement());
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (SAXException e) {
-				e.printStackTrace();
-			} 
-			return null;
-			*/
+			this.file = file;
+			XMLInputFactory xif = XMLInputFactory.newFactory();
+	        FileInputStream xml = new FileInputStream(file);
+	        xsr = new MyXmlReader(xif.createXMLStreamReader(xml));
+			T result = (T) unmarshaller.unmarshal(xsr);
+			xsr = null;
+			return result;
 		}
 	}
 	
@@ -173,15 +151,12 @@ public class XmlMarshaller<T> extends XmlUtils {
 		}
 	}
 	
-	public void marshal(T data, File file) throws JAXBException {
-		try {
-			FileOutputStream fout = new FileOutputStream(file);
-			synchronized (marshaller) {
-				marshaller.marshal(data, fout);
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+	public void marshal(T data, File file) throws JAXBException, IOException {
+		FileOutputStream fout = new FileOutputStream(file);
+		synchronized (marshaller) {
+			marshaller.marshal(data, fout);
 		}
+		fout.close();
 	}
 	
 	public String marshal(T data) throws JAXBException {

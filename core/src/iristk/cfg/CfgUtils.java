@@ -6,12 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
 
 import iristk.xml.XmlUtils;
 
 public class CfgUtils {
 
-	public static void srgs2abnf(String... args) throws FileNotFoundException, JAXBException {
+	public static void srgs2abnf(String... args) throws FileNotFoundException, JAXBException, XMLStreamException {
 		new ABNFGrammar(new SRGSGrammar(new File(args[0]))).marshal(System.out);
 	}
 	
@@ -19,7 +20,7 @@ public class CfgUtils {
 		System.out.println(abnf2srgs(new File(args[0])));
 	}
 	
-	public static String srgs2abnf(File file) throws FileNotFoundException, JAXBException {
+	public static String srgs2abnf(File file) throws FileNotFoundException, JAXBException, XMLStreamException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		new ABNFGrammar(new SRGSGrammar(file)).marshal(out);
 		return out.toString();

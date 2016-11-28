@@ -27,6 +27,8 @@ import iristk.xml.flow.Flow.Import;
 import iristk.xml.flow.Var;
 
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -79,6 +81,8 @@ public class FlowXml {
 			throw new FlowCompilerException(e.getMessage());
 		} catch (IOException e) {
 			throw new FlowCompilerException(e.getMessage());
+		} catch (XMLStreamException e) {
+			throw new FlowCompilerException(e.getMessage());
 		}
 	}
 	
@@ -129,6 +133,8 @@ public class FlowXml {
 		} catch (JAXBException e) {
 			throw new FlowCompilerException(e.getMessage());
 		} catch (FileNotFoundException e) {
+			throw new FlowCompilerException(e.getMessage());
+		} catch (XMLStreamException e) {
 			throw new FlowCompilerException(e.getMessage());
 		}
 		for (Include inc : flow.getInclude()) {

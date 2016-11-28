@@ -36,6 +36,7 @@ import iristk.xml.srgs.SpecialDatatype;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 import org.xml.sax.SAXException;
 
@@ -78,7 +79,7 @@ public class SRGSGrammar implements Grammar {
 		}
 	}
 	
-	public SRGSGrammar(File file) throws FileNotFoundException, JAXBException {
+	public SRGSGrammar(File file) throws FileNotFoundException, JAXBException, XMLStreamException {
 		grammar = srgsMarshaller.unmarshal(file).getValue();
 	}
 	

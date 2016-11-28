@@ -55,20 +55,20 @@ public class $Situated_dialog$Skill extends Skill {
 	}
 
 	@Override
-	public void init(SkillHandler handler) throws Exception {
+	public void init() throws Exception {
 		if (recognizer.equals(RECOGNIZER_GRAMMAR))  {
-			handler.loadContext("default", new SpeechGrammarContext(new SRGSGrammar(getPackageFile("$Situated_dialog$Grammar.xml"))));
-			handler.setDefaultContext("default");
+			getSkillHandler().loadContext("default", new SpeechGrammarContext(new SRGSGrammar(getPackageFile("$Situated_dialog$Grammar.xml"))));
+			getSkillHandler().setDefaultContext("default");
 		} else if (recognizer.equals(RECOGNIZER_OPEN)) {
-			handler.loadContext("default", new OpenVocabularyContext(language));
-			handler.loadContext("default", new SemanticGrammarContext(new SRGSGrammar(getPackageFile("$Situated_dialog$Grammar.xml"))));
-			handler.setDefaultContext("default");
+			getSkillHandler().loadContext("default", new OpenVocabularyContext(language));
+			getSkillHandler().loadContext("default", new SemanticGrammarContext(new SRGSGrammar(getPackageFile("$Situated_dialog$Grammar.xml"))));
+			getSkillHandler().setDefaultContext("default");
 		}
-		flow = new $Situated_dialog$Flow(handler.getSystemAgentFlow());
+		flow = new $Situated_dialog$Flow(getSkillHandler().getSystemAgentFlow());
 	}
 
 	@Override
-	public void stop(SkillHandler handler) throws Exception {
+	public void stop() throws Exception {
 	}
 
 }

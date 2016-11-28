@@ -171,23 +171,17 @@ public class XmlUtils {
 		return getBuilder().parse(new ByteArrayInputStream(string.getBytes()));
 	}
 
-	public static void indentXmlFile(File file) {
-		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setNamespaceAware(true);
-			Document doc = getBuilder().parse(file);
-			OutputFormat format = new OutputFormat(doc);
-			//format.setLineWidth(80);
-			format.setIndenting(true);
-			format.setIndent(4);
-			format.setEncoding("UTF-8");
-			XMLSerializer serializer = new XMLSerializer(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"), format);
-			serializer.serialize(doc);
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public static void indentXmlFile(File file) throws SAXException, IOException {
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		Document doc = getBuilder().parse(file);
+		OutputFormat format = new OutputFormat(doc);
+		//format.setLineWidth(80);
+		format.setIndenting(true);
+		format.setIndent(4);
+		format.setEncoding("UTF-8");
+		XMLSerializer serializer = new XMLSerializer(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"), format);
+		serializer.serialize(doc);
 	}
 
 	public static String indentXml(String xml) {

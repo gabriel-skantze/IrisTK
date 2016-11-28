@@ -30,6 +30,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
 
 public class GrammarWorkshop {
 
@@ -175,6 +176,7 @@ public class GrammarWorkshop {
 				parsers.put(name,parser);
 			} catch (FileNotFoundException e) {
 			} catch (JAXBException e) {
+			} catch (XMLStreamException e) {
 			}
 		}
 	}

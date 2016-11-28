@@ -244,10 +244,10 @@ public class Broker extends Thread {
 									String cols[] = line.substring(6).trim().split(" ");
 									if (cols.length != 2 || cols[0].length() == 0 || cols[1].length() == 0) 
 										throw new IllegalBrokerCommandException(line);
-									String label = cols[1];
+									String label = cols[0];
 									int length;
 									try {
-										length = Integer.parseInt(cols[2]);
+										length = Integer.parseInt(cols[1]);
 									} catch (NumberFormatException e) {
 										throw new IllegalBrokerCommandException(line);
 									}

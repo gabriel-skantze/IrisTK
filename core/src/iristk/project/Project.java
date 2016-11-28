@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import javax.xml.bind.JAXBException;
+import javax.xml.stream.XMLStreamException;
 
 public class Project {
 
@@ -202,6 +203,8 @@ public class Project {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (JAXBException e) {
+				e.printStackTrace();
+			} catch (XMLStreamException e) {
 				e.printStackTrace();
 			}
 		}
