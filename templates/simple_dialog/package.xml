@@ -1,4 +1,4 @@
-<package name="$simple_dialog$">
+<package name="$simple_dialog$" version="0.1.0">
 	<run>
 		<command name="$simple_dialog$" class="iristk.app.$simple_dialog$.$Simple_dialog$System"/>
 	</run>
