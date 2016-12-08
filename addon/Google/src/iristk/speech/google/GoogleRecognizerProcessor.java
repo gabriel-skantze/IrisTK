@@ -94,7 +94,7 @@ public class GoogleRecognizerProcessor extends RecognizerProcessor {
 
 		@Override
 		public void onError(Throwable error) {
-			logger.error("Google recognizer failed");
+			logger.error("Google recognizer failed: " + error.getMessage());
 			if (finishLatch != null)
 				finishLatch.countDown();
 		}
