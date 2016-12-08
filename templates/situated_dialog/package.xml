@@ -1,4 +1,4 @@
-<package name="$situated_dialog$">
+<package name="$situated_dialog$" version="0.1.0">
 	<run>
 		<command name="$situated_dialog$" class="iristk.app.$situated_dialog$.$Situated_dialog$System"/>
 	</run>
