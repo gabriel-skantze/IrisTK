@@ -21,13 +21,21 @@ import iristk.speech.Phone;
 import iristk.system.InitializationException;
 import iristk.util.Language;
 import iristk.util.Mapper;
+import iristk.util.Replacer;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 // TODO: should encode phones to IPA, now SAPI ID is used
 // http://msdn.microsoft.com/en-us/library/hh361632(v=office.14).aspx
@@ -190,15 +198,30 @@ public class WindowsSynthesizer implements Synthesizer {
 			}
 		}
 		
+		@SuppressWarnings("unchecked")
+		private Set<String> allowedElements = new HashSet<>(Arrays.asList(new String[]{"lexicon", "meta", "metadata", "p", "s", 
+				"say-as", "phoneme", "sub", "voice", "emphasis", "break", "prosody", "audio", "mark", "desc"}));
+		
+		private Replacer ssmlReplacer = new Replacer("</?([^\\s>]*).*?>") {	
+			@Override
+			public String replace(Matcher matcher) {
+				if (allowedElements.contains(matcher.group(1))) {
+					return matcher.group(0);
+				} else {
+					return "";
+				}
+			}
+		};
+		
 		private String makeSSML(String text) {
-			//TODO: more sophisticated processing to remove non-SSML tags
-			text = text.replaceAll("<.?spurt.*?>", "");
+			text = ssmlReplacer.replaceAll(text);
 			text = text.replaceAll("&(?![a-z]+;)", "&amp;");
 			String ssml = "<speak version=\"1.0\"";
 			ssml += " xmlns=\"http://www.w3.org/2001/10/synthesis\"";
 			ssml += " xml:lang=\"" + voice.getLanguage()+ "\">";
 			ssml += text.trim();
 			ssml += "</speak>";
+			//System.out.println(ssml);
 			return ssml;
 		}
 
@@ -212,5 +235,6 @@ public class WindowsSynthesizer implements Synthesizer {
 	public void printVoices() {
 		synth.printVoices();
 	}
-
+	
+	
 }
