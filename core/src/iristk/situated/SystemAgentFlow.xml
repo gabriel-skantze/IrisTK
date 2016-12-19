@@ -25,7 +25,7 @@
 			<goto state="Asleep"/>
 		</onevent>
 		<onevent name="action.attend.all" cond="eq(event:agent, agent)">
-			<goto state="AttendingAll"/>
+			<goto state="AttendingAll" p:select="event:select"/>
 		</onevent>
 		<onevent name="action.attend" cond="event?:location and eq(event:agent, agent)">
 			<goto state="AttendingLocation" p:location="event:location" p:mode="event:mode" p:speed="event:speed"/>
@@ -69,6 +69,7 @@
 	</state> 
 	
 	<state id="AttendingAll" extends="Base">
+		<param name="select" default="null"/>
 		<var name="gazeTarget" type="Agent" value="systemAgent.getRandomUser()"/>
 		<var name="middle" type="Location"/>
 		<onentry>
@@ -76,7 +77,7 @@
 			<send event="monitor.attend.all"/>
 		</onentry>
 		<onevent name="adjustHeadPose">
-			<exec>Location newMiddle = systemAgent.getUsersMiddleLocation();</exec>
+			<exec>Location newMiddle = Agent.getMiddleLocation(systemAgent.getUsers(select))</exec>
 			<if cond="middle == null or newMiddle.distance(middle) > 0.2">
 				<exec>middle = newMiddle</exec>
 				<send event="action.gaze" p:location="systemAgent.getRelative(middle)" p:mode="'headpose'"/>
@@ -84,7 +85,7 @@
 		</onevent>
 		<ontime interval="1000">
 			<raise event="adjustHeadPose"/>
-			<exec>gazeTarget = systemAgent.getOtherUser(gazeTarget.id)</exec>
+			<exec>gazeTarget = systemAgent.getOtherUserThan(gazeTarget.id, select)</exec>
 			<send event="action.gaze" p:location="systemAgent.getRelative(gazeTarget.getHeadLocation())" p:mode="'eyes'"/>
 		</ontime>
 	</state> 
@@ -209,7 +210,8 @@
 	<state id="attendRandom" public="true">
 		<param name="mode" default="'headpose'"/>
 		<param name="speed" default="'medium'"/>
-		<var name="random" value="systemAgent.getRandomUser().id"/>
+		<param name="select" default="null"/>
+		<var name="random" value="systemAgent.getRandomUser(select).id"/>
 		<onentry>
 			<exec>systemAgent.setAttending(random)</exec>
 			<send event="action.attend" p:target="random" p:agent="agent" p:mode="mode" p:speed="speed"/> 
@@ -220,7 +222,8 @@
 	<state id="attendOther" public="true">
 		<param name="mode" default="'headpose'"/>
 		<param name="speed" default="'medium'"/>
-		<var name="other" value="systemAgent.getOtherUser().id"/>
+		<param name="select" default="null"/>
+		<var name="other" value="systemAgent.getOtherUser(select).id"/>
 		<onentry>
 			<exec>systemAgent.setAttending(other)</exec>
 			<send event="action.attend" p:target="other" p:agent="agent" p:mode="mode" p:speed="speed"/>
@@ -229,10 +232,11 @@
 	</state>
 	
 	<state id="attendAll" public="true">
+		<param name="select" default="null"/>
 		<onentry>
 			<if cond="systemAgent.hasManyUsers()">
 				<exec>systemAgent.setAttendingAll()</exec>
-				<send event="action.attend.all" p:agent="agent"/>
+				<send event="action.attend.all" p:agent="agent" p:select="select"/>
 			</if>
 			<return/>
 		</onentry>

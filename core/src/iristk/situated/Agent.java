@@ -10,6 +10,8 @@
  ******************************************************************************/
 package iristk.situated;
 
+import java.util.List;
+
 public class Agent extends Body {
 
 	public static final String NOBODY = "nobody";
@@ -69,6 +71,14 @@ public class Agent extends Body {
 		return true;
 	}
 
+	public static Location getMiddleLocation(List<Agent> users) {
+		Location[] locations = new Location[users.size()];
+		for (int i = 0; i < users.size(); i++) {
+			locations[i] = users.get(i).getHeadLocation();
+		}
+		return Location.mean(locations);
+	}
+	
 	/*
 	public Situation getSituation() {
 		return situation;

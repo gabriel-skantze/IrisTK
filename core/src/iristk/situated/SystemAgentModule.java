@@ -14,6 +14,7 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 	private SystemAgent systemAgent;
 	private ListMap<String,Agent> bodyUserMap = new ListMap<>();
 	private int userIdCount = 0;
+	private ListMap<String,String> userSpaces = new ListMap<>();
 
 	public SystemAgentModule(String id) {
 		this.systemAgent = new SystemAgent(id, situation);
@@ -29,6 +30,9 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 
 	@Override
 	public void onEvent(Event event) {
+		//Ignore events sent by this module
+		//if (event.getSender().equals(getName()))
+		//	return;
 		super.onEvent(event);
 		if (event.triggers("action.situation.detect")) {
 			sendSenseSituation();
@@ -151,6 +155,9 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 				user.gaze = body.gaze;
 			}
 		}
+		//for (String spaceName : systemAgent.getInteractionSpaceNames()) {
+		//	user.put(spaceName, systemAgent.isInInteractionSpace(spaceName, user));
+		//}
 	}
 
 	@Override
@@ -198,13 +205,7 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 				}
 				fillUser(user, cluster);
 				systemAgent.addUser(user);
-				Event event = new Event("sense.user.enter");
-				event.put("user", user.id);
-				event.put("agent", systemAgent.id);
-				event.put("head:location", user.head.location.clone());
-				if (user.head.rotation != null)
-					event.put("head:rotation", user.head.rotation.clone());
-				send(event);
+				sendSenseEnter(user, systemAgent.getInteractionSpaceNames(user.id), true);
 			} else {
 				// Updated user
 				leavingUsers.remove(oldUser.id);
@@ -214,6 +215,7 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 				Agent clone = (Agent) oldUser.deepClone();
 				fillUser(oldUser, cluster);
 				if (!Utils.equals(oldUser.head.location, clone.head.location) || !Utils.equals(oldUser.head.rotation, clone.head.rotation)) {
+					//System.out.println(oldUser.toStringIndent());
 					moved.add(oldUser);
 				}
 				String oldAttending = oldUser.attending;
@@ -243,32 +245,34 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 		}
 		for (String userId : leavingUsers) {
 			systemAgent.removeUser(userId);
-			Event event = new Event("sense.user.leave");
-			event.put("user", userId);
-			event.put("agent", systemAgent.id);
-			send(event);
-			//System.out.println("Leave: " + userId);
+			sendSenseLeave(userId, new ArrayList<>(userSpaces.get(userId)), true);
 		}
 		if (moved.size() > 0) {
+			for (Agent user : moved) {
+				List<String> oldSpaces = userSpaces.get(user.id);
+				List<String> newSpaces = systemAgent.getInteractionSpaceNames(user.id);
+				List<String> addedSpaces = new ArrayList<>(newSpaces);
+				addedSpaces.removeAll(oldSpaces);
+				sendSenseEnter(user, addedSpaces, false);
+				List<String> removedSpaces = new ArrayList<>(oldSpaces);
+				removedSpaces.removeAll(newSpaces);
+				sendSenseLeave(user.id, removedSpaces, false);
+			}
 			Event event = new Event("sense.user.move");
 			for (Agent user : moved) {
-				//Agent agent = new Agent(user.id);
-				//agent.head.location = user.head.location;
-				//agent.head.rotation = user.head.rotation;
-				//agent.body = user.body;
 				event.put(user.id, user.deepClone());
 			}
 			event.put("agent", systemAgent.id);
 			send(event);
 		}
-		Event moveEvent = new Event("sense.item.move");
+		Event itemMoveEvent = new Event("sense.item.move");
 		String prominent = null;
 		double maxdist = 0;
 		for (Item item : situation.getItems().values()) {
 			Item oldItem = systemAgent.getItems().get(item.id);
 			if (oldItem == null || !oldItem.getPosition().equals(item.getPosition())) {
 				double dist = (oldItem == null ? 1 : oldItem.location.distance(item.location));
-				moveEvent.put("items:" + item.id, dist);
+				itemMoveEvent.put("items:" + item.id, dist);
 				if (dist > maxdist) {
 					maxdist = dist;
 					prominent = item.id;
@@ -283,9 +287,37 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 			if (situation.getItem(itemId) == null)
 				systemAgent.getItems().remove(itemId);
 		}
-		if (moveEvent.has("items")) {
-			moveEvent.put("prominent", prominent);
-			send(moveEvent);
+		if (itemMoveEvent.has("items")) {
+			itemMoveEvent.put("prominent", prominent);
+			send(itemMoveEvent);
+		}
+	}
+
+	
+	private void sendSenseLeave(String userId, List<String> spaces, boolean lost) {
+		for (String space : spaces) {
+			userSpaces.removeItem(userId, space);
+			Event event = new Event("sense.user.leave");
+			event.put("user", userId);
+			event.put("space", space);
+			event.put("lost", lost);
+			event.put("agent", systemAgent.id);
+			send(event);
+		}
+	}
+
+	private void sendSenseEnter(Agent user, List<String> spaces, boolean isNew) {
+		for (String space : spaces) {
+			userSpaces.add(user.id, space);
+			Event event = new Event("sense.user.enter");
+			event.put("user", user.id);
+			event.put("agent", systemAgent.id);
+			event.put("space", space);
+			event.put("new", isNew);
+			event.put("head:location", user.head.location.clone());
+			if (user.head.rotation != null)
+				event.put("head:rotation", user.head.rotation.clone());
+			send(event);
 		}
 	}
 
@@ -294,3 +326,4 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 	}
 
 }
+

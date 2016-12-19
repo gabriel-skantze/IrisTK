@@ -64,16 +64,20 @@
         <complexType>
             <attribute default="'headpose'" name="mode" type="string"/>
             <attribute default="'medium'" name="speed" type="string"/>
+            <attribute default="null" name="select" type="string"/>
         </complexType>
     </element>
     <element name="attendOther">
         <complexType>
             <attribute default="'headpose'" name="mode" type="string"/>
             <attribute default="'medium'" name="speed" type="string"/>
+            <attribute default="null" name="select" type="string"/>
         </complexType>
     </element>
     <element name="attendAll">
-        <complexType/>
+        <complexType>
+            <attribute default="null" name="select" type="string"/>
+        </complexType>
     </element>
     <element name="fallAsleep">
         <complexType/>

@@ -1,11 +1,13 @@
 package iristk.situated;
 
+import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import iristk.system.Event;
 import iristk.flow.*;
 import iristk.util.Record;
 import static iristk.util.Converters.*;
+import static iristk.flow.State.*;
 
 public class SystemAgentFlow extends iristk.flow.Flow {
 
@@ -74,7 +76,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
-			flowThread.addEventClock(1000, 5000, "timer_1490180672");
+			flowThread.addEventClock(1000, 5000, "timer_1919892312");
 		}
 
 		@Override
@@ -89,10 +91,10 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 15
 			try {
-				count = getCount(195600860) + 1;
+				count = getCount(1347137144) + 1;
 				if (event.triggers("action.attend")) {
 					if (eq(event.get("target"),"nobody") && eq(event.get("agent"), agent)) {
-						incrCount(195600860);
+						incrCount(1347137144);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 16
@@ -109,9 +111,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 18
 			try {
-				count = getCount(1347137144) + 1;
+				count = getCount(1973336893) + 1;
 				if (event.triggers("action.attend.nobody")) {
-					incrCount(1347137144);
+					incrCount(1973336893);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 19
@@ -127,9 +129,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 21
 			try {
-				count = getCount(1973336893) + 1;
+				count = getCount(1174290147) + 1;
 				if (event.triggers("action.attend.think")) {
-					incrCount(1973336893);
+					incrCount(1174290147);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 22
@@ -145,10 +147,10 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 24
 			try {
-				count = getCount(1174290147) + 1;
+				count = getCount(1285044316) + 1;
 				if (event.triggers("action.attend.asleep")) {
 					if (eq(event.get("agent"), agent)) {
-						incrCount(1174290147);
+						incrCount(1285044316);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 25
@@ -165,15 +167,16 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 27
 			try {
-				count = getCount(1285044316) + 1;
+				count = getCount(1811075214) + 1;
 				if (event.triggers("action.attend.all")) {
 					if (eq(event.get("agent"), agent)) {
-						incrCount(1285044316);
+						incrCount(1811075214);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 28
 							AttendingAll state4 = new AttendingAll();
-							flowThread.gotoState(state4, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 28, 32)));
+							state4.setSelect(event.get("select"));
+							flowThread.gotoState(state4, currentState, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 28, 56)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -185,10 +188,10 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 30
 			try {
-				count = getCount(1811075214) + 1;
+				count = getCount(1407343478) + 1;
 				if (event.triggers("action.attend")) {
 					if (event.has("location") && eq(event.get("agent"), agent)) {
-						incrCount(1811075214);
+						incrCount(1407343478);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 31
@@ -208,10 +211,10 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 33
 			try {
-				count = getCount(1407343478) + 1;
+				count = getCount(245565335) + 1;
 				if (event.triggers("action.attend")) {
 					if (event.has("target") && systemAgent.hasUser(asString(event.get("target"))) && eq(event.get("agent"), agent)) {
-						incrCount(1407343478);
+						incrCount(245565335);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 34
@@ -231,10 +234,10 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 36
 			try {
-				count = getCount(245565335) + 1;
+				count = getCount(1066376662) + 1;
 				if (event.triggers("action.attend")) {
 					if (systemAgent.hasItem(asString(event.get("target")))) {
-						incrCount(245565335);
+						incrCount(1066376662);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 37
@@ -254,9 +257,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 39
 			try {
-				count = getCount(1066376662) + 1;
+				count = getCount(476402209) + 1;
 				if (event.triggers("monitor.speech.prominence")) {
-					incrCount(1066376662);
+					incrCount(476402209);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 40
@@ -273,9 +276,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 39, 46));
 			}
 			// Line: 44
-			count = getCount(1490180672) + 1;
-			if (event.triggers("timer_1490180672")) {
-				incrCount(1490180672);
+			count = getCount(1919892312) + 1;
+			if (event.triggers("timer_1919892312")) {
+				incrCount(1919892312);
 				eventResult = EVENT_CONSUMED;
 				EXECUTION: {
 					// Line: 45
@@ -289,9 +292,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 			// Line: 47
 			try {
-				count = getCount(1919892312) + 1;
+				count = getCount(250075633) + 1;
 				if (event.triggers("blink")) {
-					incrCount(1919892312);
+					incrCount(250075633);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 48
@@ -332,8 +335,8 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			// Line: 53
 			try {
 				EXECUTION: {
-					int count = getCount(517938326) + 1;
-					incrCount(517938326);
+					int count = getCount(110718392) + 1;
+					incrCount(110718392);
 					// Line: 54
 					Event sendEvent11 = new Event("action.gaze");
 					sendEvent11.putIfNotNull("mode", "headpose");
@@ -368,14 +371,14 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	private class Think extends Base {
 
 		final State currentState = this;
-		public Integer dir = asInteger(1);
-		public Location nobody = systemAgent.getRelative(systemAgent.getNobody().getHeadLocation());
 
+		public Integer dir = asInteger(1);
+		public Location nobody = (Location) systemAgent.getRelative(systemAgent.getNobody().getHeadLocation());
 
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
-			flowThread.addEventClock(500, 500, "timer_114935352");
+			flowThread.addEventClock(500, 500, "timer_32374789");
 		}
 
 		@Override
@@ -385,8 +388,8 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			// Line: 62
 			try {
 				EXECUTION: {
-					int count = getCount(204349222) + 1;
-					incrCount(204349222);
+					int count = getCount(114935352) + 1;
+					incrCount(114935352);
 					// Line: 63
 					Event sendEvent13 = new Event("action.gaze");
 					sendEvent13.putIfNotNull("mode", "headpose");
@@ -404,9 +407,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			int eventResult;
 			int count;
 			// Line: 65
-			count = getCount(114935352) + 1;
-			if (event.triggers("timer_114935352")) {
-				incrCount(114935352);
+			count = getCount(32374789) + 1;
+			if (event.triggers("timer_32374789")) {
+				incrCount(32374789);
 				eventResult = EVENT_CONSUMED;
 				EXECUTION: {
 					// Line: 66
@@ -432,37 +435,45 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	private class AttendingAll extends Base {
 
 		final State currentState = this;
-		public Agent gazeTarget = systemAgent.getRandomUser();
-		public Location middle;
+		public String select = asString(null);
 
+		public void setSelect(Object value) {
+			if (value != null) {
+				select = asString(value);
+				params.put("select", value);
+			}
+		}
+
+		public Agent gazeTarget = (Agent) systemAgent.getRandomUser();
+		public Location middle;
 
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
-			flowThread.addEventClock(1000, 1000, "timer_1579572132");
+			flowThread.addEventClock(1000, 1000, "timer_2111991224");
 		}
 
 		@Override
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 74
+			// Line: 75
 			try {
 				EXECUTION: {
-					int count = getCount(515132998) + 1;
-					incrCount(515132998);
-					// Line: 75
+					int count = getCount(1651191114) + 1;
+					incrCount(1651191114);
+					// Line: 76
 					Event raiseEvent15 = new Event("adjustHeadPose");
-					if (flowThread.raiseEvent(raiseEvent15, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 75, 35))) == State.EVENT_ABORTED) {
+					if (flowThread.raiseEvent(raiseEvent15, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 76, 35))) == State.EVENT_ABORTED) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
-					// Line: 76
+					// Line: 77
 					Event sendEvent16 = new Event("monitor.attend.all");
-					flowRunner.sendEvent(sendEvent16, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 76, 38)));
+					flowRunner.sendEvent(sendEvent16, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 77, 38)));
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 74, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 75, 12));
 			}
 		}
 
@@ -470,50 +481,50 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 78
+			// Line: 79
 			try {
-				count = getCount(1651191114) + 1;
+				count = getCount(932583850) + 1;
 				if (event.triggers("adjustHeadPose")) {
-					incrCount(1651191114);
+					incrCount(932583850);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
-						// Line: 79
-						Location newMiddle = systemAgent.getUsersMiddleLocation();
 						// Line: 80
+						Location newMiddle = Agent.getMiddleLocation(systemAgent.getUsers(select));
+						// Line: 81
 						if (middle == null || newMiddle.distance(middle) > 0.2) {
-							// Line: 81
-							middle = newMiddle;
 							// Line: 82
+							middle = newMiddle;
+							// Line: 83
 							Event sendEvent17 = new Event("action.gaze");
 							sendEvent17.putIfNotNull("mode", "headpose");
 							sendEvent17.putIfNotNull("location", systemAgent.getRelative(middle));
-							flowRunner.sendEvent(sendEvent17, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 82, 97)));
+							flowRunner.sendEvent(sendEvent17, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 83, 97)));
 						}
 					}
 					if (eventResult != EVENT_IGNORED) return eventResult;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 78, 34));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 79, 34));
 			}
-			// Line: 85
-			count = getCount(1579572132) + 1;
-			if (event.triggers("timer_1579572132")) {
-				incrCount(1579572132);
+			// Line: 86
+			count = getCount(2111991224) + 1;
+			if (event.triggers("timer_2111991224")) {
+				incrCount(2111991224);
 				eventResult = EVENT_CONSUMED;
 				EXECUTION: {
-					// Line: 86
+					// Line: 87
 					Event raiseEvent18 = new Event("adjustHeadPose");
-					if (flowThread.raiseEvent(raiseEvent18, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 86, 35))) == State.EVENT_ABORTED) {
+					if (flowThread.raiseEvent(raiseEvent18, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 87, 35))) == State.EVENT_ABORTED) {
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
-					// Line: 87
-					gazeTarget = systemAgent.getOtherUser(gazeTarget.id);
 					// Line: 88
+					gazeTarget = systemAgent.getOtherUserThan(gazeTarget.id, select);
+					// Line: 89
 					Event sendEvent19 = new Event("action.gaze");
 					sendEvent19.putIfNotNull("mode", "eyes");
 					sendEvent19.putIfNotNull("location", systemAgent.getRelative(gazeTarget.getHeadLocation()));
-					flowRunner.sendEvent(sendEvent19, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 88, 114)));
+					flowRunner.sendEvent(sendEvent19, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 89, 114)));
 				}
 				if (eventResult != EVENT_IGNORED) return eventResult;
 			}
@@ -530,8 +541,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	private class AttendingAgent extends Base {
 
 		final State currentState = this;
-		public Agent user;
-
 		public String target = null;
 		public String mode = asString("headpose");
 		public String speed = asString("medium");
@@ -557,6 +566,8 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+		public Agent user;
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -566,33 +577,33 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 97
+			// Line: 98
 			try {
 				EXECUTION: {
-					int count = getCount(1130478920) + 1;
-					incrCount(1130478920);
-					// Line: 98
-					user = systemAgent.getUser(target);
+					int count = getCount(123961122) + 1;
+					incrCount(123961122);
 					// Line: 99
+					user = systemAgent.getUser(target);
+					// Line: 100
 					Event sendEvent20 = new Event("action.gaze");
 					sendEvent20.putIfNotNull("mode", mode);
 					sendEvent20.putIfNotNull("agent", agent);
 					sendEvent20.putIfNotNull("location", systemAgent.getRelative(user.getHeadLocation()));
 					sendEvent20.putIfNotNull("speed", speed);
-					flowRunner.sendEvent(sendEvent20, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 99, 138)));
-					// Line: 100
+					flowRunner.sendEvent(sendEvent20, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 100, 138)));
+					// Line: 101
 					if (eq(mode,"headpose")) {
-						// Line: 101
+						// Line: 102
 						mode = "default";
 					}
-					// Line: 103
+					// Line: 104
 					Event sendEvent21 = new Event("monitor.attend");
 					sendEvent21.putIfNotNull("agent", agent);
 					sendEvent21.putIfNotNull("target", target);
-					flowRunner.sendEvent(sendEvent21, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 103, 68)));
+					flowRunner.sendEvent(sendEvent21, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 104, 68)));
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 97, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 98, 12));
 			}
 		}
 
@@ -600,26 +611,26 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 105
+			// Line: 106
 			try {
-				count = getCount(1562557367) + 1;
+				count = getCount(971848845) + 1;
 				if (event.triggers("sense.user.move")) {
 					if (eq(event.get("agent"), agent) && event.has("" + user.id + ":head:location")) {
-						incrCount(1562557367);
+						incrCount(971848845);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 106
+							// Line: 107
 							Event sendEvent22 = new Event("action.gaze");
 							sendEvent22.putIfNotNull("mode", mode);
 							sendEvent22.putIfNotNull("agent", agent);
 							sendEvent22.putIfNotNull("location", systemAgent.getRelative((Location)event.get("" + user.id + ":head:location")));
-							flowRunner.sendEvent(sendEvent22, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 106, 139)));
+							flowRunner.sendEvent(sendEvent22, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 107, 139)));
 						}
 						if (eventResult != EVENT_IGNORED) return eventResult;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 105, 100));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 106, 100));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -634,7 +645,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	private class AttendingItem extends Base {
 
 		final State currentState = this;
-
 		public String target = null;
 		public String mode = asString("default");
 		public String speed = asString("medium");
@@ -660,6 +670,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -669,27 +680,27 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 114
+			// Line: 115
 			try {
 				EXECUTION: {
-					int count = getCount(758529971) + 1;
-					incrCount(758529971);
-					// Line: 115
+					int count = getCount(1940030785) + 1;
+					incrCount(1940030785);
+					// Line: 116
 					if (systemAgent.hasItem(target)) {
-						// Line: 116
+						// Line: 117
 						Event sendEvent23 = new Event("action.gaze");
 						sendEvent23.putIfNotNull("mode", mode);
 						sendEvent23.putIfNotNull("location", systemAgent.getRelative(systemAgent.getItem(target).location));
 						sendEvent23.putIfNotNull("speed", speed);
-						flowRunner.sendEvent(sendEvent23, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 116, 137)));
+						flowRunner.sendEvent(sendEvent23, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 117, 137)));
 					}
-					// Line: 118
+					// Line: 119
 					Event sendEvent24 = new Event("monitor.attend");
 					sendEvent24.putIfNotNull("target", target);
-					flowRunner.sendEvent(sendEvent24, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 118, 52)));
+					flowRunner.sendEvent(sendEvent24, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 119, 52)));
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 114, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 115, 12));
 			}
 		}
 
@@ -697,24 +708,24 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 120
+			// Line: 121
 			try {
-				count = getCount(1869997857) + 1;
+				count = getCount(125993742) + 1;
 				if (event.triggers("sense.item.move")) {
 					if (systemAgent.hasItem(target)) {
-						incrCount(1869997857);
+						incrCount(125993742);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 121
+							// Line: 122
 							Event sendEvent25 = new Event("action.gaze");
 							sendEvent25.putIfNotNull("location", systemAgent.getRelative(systemAgent.getItem(target).location));
-							flowRunner.sendEvent(sendEvent25, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 121, 106)));
+							flowRunner.sendEvent(sendEvent25, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 122, 106)));
 						}
 						if (eventResult != EVENT_IGNORED) return eventResult;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 120, 70));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 121, 70));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -729,7 +740,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	private class AttendingLocation extends Base {
 
 		final State currentState = this;
-
 		public Location location = null;
 		public String mode = asString("default");
 		public String speed = asString("medium");
@@ -755,6 +765,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -764,23 +775,23 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 129
+			// Line: 130
 			try {
 				EXECUTION: {
-					int count = getCount(864237698) + 1;
-					incrCount(864237698);
-					// Line: 130
-					systemAgent.setAttending(systemAgent.getNobody().id);
+					int count = getCount(237852351) + 1;
+					incrCount(237852351);
 					// Line: 131
+					systemAgent.setAttending(systemAgent.getNobody().id);
+					// Line: 132
 					Event sendEvent26 = new Event("action.gaze");
 					sendEvent26.putIfNotNull("mode", mode);
 					sendEvent26.putIfNotNull("agent", agent);
 					sendEvent26.putIfNotNull("location", systemAgent.getRelative(location));
 					sendEvent26.putIfNotNull("speed", speed);
-					flowRunner.sendEvent(sendEvent26, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 131, 124)));
+					flowRunner.sendEvent(sendEvent26, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 132, 124)));
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 129, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 130, 12));
 			}
 		}
 
@@ -812,25 +823,25 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 136
+			// Line: 137
 			try {
 				EXECUTION: {
-					int count = getCount(1451270520) + 1;
-					incrCount(1451270520);
-					// Line: 137
+					int count = getCount(511833308) + 1;
+					incrCount(511833308);
+					// Line: 138
 					Event sendEvent27 = new Event("action.gaze");
 					sendEvent27.putIfNotNull("mode", "headpose");
 					sendEvent27.putIfNotNull("agent", agent);
 					sendEvent27.putIfNotNull("location", systemAgent.getRelative(systemAgent.getNobody().getHeadLocation()));
-					flowRunner.sendEvent(sendEvent27, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 137, 147)));
-					// Line: 138
+					flowRunner.sendEvent(sendEvent27, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 138, 147)));
+					// Line: 139
 					Event sendEvent28 = new Event("action.gesture");
 					sendEvent28.putIfNotNull("agent", agent);
 					sendEvent28.putIfNotNull("name", "sleep");
-					flowRunner.sendEvent(sendEvent28, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 138, 67)));
+					flowRunner.sendEvent(sendEvent28, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 139, 67)));
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 136, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 137, 12));
 			}
 		}
 
@@ -838,18 +849,18 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 143
+			// Line: 144
 			try {
-				count = getCount(1705929636) + 1;
+				count = getCount(1556956098) + 1;
 				if (event.triggers("blink")) {
-					incrCount(1705929636);
+					incrCount(1556956098);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 					}
 					if (eventResult != EVENT_IGNORED) return eventResult;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 143, 26));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 144, 26));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -857,17 +868,17 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			if (eventResult != EVENT_IGNORED) return eventResult;
 			return EVENT_IGNORED;
 		}
-		// Line: 140
+		// Line: 141
 		@Override
 		public void onexit() {
 			int eventResult;
 			Event event = new Event("state.exit");
 			EXECUTION: {
-				// Line: 141
+				// Line: 142
 				Event sendEvent29 = new Event("action.gesture");
 				sendEvent29.putIfNotNull("agent", agent);
 				sendEvent29.putIfNotNull("name", "blink");
-				flowRunner.sendEvent(sendEvent29, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 141, 67)));
+				flowRunner.sendEvent(sendEvent29, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 142, 67)));
 			}
 			super.onexit();
 		}
@@ -878,9 +889,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class gesture extends State {
 
 		final State currentState = this;
-		public String actionId;
-
-		public boolean async = true;
+		public boolean async = (boolean) true;
 		public String name = asString("smile");
 		public String text = null;
 
@@ -905,6 +914,8 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+		public String actionId;
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -914,28 +925,28 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 151
+			// Line: 152
 			try {
 				EXECUTION: {
-					int count = getCount(1785210046) + 1;
-					incrCount(1785210046);
-					// Line: 152
+					int count = getCount(739498517) + 1;
+					incrCount(739498517);
+					// Line: 153
 					Event sendEvent30 = new Event("action.gesture");
 					sendEvent30.putIfNotNull("agent", agent);
 					sendEvent30.putIfNotNull("name", name);
 					sendEvent30.putIfNotNull("text", text);
-					flowRunner.sendEvent(sendEvent30, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 152, 96)));
+					flowRunner.sendEvent(sendEvent30, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 153, 96)));
 					actionId = sendEvent30.getId();
-					// Line: 153
+					// Line: 154
 					if (async) {
-						// Line: 154
-						flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 154, 14)));
+						// Line: 155
+						flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 155, 14)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 151, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 152, 12));
 			}
 		}
 
@@ -943,16 +954,16 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 157
+			// Line: 158
 			try {
-				count = getCount(125130493) + 1;
+				count = getCount(991505714) + 1;
 				if (event.triggers("monitor.gesture.end")) {
 					if (eq(actionId,event.get("action"))) {
-						incrCount(125130493);
+						incrCount(991505714);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 158
-							flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 158, 13)));
+							// Line: 159
+							flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 159, 13)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -960,7 +971,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 157, 72));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 158, 72));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -975,7 +986,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class voice extends State {
 
 		final State currentState = this;
-
 		public String name = asString(null);
 		public String gender = asString(null);
 
@@ -993,6 +1003,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -1002,24 +1013,24 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 165
+			// Line: 166
 			try {
 				EXECUTION: {
-					int count = getCount(824009085) + 1;
-					incrCount(824009085);
-					// Line: 166
+					int count = getCount(1887400018) + 1;
+					incrCount(1887400018);
+					// Line: 167
 					Event sendEvent31 = new Event("action.voice");
 					sendEvent31.putIfNotNull("agent", agent);
 					sendEvent31.putIfNotNull("gender", gender);
 					sendEvent31.putIfNotNull("name", name);
-					flowRunner.sendEvent(sendEvent31, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 166, 80)));
-					// Line: 167
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 167, 13)));
+					flowRunner.sendEvent(sendEvent31, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 167, 80)));
+					// Line: 168
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 168, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 165, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 166, 12));
 			}
 		}
 
@@ -1040,7 +1051,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class texture extends State {
 
 		final State currentState = this;
-
 		public String name = asString(null);
 
 		public void setName(Object value) {
@@ -1049,6 +1059,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 				params.put("name", value);
 			}
 		}
+
 
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
@@ -1059,23 +1070,23 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 173
+			// Line: 174
 			try {
 				EXECUTION: {
-					int count = getCount(344560770) + 1;
-					incrCount(344560770);
-					// Line: 174
+					int count = getCount(791885625) + 1;
+					incrCount(791885625);
+					// Line: 175
 					Event sendEvent32 = new Event("action.face.texture");
 					sendEvent32.putIfNotNull("agent", agent);
 					sendEvent32.putIfNotNull("name", name);
-					flowRunner.sendEvent(sendEvent32, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 174, 69)));
-					// Line: 175
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 175, 13)));
+					flowRunner.sendEvent(sendEvent32, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 175, 69)));
+					// Line: 176
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 176, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 173, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 174, 12));
 			}
 		}
 
@@ -1096,10 +1107,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class attend extends State {
 
 		final State currentState = this;
-
 		public String mode = asString("headpose");
 		public String target = asString("nobody");
-		public Location location = null;
+		public Location location = (Location) null;
 		public Double x = asDouble(null);
 		public Double y = asDouble(null);
 		public Double z = asDouble(null);
@@ -1162,6 +1172,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -1171,49 +1182,49 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 188
+			// Line: 189
 			try {
 				EXECUTION: {
-					int count = getCount(529116035) + 1;
-					incrCount(529116035);
-					// Line: 189
-					systemAgent.setAttending(target);
+					int count = getCount(2065530879) + 1;
+					incrCount(2065530879);
 					// Line: 190
+					systemAgent.setAttending(target);
+					// Line: 191
 					if (location != null) {
-						// Line: 191
+						// Line: 192
 						Event sendEvent33 = new Event("action.attend");
 						sendEvent33.putIfNotNull("mode", mode);
 						sendEvent33.putIfNotNull("agent", agent);
 						sendEvent33.putIfNotNull("location", location);
 						sendEvent33.putIfNotNull("speed", speed);
-						flowRunner.sendEvent(sendEvent33, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 191, 102)));
-						// Line: 192
-					} else if (x != null && y != null && z != null) {
+						flowRunner.sendEvent(sendEvent33, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 192, 102)));
 						// Line: 193
+					} else if (x != null && y != null && z != null) {
+						// Line: 194
 						Event sendEvent34 = new Event("action.attend");
 						sendEvent34.putIfNotNull("mode", mode);
 						sendEvent34.putIfNotNull("agent", agent);
 						sendEvent34.putIfNotNull("location", new Location(x, y, z));
 						sendEvent34.putIfNotNull("speed", speed);
-						flowRunner.sendEvent(sendEvent34, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 193, 115)));
-						// Line: 194
-					} else {
+						flowRunner.sendEvent(sendEvent34, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 194, 115)));
 						// Line: 195
+					} else {
+						// Line: 196
 						Event sendEvent35 = new Event("action.attend");
 						sendEvent35.putIfNotNull("mode", mode);
 						sendEvent35.putIfNotNull("agent", agent);
 						sendEvent35.putIfNotNull("part", part);
 						sendEvent35.putIfNotNull("speed", speed);
 						sendEvent35.putIfNotNull("target", target);
-						flowRunner.sendEvent(sendEvent35, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 195, 112)));
+						flowRunner.sendEvent(sendEvent35, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 196, 112)));
 					}
-					// Line: 197
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 197, 13)));
+					// Line: 198
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 198, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 188, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 189, 12));
 			}
 		}
 
@@ -1245,25 +1256,25 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 202
+			// Line: 203
 			try {
 				EXECUTION: {
-					int count = getCount(1937962514) + 1;
-					incrCount(1937962514);
-					// Line: 203
-					systemAgent.setAttending("nobody");
+					int count = getCount(242131142) + 1;
+					incrCount(242131142);
 					// Line: 204
+					systemAgent.setAttending("nobody");
+					// Line: 205
 					Event sendEvent36 = new Event("action.attend");
 					sendEvent36.putIfNotNull("agent", agent);
 					sendEvent36.putIfNotNull("target", "nobody");
-					flowRunner.sendEvent(sendEvent36, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 204, 69)));
-					// Line: 205
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 205, 13)));
+					flowRunner.sendEvent(sendEvent36, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 205, 69)));
+					// Line: 206
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 206, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 202, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 203, 12));
 			}
 		}
 
@@ -1284,10 +1295,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class attendRandom extends State {
 
 		final State currentState = this;
-		public String random = asString(systemAgent.getRandomUser().id);
-
 		public String mode = asString("headpose");
 		public String speed = asString("medium");
+		public String select = asString(null);
 
 		public void setMode(Object value) {
 			if (value != null) {
@@ -1303,6 +1313,15 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+		public void setSelect(Object value) {
+			if (value != null) {
+				select = asString(value);
+				params.put("select", value);
+			}
+		}
+
+		public String random = asString(systemAgent.getRandomUser(select).id);
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -1312,27 +1331,27 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 213
+			// Line: 215
 			try {
 				EXECUTION: {
-					int count = getCount(1254526270) + 1;
-					incrCount(1254526270);
-					// Line: 214
+					int count = getCount(1023714065) + 1;
+					incrCount(1023714065);
+					// Line: 216
 					systemAgent.setAttending(random);
-					// Line: 215
+					// Line: 217
 					Event sendEvent37 = new Event("action.attend");
 					sendEvent37.putIfNotNull("mode", mode);
 					sendEvent37.putIfNotNull("agent", agent);
 					sendEvent37.putIfNotNull("speed", speed);
 					sendEvent37.putIfNotNull("target", random);
-					flowRunner.sendEvent(sendEvent37, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 215, 97)));
-					// Line: 216
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 216, 13)));
+					flowRunner.sendEvent(sendEvent37, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 217, 97)));
+					// Line: 218
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 218, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 213, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 215, 12));
 			}
 		}
 
@@ -1353,10 +1372,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class attendOther extends State {
 
 		final State currentState = this;
-		public String other = asString(systemAgent.getOtherUser().id);
-
 		public String mode = asString("headpose");
 		public String speed = asString("medium");
+		public String select = asString(null);
 
 		public void setMode(Object value) {
 			if (value != null) {
@@ -1372,6 +1390,15 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+		public void setSelect(Object value) {
+			if (value != null) {
+				select = asString(value);
+				params.put("select", value);
+			}
+		}
+
+		public String other = asString(systemAgent.getOtherUser(select).id);
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -1381,27 +1408,27 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 224
+			// Line: 227
 			try {
 				EXECUTION: {
-					int count = getCount(1971489295) + 1;
-					incrCount(1971489295);
-					// Line: 225
+					int count = getCount(1395089624) + 1;
+					incrCount(1395089624);
+					// Line: 228
 					systemAgent.setAttending(other);
-					// Line: 226
+					// Line: 229
 					Event sendEvent38 = new Event("action.attend");
 					sendEvent38.putIfNotNull("mode", mode);
 					sendEvent38.putIfNotNull("agent", agent);
 					sendEvent38.putIfNotNull("speed", speed);
 					sendEvent38.putIfNotNull("target", other);
-					flowRunner.sendEvent(sendEvent38, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 226, 96)));
-					// Line: 227
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 227, 13)));
+					flowRunner.sendEvent(sendEvent38, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 229, 96)));
+					// Line: 230
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 230, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 224, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 227, 12));
 			}
 		}
 
@@ -1422,6 +1449,14 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class attendAll extends State {
 
 		final State currentState = this;
+		public String select = asString(null);
+
+		public void setSelect(Object value) {
+			if (value != null) {
+				select = asString(value);
+				params.put("select", value);
+			}
+		}
 
 
 		@Override
@@ -1433,27 +1468,28 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 232
+			// Line: 236
 			try {
 				EXECUTION: {
-					int count = getCount(1476011703) + 1;
-					incrCount(1476011703);
-					// Line: 233
+					int count = getCount(1330106945) + 1;
+					incrCount(1330106945);
+					// Line: 237
 					if (systemAgent.hasManyUsers()) {
-						// Line: 234
+						// Line: 238
 						systemAgent.setAttendingAll();
-						// Line: 235
+						// Line: 239
 						Event sendEvent39 = new Event("action.attend.all");
 						sendEvent39.putIfNotNull("agent", agent);
-						flowRunner.sendEvent(sendEvent39, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 235, 54)));
+						sendEvent39.putIfNotNull("select", select);
+						flowRunner.sendEvent(sendEvent39, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 239, 72)));
 					}
-					// Line: 237
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 237, 13)));
+					// Line: 241
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 241, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 232, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 236, 12));
 			}
 		}
 
@@ -1485,24 +1521,24 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 242
+			// Line: 246
 			try {
 				EXECUTION: {
-					int count = getCount(1279149968) + 1;
-					incrCount(1279149968);
-					// Line: 243
+					int count = getCount(1689843956) + 1;
+					incrCount(1689843956);
+					// Line: 247
 					systemAgent.setAttending("nobody");
-					// Line: 244
+					// Line: 248
 					Event sendEvent40 = new Event("action.attend.asleep");
 					sendEvent40.putIfNotNull("agent", agent);
-					flowRunner.sendEvent(sendEvent40, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 244, 56)));
-					// Line: 245
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 245, 13)));
+					flowRunner.sendEvent(sendEvent40, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 248, 56)));
+					// Line: 249
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 249, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 242, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 246, 12));
 			}
 		}
 
@@ -1523,7 +1559,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class prompt extends listen {
 
 		final State currentState = this;
-
 		public String text = null;
 
 		public void setText(Object value) {
@@ -1532,6 +1567,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 				params.put("text", value);
 			}
 		}
+
 
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
@@ -1542,19 +1578,19 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 251
+			// Line: 255
 			try {
 				EXECUTION: {
-					int count = getCount(1689843956) + 1;
-					incrCount(1689843956);
-					// Line: 252
+					int count = getCount(5592464) + 1;
+					incrCount(5592464);
+					// Line: 256
 					Event sendEvent41 = new Event("action.speech");
 					sendEvent41.putIfNotNull("agent", agent);
 					sendEvent41.putIfNotNull("text", text);
-					flowRunner.sendEvent(sendEvent41, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 252, 64)));
+					flowRunner.sendEvent(sendEvent41, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 256, 64)));
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 251, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 255, 12));
 			}
 		}
 
@@ -1562,38 +1598,38 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 254
+			// Line: 258
 			try {
-				count = getCount(977993101) + 1;
+				count = getCount(1013423070) + 1;
 				if (event.triggers("monitor.speech.start")) {
-					incrCount(977993101);
+					incrCount(1013423070);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
-						// Line: 255
+						// Line: 259
 						Event sendEvent42 = new Event("action.listen");
 						sendEvent42.putIfNotNull("endSilTimeout", endSil);
 						sendEvent42.putIfNotNull("context", context);
 						sendEvent42.putIfNotNull("noSpeechTimeout", timeout + asInteger(event.get("length")));
-						flowRunner.sendEvent(sendEvent42, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 255, 156)));
+						flowRunner.sendEvent(sendEvent42, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 259, 156)));
 						listenActionId = sendEvent42.getId();
 					}
 					if (eventResult != EVENT_IGNORED) return eventResult;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 254, 40));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 258, 40));
 			}
-			// Line: 257
+			// Line: 261
 			try {
-				count = getCount(859417998) + 1;
+				count = getCount(142638629) + 1;
 				if (event.triggers("sense.user.speech.start")) {
 					if (eq(event.get("speakers"), 1)) {
-						incrCount(859417998);
+						incrCount(142638629);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 258
+							// Line: 262
 							Event sendEvent43 = new Event("action.speech.stop");
-							flowRunner.sendEvent(sendEvent43, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 258, 38)));
-							// Line: 259
+							flowRunner.sendEvent(sendEvent43, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 262, 38)));
+							// Line: 263
 							eventResult = EVENT_IGNORED;
 							break EXECUTION;
 						}
@@ -1601,7 +1637,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 257, 72));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 261, 72));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -1627,22 +1663,22 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 264
+			// Line: 268
 			try {
 				EXECUTION: {
-					int count = getCount(1013423070) + 1;
-					incrCount(1013423070);
-					// Line: 265
+					int count = getCount(317983781) + 1;
+					incrCount(317983781);
+					// Line: 269
 					Event sendEvent44 = new Event("action.speech.stop");
 					sendEvent44.putIfNotNull("agent", agent);
-					flowRunner.sendEvent(sendEvent44, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 265, 54)));
-					// Line: 266
-					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 266, 13)));
+					flowRunner.sendEvent(sendEvent44, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 269, 54)));
+					// Line: 270
+					flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 270, 13)));
 					eventResult = EVENT_ABORTED;
 					break EXECUTION;
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 264, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 268, 12));
 			}
 		}
 
@@ -1663,15 +1699,13 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class say extends State {
 
 		final State currentState = this;
-		public String action;
-
 		public String text = null;
-		public boolean async = false;
-		public boolean ifsilent = false;
+		public boolean async = (boolean) false;
+		public boolean ifsilent = (boolean) false;
 		public String gesture = asString("brow_raise");
 		public String display = asString(null);
 		public String audio = asString(null);
-		public boolean abort = false;
+		public boolean abort = (boolean) false;
 
 		public void setText(Object value) {
 			if (value != null) {
@@ -1722,6 +1756,8 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+		public String action;
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -1731,20 +1767,20 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 279
+			// Line: 283
 			try {
 				EXECUTION: {
-					int count = getCount(1451043227) + 1;
-					incrCount(1451043227);
-					// Line: 280
+					int count = getCount(392292416) + 1;
+					incrCount(392292416);
+					// Line: 284
 					if (speechTextProcessor != null) {
-						// Line: 281
+						// Line: 285
 						text = speechTextProcessor.process(text);
 						display = speechTextProcessor.process(display);
 					}
-					// Line: 286
+					// Line: 290
 					display = SystemAgent.processDisplay(text, display);
-					// Line: 295
+					// Line: 299
 					Event sendEvent45 = new Event("action.speech");
 					sendEvent45.putIfNotNull("async", async);
 					sendEvent45.putIfNotNull("agent", agent);
@@ -1753,20 +1789,20 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 					sendEvent45.putIfNotNull("text", text);
 					sendEvent45.putIfNotNull("audio", audio);
 					sendEvent45.putIfNotNull("ifsilent", ifsilent);
-					flowRunner.sendEvent(sendEvent45, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 295, 23)));
+					flowRunner.sendEvent(sendEvent45, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 299, 23)));
 					action = sendEvent45.getId();
-					// Line: 296
+					// Line: 300
 					gestures.putIfNotNull("" + action, gesture);
-					// Line: 297
+					// Line: 301
 					if (async) {
-						// Line: 298
-						flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 298, 14)));
+						// Line: 302
+						flowThread.returnFromCall(this, null, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 302, 14)));
 						eventResult = EVENT_ABORTED;
 						break EXECUTION;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 279, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 283, 12));
 			}
 		}
 
@@ -1774,18 +1810,18 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 301
+			// Line: 305
 			try {
-				count = getCount(1058025095) + 1;
+				count = getCount(578866604) + 1;
 				if (event.triggers("monitor.speech.done")) {
 					if (eq(event.get("agent"), agent)) {
-						incrCount(1058025095);
+						incrCount(578866604);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 302
+							// Line: 306
 							Event returnEvent46 = new Event("monitor.speech.done");
 							returnEvent46.putIfNotNull("agent", agent);
-							flowThread.returnFromCall(this, returnEvent46, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 302, 57)));
+							flowThread.returnFromCall(this, returnEvent46, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 306, 57)));
 							eventResult = EVENT_ABORTED;
 							break EXECUTION;
 						}
@@ -1793,7 +1829,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 301, 69));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 305, 69));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -1808,9 +1844,6 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class listen extends State {
 
 		final State currentState = this;
-		public MultiSpeech multispeech = new MultiSpeech(systemAgent);
-		public String listenActionId = asString("");
-
 		public int timeout = asInteger(8000);
 		public int endSil = asInteger(700);
 		public int nbest = asInteger(1);
@@ -1844,6 +1877,9 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
+		public MultiSpeech multispeech = (MultiSpeech) new MultiSpeech(systemAgent);
+		public String listenActionId = asString("");
+
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
 			super.setFlowThread(flowThread);
@@ -1853,22 +1889,22 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public void onentry() throws Exception {
 			int eventResult;
 			Event event = new Event("state.enter");
-			// Line: 315
+			// Line: 319
 			try {
 				EXECUTION: {
-					int count = getCount(1156060786) + 1;
-					incrCount(1156060786);
-					// Line: 316
+					int count = getCount(124313277) + 1;
+					incrCount(124313277);
+					// Line: 320
 					Event sendEvent47 = new Event("action.listen");
 					sendEvent47.putIfNotNull("endSilTimeout", endSil);
 					sendEvent47.putIfNotNull("context", context);
 					sendEvent47.putIfNotNull("noSpeechTimeout", timeout);
 					sendEvent47.putIfNotNull("nbest", nbest);
-					flowRunner.sendEvent(sendEvent47, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 316, 146)));
+					flowRunner.sendEvent(sendEvent47, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 320, 146)));
 					listenActionId = sendEvent47.getId();
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 315, 12));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 319, 12));
 			}
 		}
 
@@ -1876,21 +1912,21 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		public int onFlowEvent(Event event) throws Exception {
 			int eventResult;
 			int count;
-			// Line: 318
+			// Line: 322
 			try {
-				count = getCount(1286084959) + 1;
+				count = getCount(2101842856) + 1;
 				if (event.triggers("sense.speech.start")) {
 					if (eq(event.get("action"), listenActionId)) {
-						incrCount(1286084959);
+						incrCount(2101842856);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 319
+							// Line: 323
 							String agent = systemAgent.getUserId(event);
-							// Line: 320
+							// Line: 324
 							boolean isAttendingSystem = systemAgent.getUser(agent).isAttending(systemAgent.id);
-							// Line: 321
+							// Line: 325
 							multispeech.addStart(agent, isAttendingSystem);
-							// Line: 322
+							// Line: 326
 							Event sendEvent48 = new Event("sense.user.speech.start");
 							sendEvent48.putIfNotNull("agent", systemAgent.id);
 							sendEvent48.putIfNotNull("attsys", isAttendingSystem);
@@ -1898,44 +1934,44 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 							sendEvent48.putIfNotNull("action", listenActionId);
 							sendEvent48.putIfNotNull("sensor", event.get("sensor"));
 							sendEvent48.putIfNotNull("user", agent);
-							flowRunner.sendEvent(sendEvent48, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 322, 196)));
+							flowRunner.sendEvent(sendEvent48, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 326, 196)));
 						}
 						if (eventResult != EVENT_IGNORED) return eventResult;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 318, 78));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 322, 78));
 			}
-			// Line: 329
+			// Line: 328
 			try {
-				count = getCount(1225616405) + 1;
+				count = getCount(2080166188) + 1;
 				if (event.triggers("sense.user.attend")) {
 					if (eq(event.get("target"), systemAgent.id) && multispeech.hasStarted(asString(event.get("user")))) {
-						incrCount(1225616405);
+						incrCount(2080166188);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 330
+							// Line: 329
 							multispeech.attendingSystem(asString(event.get("agent")));
 						}
 						if (eventResult != EVENT_IGNORED) return eventResult;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 329, 126));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 328, 126));
 			}
-			// Line: 332
+			// Line: 331
 			try {
-				count = getCount(1151020327) + 1;
+				count = getCount(606548741) + 1;
 				if (event.triggers("sense.speech.end")) {
 					if (eq(event.get("action"), listenActionId)) {
-						incrCount(1151020327);
+						incrCount(606548741);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 333
+							// Line: 332
 							String agent = systemAgent.getUserId(event);
-							// Line: 334
+							// Line: 333
 							multispeech.speakers--;
-							// Line: 335
+							// Line: 334
 							Event sendEvent49 = new Event("sense.user.speech.end");
 							sendEvent49.putIfNotNull("agent", systemAgent.id);
 							sendEvent49.putIfNotNull("attsys", multispeech.someAttendingSystem());
@@ -1943,32 +1979,32 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 							sendEvent49.putIfNotNull("action", listenActionId);
 							sendEvent49.putIfNotNull("sensor", event.get("sensor"));
 							sendEvent49.putIfNotNull("user", agent);
-							flowRunner.sendEvent(sendEvent49, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 335, 210)));
+							flowRunner.sendEvent(sendEvent49, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 334, 210)));
 						}
 						if (eventResult != EVENT_IGNORED) return eventResult;
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 332, 76));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 331, 76));
 			}
-			// Line: 337
+			// Line: 336
 			try {
-				count = getCount(2080166188) + 1;
+				count = getCount(26117480) + 1;
 				if (event.triggers("sense.speech.rec**")) {
 					if (eq(event.get("action"), listenActionId)) {
-						incrCount(2080166188);
+						incrCount(26117480);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
-							// Line: 338
+							// Line: 337
 							multispeech.addRec(systemAgent.getUserId(event), event);
-							// Line: 339
+							// Line: 338
 							if (multispeech.runningRecognizers == 0) {
-								// Line: 340
+								// Line: 339
 								Event result = multispeech.getEvent();
-								// Line: 341
+								// Line: 340
 								Event returnEvent50 = new Event(result.getName());
 								returnEvent50.copyParams(result);
-								flowThread.returnFromCall(this, returnEvent50, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 341, 28)));
+								flowThread.returnFromCall(this, returnEvent50, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 340, 28)));
 								eventResult = EVENT_ABORTED;
 								break EXECUTION;
 							}
@@ -1977,7 +2013,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 					}
 				}
 			} catch (Exception e) {
-				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 337, 78));
+				throw new FlowException(e, currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 336, 78));
 			}
 			eventResult = super.onFlowEvent(event);
 			if (eventResult != EVENT_IGNORED) return eventResult;
@@ -1985,16 +2021,16 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			if (eventResult != EVENT_IGNORED) return eventResult;
 			return EVENT_IGNORED;
 		}
-		// Line: 344
+		// Line: 343
 		@Override
 		public void onexit() {
 			int eventResult;
 			Event event = new Event("state.exit");
 			EXECUTION: {
-				// Line: 345
+				// Line: 344
 				Event sendEvent51 = new Event("action.listen.stop");
 				sendEvent51.putIfNotNull("action", listenActionId);
-				flowRunner.sendEvent(sendEvent51, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 345, 64)));
+				flowRunner.sendEvent(sendEvent51, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 344, 64)));
 			}
 			super.onexit();
 		}

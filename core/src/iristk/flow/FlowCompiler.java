@@ -254,12 +254,13 @@ public class FlowCompiler {
 			code.println(decl + " {");
 			code.println();
 			code.println("final State currentState = this;");
+			if (state.getParam() != null) {
+				printParameters(state.getParam());
+			}
+
 			if (state.getVar() != null) {
 				printVariables(state.getVar());
 				code.println();
-			}
-			if (state.getParam() != null) {
-				printParameters(state.getParam());
 			}
 
 			code.println("@Override");

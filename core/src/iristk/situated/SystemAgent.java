@@ -3,6 +3,9 @@ package iristk.situated;
 import iristk.system.Event;
 import iristk.util.RandomList;
 
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +54,23 @@ public class SystemAgent extends Agent {
 		return interactionSpaces;
 	}
 
+	/**
+	 * Determines whether a body is in a specific interaction space
+	 */
+	public boolean isInInteractionSpace(String spaceName, Body body) {
+		if (interactionSpaces.size() == 0 || spaceName == null)
+			return true;
+		for (Space space : interactionSpaces) {
+			if (space.name.equals(spaceName) && space.contains(body.getHeadLocation().subtract(this.getHeadLocation()))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Determines whether a body is in any interaction space
+	 */
 	public boolean isInInteractionSpace(Body body) {
 		if (interactionSpaces.size() == 0)
 			return true;
@@ -61,6 +81,34 @@ public class SystemAgent extends Agent {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return A list with the interaction space names
+	 */
+	public List<String> getInteractionSpaceNames() {
+		List<String> names = new ArrayList<>();
+		for (Space space : interactionSpaces) {
+			if (!names.contains(space.name))
+				names.add(space.name);
+		}
+		return names;
+	}
+	
+	/**
+	 * @return A list with the names of the interaction spaces a certain user is in
+	 * @param userId The id of the user 
+	 */
+	public List<String> getInteractionSpaceNames(String userId) {
+		List<String> names = new ArrayList<>();
+		Agent user = getUser(userId);
+		for (Space space : interactionSpaces) {
+			if (!names.contains(space.name) && isInInteractionSpace(space.name, user)) {
+				names.add(space.name);
+			}
+		}
+		return names;
+	}
+	
 	/**
 	 * Verifies if agent exists in SystemAgens users database.
 	 * @param agent 
@@ -89,8 +137,75 @@ public class SystemAgent extends Agent {
 		return maxUsers;
 	}
 	
+	/**
+	 * Determines whether a specific agent fits a selection string
+	 * @param selection A space-separated list of selection tags. If there are 
+	 * several tags, only one of them must match. If a tag has a + prefix, 
+	 * it must match. If a tag has a - prefix, it must not match. 
+	 */
+	public boolean isSelected(Agent agent, String selection) {
+		if (selection == null)
+			return true;
+		selection = selection.trim();
+		if (selection.isEmpty())
+			return true;
+		boolean oneof = false;
+		boolean onehit = false;
+		for (String tag : selection.split(" ")) {
+			if (tag.isEmpty())
+				continue;
+			if (tag.startsWith("+")) {
+				tag = tag.substring(1);
+				if (!hasTag(agent, tag))
+					return false;
+			} else if (tag.startsWith("-")) {
+				tag = tag.substring(1);
+				if (hasTag(agent, tag))
+					return false;
+			} else {
+				oneof = true;
+				if (hasTag(agent, tag))
+					onehit = true;
+			}
+		}
+		if (oneof) {
+			return onehit;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * Determines whether a specific agent matches a selection tag. 
+	 * Each tag can either be the name of an interaction space 
+	 * (matches if the agent is in it), or a boolean field of the 
+	 * agent (matches if it evaluated to true). 
+	 */
+	public boolean hasTag(Agent agent, String tag) {
+		if (agent.getBoolean(tag))
+			return true;
+		if (isInInteractionSpace(tag, agent))
+			return true;
+		return false;
+	}
+
+	/**
+	 * @return The total number of users in any interaction space.
+	 */
 	public int getNumUsers() {
 		return users.size();
+	}
+	
+	/**
+	 * @return The total number of users in interaction spaces with a certain name.
+	 */
+	public int getNumUsers(String selection) {
+		int num = 0;
+		for (Agent user : users.values()) {
+			if (isSelected(user, selection))
+				num++;
+		}
+		return num;
 	}
 	
 	public void setMaxUsers(int maxUsers) {
@@ -165,14 +280,23 @@ public class SystemAgent extends Agent {
 	 * Retrieves another user than the one provided (or the same user if there is only one)
 	 * @param the agent id 
 	 */
-	public Agent getOtherUser(String agentId) {
+	public Agent getOtherUserThan(String agentId) {
+		return getOtherUserThan(agentId, null);
+ 	}
+	
+	/**
+	 * Retrieves another user than the one provided (or the same user if there is only one)
+	 * @param agentId the agent id 
+	 * @param selection a selection of users using tags
+	 */
+	public Agent getOtherUserThan(String agentId, String selection) {
+		List<Agent> users = getUsers(selection);
 		if (users.size() == 0)
 			return getNobody();
 		else if (users.size() == 1)
-			return users.values().iterator().next();
-		ArrayList<Agent> ulist = new ArrayList<Agent>(users.values());
-		RandomList.shuffle(ulist);
-		for (Agent user : ulist) {
+			return users.get(0);
+		RandomList.shuffle(users);
+		for (Agent user : users) {
 			if (!user.id.equals(agentId))
 				return user;
 		}
@@ -183,15 +307,19 @@ public class SystemAgent extends Agent {
 	 * @return a user that is currently not in focus (or the current user if there is only one)
 	 */
 	public Agent getOtherUser() {
-		if (!hasUsers())
-			return getNobody();
-		else {
-			return getOtherUser(currentUser.id);
-		}
+		return getOtherUserThan(currentUser.id, null);
 	}
 	
-	public Agent getOtherUser(Event event) {
-		return getOtherUser(getUserId(event));
+	/**
+	 * @return a user that is currently not in focus (or the current user if there is only one)
+	 * @param space the space to search in
+	 */
+	public Agent getOtherUser(String selection) {
+		return getOtherUserThan(currentUser.id, selection);
+	}
+	
+	public Agent getOtherUserThan(Event event) {
+		return getOtherUserThan(getUserId(event));
 	}
 
 	/**
@@ -245,6 +373,13 @@ public class SystemAgent extends Agent {
 		return new ArrayList<Agent>(users.values()).get(new Random().nextInt(users.size()));
 	}
 	
+	public Agent getRandomUser(String selection) {
+		List<Agent> users = getUsers(selection);
+		if (users.size() == 0)
+			return getNobody();
+		return new ArrayList<Agent>(users).get(new Random().nextInt(users.size()));
+	}
+	
 	@Override
 	public void setAttending(String target) {
 		super.setAttending(target);
@@ -275,6 +410,15 @@ public class SystemAgent extends Agent {
 		return new ArrayList<Agent>(users.values());
 	}
 
+	public List<Agent> getUsers(String selection) {
+		List<Agent> list = new ArrayList<Agent>();
+		for (Agent user : users.values()) {
+			if (isSelected(user, selection))
+				list.add(user);
+		}
+		return list;
+	}
+	
 	public Map<String,Item> getItems() {
 		return items;
 	}
@@ -294,15 +438,6 @@ public class SystemAgent extends Agent {
 	@Override
 	public boolean isHuman() {
 		return false;
-	}
-
-	public Location getUsersMiddleLocation() {
-		List<Agent> users = getUsers();
-		Location[] locations = new Location[users.size()];
-		for (int i = 0; i < users.size(); i++) {
-			locations[i] = users.get(i).getHeadLocation();
-		}
-		return Location.mean(locations);
 	}
 
 	public static String processDisplay(String text, String display) {

@@ -11,6 +11,15 @@ public class ListMap<A,B> extends HashMap<A,ArrayList<B>> {
 		get(key).add(value);
 	}
 	
+	public void removeItem(A key, B value) {
+		if (containsKey(key)) {
+			List<B> list = get(key);
+			list.remove(value);
+			if (list.size() == 0)
+				remove(key);
+		}
+	}
+	
 	public void addUnique(A key, B value) {
 		if (!containsKey(key)) {
 			put(key, new ArrayList<B>());

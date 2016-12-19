@@ -1,5 +1,7 @@
 package iristk.situated;
 
+import java.util.List;
+
 public class Body extends Item {
 
 	@RecordField
@@ -76,5 +78,5 @@ public class Body extends Item {
 	public boolean isCloseTo(Body body2) {
 		return getHeadLocation().distance(body2.getHeadLocation()) < Math.max(this.proximity, body2.proximity);
 	}
-		
+
 }

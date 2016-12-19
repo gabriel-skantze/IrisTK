@@ -7,6 +7,9 @@ import java.awt.Color;
 
 public abstract class Space extends Record {
 	
+	@RecordField
+	public String name = "interact";
+	
 	public abstract boolean contains(Location location);
 	public abstract void draw(SituationPanel panel, int view);
 	public abstract Location getCenter();
@@ -18,6 +21,12 @@ public abstract class Space extends Record {
 		public double radius;
 
 		public Sphere() {
+		}
+		
+		public Sphere(String name, Location center, double radius) {
+			this.name = name;
+			this.center = center;
+			this.radius = radius;
 		}
 		
 		public Sphere(Location center, double radius) {

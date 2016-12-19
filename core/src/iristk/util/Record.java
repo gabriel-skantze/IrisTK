@@ -829,12 +829,14 @@ public class Record {
 			Constructor<?> constructor = getClass().getDeclaredConstructor();
 			constructor.setAccessible(true);
 			Record clone = (Record) constructor.newInstance(null);
-			for (String field : clone.getFields()) {
+			for (String field : this.getFields()) {
 				Object value = get(field);
-				if (value != null && value instanceof Record)
-					clone.put(field, ((Record)value).deepClone());
-				else
-					clone.put(field, value);
+				if (value != null) {
+					if (value instanceof Record) 
+						clone.put(field, ((Record)value).deepClone());
+					else
+						clone.put(field, value);
+				}
 			}
 			return clone;
 		} catch (InstantiationException e) {

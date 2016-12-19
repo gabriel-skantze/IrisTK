@@ -370,18 +370,22 @@ public class Situation {
 		} else if (event.getName().equals("monitor.speech.end")) {
 			monitorSpeech(event);
 		} else if (event.triggers("sense.user.enter")) {
-			String systemId = event.getString("agent");
-			SystemAgent system = systemAgents.get(systemId);
-			Agent user = new Agent(event.getString("user"));
-			user.head.location = (Location) event.getRecord("head:location");
-			user.head.rotation = (Rotation) event.getRecord("head:rotation");
-			system.addUser(user);
-			updated();
+			if (event.getBoolean("new")) {
+				String systemId = event.getString("agent");
+				SystemAgent system = systemAgents.get(systemId);
+				Agent user = new Agent(event.getString("user"));
+				user.head.location = (Location) event.getRecord("head:location");
+				user.head.rotation = (Rotation) event.getRecord("head:rotation");
+				system.addUser(user);
+				updated();
+			}
 		} else if (event.triggers("sense.user.leave")) {
-			String systemId = event.getString("agent");
-			SystemAgent system = systemAgents.get(systemId);
-			system.removeUser(event.getString("user"));
-			updated();
+			if (event.getBoolean("lost")) {
+				String systemId = event.getString("agent");
+				SystemAgent system = systemAgents.get(systemId);
+				system.removeUser(event.getString("user"));
+				updated();
+			}
 		} else if (event.triggers("sense.user.attend")) {
 			String systemId = event.getString("agent");
 			SystemAgent system = systemAgents.get(systemId);

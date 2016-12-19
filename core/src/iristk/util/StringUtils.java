@@ -54,14 +54,14 @@ public class StringUtils {
 	public static String enumerate(String finalGlue, Object... parts) {
 		int len = 0;
 		for (int i = 0; i < parts.length; i++) {
-			if (parts[i] != null) len++;
+			if (parts[i] != null && !parts[i].toString().trim().isEmpty()) len++;
 		}
 		if (len == 0)
 			return "";
 		int blen = 0;
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < parts.length; i++) {
-			if (parts[i] != null) {
+			if (parts[i] != null && !parts[i].toString().trim().isEmpty()) {
 				if (blen == len - 1)
 					result.append(" " + finalGlue + " ");
 				else if (blen > 0)
