@@ -4,7 +4,11 @@
     xmlns="http://www.w3.org/2001/XMLSchema" xmlns:flow="iristk.flow" xmlns:tns="iristk.situated.SystemAgentFlow">
     <import namespace="iristk.flow" schemaLocation="flow.xsd"/>
     <element name="gesture">
-        <complexType>
+        <complexType mixed="true">
+            <sequence>
+                <any maxOccurs="unbounded" minOccurs="0"
+                    namespace="##any" processContents="lax"/>
+            </sequence>
             <attribute default="true" name="async" type="string">
                 <annotation>
                     <documentation>Whether to immediately return and produce gesture asynchronously</documentation>
@@ -15,6 +19,7 @@
                     <documentation>The name of the gesture</documentation>
                 </annotation>
             </attribute>
+            <attribute name="text" type="string"/>
         </complexType>
     </element>
     <element name="voice">
@@ -26,7 +31,7 @@
             </attribute>
             <attribute default="null" name="gender" type="string">
                 <annotation>
-                    <documentation>The gender of the voice</documentation>
+                    <documentation>The gender gender of the voice</documentation>
                 </annotation>
             </attribute>
         </complexType>
@@ -43,12 +48,17 @@
     <element name="attend">
         <complexType>
             <attribute default="'headpose'" name="mode" type="string"/>
-            <attribute default="'nobody'" name="target" type="string"/>
+            <attribute default="'nobody'" name="target" type="string">
+                <annotation>
+                    <documentation>test</documentation>
+                </annotation>
+            </attribute>
             <attribute default="null" name="location" type="string"/>
             <attribute default="null" name="x" type="string"/>
             <attribute default="null" name="y" type="string"/>
             <attribute default="null" name="z" type="string"/>
             <attribute default="'head'" name="part" type="string"/>
+            <attribute default="'medium'" name="speed" type="string"/>
         </complexType>
     </element>
     <element name="attendNobody">
@@ -57,15 +67,29 @@
     <element name="attendRandom">
         <complexType>
             <attribute default="'headpose'" name="mode" type="string"/>
+            <attribute default="'medium'" name="speed" type="string"/>
+            <attribute default="null" name="select" type="string">
+                <annotation>
+                    <documentation>Restricts the attend to this selection.</documentation>
+                </annotation>
+            </attribute>
         </complexType>
     </element>
     <element name="attendOther">
         <complexType>
             <attribute default="'headpose'" name="mode" type="string"/>
+            <attribute default="'medium'" name="speed" type="string"/>
+            <attribute default="null" name="select" type="string">
+                <annotation>
+                    <documentation>Restricts the attend to this selection.</documentation>
+                </annotation>
+            </attribute>
         </complexType>
     </element>
     <element name="attendAll">
-        <complexType/>
+        <complexType>
+            <attribute default="null" name="select" type="string"/>
+        </complexType>
     </element>
     <element name="fallAsleep">
         <complexType/>
