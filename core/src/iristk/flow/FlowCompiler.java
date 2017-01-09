@@ -271,19 +271,34 @@ public class FlowCompiler {
 					Ontime ontime = (Ontime) trigger;
 					String interval = ontime.getInterval();
 					if (interval != null) {
-						if (interval.contains("-")) {
+						if(interval.contains(",")){// new usage, in case dev wants to have e.g "x , 400-x"
+							//Assuming interval is now well-formed and resolves to (int, int)
+							code.println("flowThread.addEventClock(" + interval + ", \"timer_" + trigger.hashCode() + "\");");
+
+						}
+						else if (interval.contains("-")) {
 							String[] cols = interval.split("-");
-							int min = Integer.parseInt(cols[0]);
-							int max = Integer.parseInt(cols[1]);
-							code.println("flowThread.addEventClock(" + min + ", " + max + ", \"timer_" + trigger.hashCode() + "\");");
+							try{
+								int min = Integer.parseInt(cols[0]);
+								int max = Integer.parseInt(cols[1]);
+								code.println("flowThread.addEventClock(" + min + ", " + max + ", \"timer_" + trigger.hashCode() + "\");");
+							}
+							catch(NumberFormatException e){//In case developer uses variable names instead of an integer.
+								code.println("flowThread.addEventClock(" + cols[0] + ", " + cols[1] + ", \"timer_" + trigger.hashCode() + "\");");
+							}
 							//code.println("new EventClock(flowRunner, " + min + ", " + max + ", \"timer_" + trigger.hashCode() + "\");");
 						} else {
-							int time = Integer.parseInt(interval);
-							code.println("flowThread.addEventClock(" + time + ", " + time + ", \"timer_" + trigger.hashCode() + "\");");
-							//code.println("new EventClock(flowRunner, " + time + ", \"timer_" + trigger.hashCode() + "\");");
+							try{
+								int time = Integer.parseInt(interval);
+								code.println("flowThread.addEventClock(" + time + ", " + time + ", \"timer_" + trigger.hashCode() + "\");");
+								//code.println("new EventClock(flowRunner, " + time + ", \"timer_" + trigger.hashCode() + "\");");
+							}
+							catch(NumberFormatException e){//In case developer uses variable names instead of an integer.
+								code.println("flowThread.addEventClock(" + interval + ", " + interval + ", \"timer_" + trigger.hashCode() + "\");");
+							}
 						}
-					}
-				} 
+					}//if interval !null
+				}//if instanceof ontime 
 			}
 			code.println("}");
 			code.println();
@@ -461,7 +476,7 @@ public class FlowCompiler {
 		code.println("public void onentry() throws Exception {");
 		code.println("int eventResult;");
 		code.println("Event event = new Event(\"state.enter\");");
-	
+
 		for (Object trigger : eventHandlers) {
 			if (trigger instanceof Ontime) {
 				String afterentry = ((Ontime)trigger).getAfterentry();
@@ -549,7 +564,7 @@ public class FlowCompiler {
 				code.println("} catch (Exception e) {");
 				code.println("throw new FlowException(e, currentState, event, " + location(flowXml.getLocation(trigger)) + ");");
 				code.println("}");
-				
+
 			} else if (trigger instanceof Ontime) {
 				printLocation(trigger);
 				Ontime onTimeElem = (Ontime) trigger;
@@ -678,9 +693,9 @@ public class FlowCompiler {
 		}
 		return result;
 	}
-	
-	
-	*/
+
+
+	 */
 
 	private String varname(String prefix) {
 		return prefix + (varnameCount++);
@@ -782,7 +797,7 @@ public class FlowCompiler {
 			iristk.xml.flow.Wait waitAction = (iristk.xml.flow.Wait) action;
 			if (exprContext != null)
 				throw new FlowCompilerException("<wait> not allowed in expression", waitAction.sourceLocation().getLineNumber());
-		
+
 			String waitvar = varname("waitState");
 			code.println(DialogFlow.class.getName() + ".wait " + waitvar + " = new " + DialogFlow.class.getName() + ".wait();");
 			code.println(waitvar + ".setMsec(" + waitAction.getMsec() + ");");
@@ -878,7 +893,7 @@ public class FlowCompiler {
 			iristk.xml.flow.Raise raiseAction = (iristk.xml.flow.Raise) action;
 			if (exprContext != null)
 				throw new FlowCompilerException("<raise> not allowed in expression", raiseAction.sourceLocation().getLineNumber());
-		
+
 			String raiseEvent = varname("raiseEvent");
 			printInitEvent(raiseEvent, raiseAction.getCopy(), raiseAction.getEvent(), getParameters(raiseAction.getOtherAttributes(), raiseAction.getContent(), raiseAction));
 			if (raiseAction.getDelay() != null) {
@@ -960,7 +975,7 @@ public class FlowCompiler {
 			} else {
 				code.println(exprContext + ".append(" + formatExpr(((Expr)action).getValue()) + ");");
 			}
-		} else if (action instanceof Element) {
+		} else if (action instanceof Element) {//perhaps implement variable name here
 			Element elem = (Element)action;
 			if (exprContext == null) {
 				if (elem.getNamespaceURI().equals("iristk.flow") || elem.getPrefix() == null) {
@@ -969,7 +984,7 @@ public class FlowCompiler {
 				String stateVar = varname("state");
 				code.println(stateClass(elem) + " " + stateVar + " = " + newState(elem) + ";");
 				printSetStateParameters(stateVar, getParameters(elem));
-	
+
 				code.println("if (!flowThread.callState(" + stateVar + ", new FlowEventInfo(currentState, event, " + location(flowXml.getLocation(parent)) + "))) {");
 				code.println("eventResult = EVENT_ABORTED;");
 				code.println("break EXECUTION;");
@@ -988,7 +1003,7 @@ public class FlowCompiler {
 			String str = action.toString().trim();
 			if (str.length() > 0) {
 				if (exprContext == null) {
-						throw new FlowCompilerException("Text node not allowed: " + str, currentLineNumber);
+					throw new FlowCompilerException("Text node not allowed: " + str, currentLineNumber);
 				} else {
 					code.println(exprContext + ".append(\"" + str.replaceAll("\\n", " ") + "\");");
 				}
@@ -1004,7 +1019,7 @@ public class FlowCompiler {
 		printActions(content, parent, varName);
 		return varName + ".toString()";
 	}
-	
+
 	private String createExpression(Element en) throws FlowCompilerException {
 		String estring = "";
 		estring += "<" + en.getLocalName();
@@ -1326,7 +1341,7 @@ public class FlowCompiler {
 	public static String formatEqExpr(String expr) {
 		return expr;
 	}
-	
+
 	public static void compile(File flowFile, boolean binary) throws FlowCompilerException {
 		System.out.println("Compiling flow: " + flowFile.getAbsolutePath());
 		FlowCompiler fcompiler = new FlowCompiler(flowFile);
