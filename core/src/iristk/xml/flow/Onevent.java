@@ -106,7 +106,7 @@ public class Onevent implements Locatable
      *     
      */
     public String getName() {
-        return name;
+        return name.trim();
     }
 
     /**
