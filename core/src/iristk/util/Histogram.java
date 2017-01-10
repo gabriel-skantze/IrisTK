@@ -24,7 +24,7 @@ public class Histogram {
 
 	public void add(int value) {
 			if(value>=100){//Added to handle odd occurences that pass bad data.
-				System.err.println("High value passed into histogram" + value + ". Readjusting down.");
+				//System.err.println("High value passed into histogram" + value + ". Readjusting down.");
 				value=0;
 			}
 			histogram[value]++;
