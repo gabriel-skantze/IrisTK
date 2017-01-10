@@ -121,7 +121,7 @@ public class Send
      *     
      */
     public String getEvent() {
-        return event;
+        return event.trim();
     }
 
     /**
