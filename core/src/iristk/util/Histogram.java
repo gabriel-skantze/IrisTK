@@ -23,17 +23,21 @@ public class Histogram {
 	}
 
 	public void add(int value) {
-		histogram[value]++;
-		values++;
-		//if (adaptRate != null && values > adaptRate) {
-		if (adaptRate != null && histogram[value] >= adaptRate) {
-			//System.out.println("XXX");
-			values = 0;
-			for (int i = 0; i < histogram.length; i++) {
-				histogram[i] /= 2;
-				values += histogram[i];
+			if(value>=100){//Added to handle odd occurences that pass bad data.
+				System.err.println("High value passed into histogram" + value + ". Readjusting down.");
+				value=0;
 			}
-		}
+			histogram[value]++;
+			values++;
+			//if (adaptRate != null && values > adaptRate) {
+			if (adaptRate != null && histogram[value] >= adaptRate) {
+				//System.out.println("XXX");
+				values = 0;
+				for (int i = 0; i < histogram.length; i++) {
+					histogram[i] /= 2;
+					values += histogram[i];
+				}
+			}
 	}
 	
 	public void addAll(int[] arr) {
