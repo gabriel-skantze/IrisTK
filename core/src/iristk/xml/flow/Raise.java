@@ -118,7 +118,7 @@ public class Raise
      *     
      */
     public String getEvent() {
-        return event;
+        return event.trim();
     }
 
     /**
