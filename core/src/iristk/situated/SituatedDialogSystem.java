@@ -7,12 +7,15 @@ import iristk.audio.AudioChannel;
 import iristk.audio.AudioLogger;
 import iristk.audio.AudioPort;
 import iristk.audio.Microphone;
+import iristk.audio.MicrophoneConfiguration;
 import iristk.flow.FlowModule;
 import iristk.kinect.CameraViewPanel;
 import iristk.kinect.KinectAudioSource;
 import iristk.kinect.KinectCameraView;
 import iristk.kinect.KinectModule;
 import iristk.kinect.KinectRecognizerModule;
+import iristk.speech.EnergyVADContainer;
+import iristk.speech.Recognizer;
 import iristk.speech.RecognizerFactory;
 import iristk.speech.RecognizerModule;
 import iristk.speech.Synthesizer;
@@ -143,25 +146,43 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 		setupFace(gender == Gender.FEMALE ? "female" : "male", synthesizer, gender, agentName);
 	}
 	
-	public void setupStereoMicrophones(RecognizerFactory recognizerFactory) throws Exception {
-		setupStereoMicrophones(recognizerFactory, "Wireless");
+	public void setupMicrophones(RecognizerFactory recognizerFactory, MicrophoneConfiguration config) throws Exception {
+		if (!config.isDone())
+			throw new Exception("Microphone configuration incomplete");
+		if (config.channels.size() == 1) {
+			Recognizer rec = setupMonoMicrophone(recognizerFactory, config.channels.get(0).device);
+			if (rec instanceof EnergyVADContainer) {
+				((EnergyVADContainer)rec).getEnergyVAD().speechLevel.set(config.channels.get(0).speechMean);
+			}
+		} else if (config.channels.size() == 2) {
+			Recognizer[] rec = setupStereoMicrophones(recognizerFactory, config.channels.get(0).device, config.channels.get(1).device);
+			for (int i = 0; i < 2; i++) {
+				if (rec[i] instanceof EnergyVADContainer) {
+					((EnergyVADContainer)rec[i]).getEnergyVAD().speechLevel.set(config.channels.get(i).speechMean);
+				}	
+			}
+		}
 	}
 	
-	public void setupStereoMicrophones(RecognizerFactory recognizerFactory, String stereoDeviceName) throws Exception {
+	public Recognizer[] setupStereoMicrophones(RecognizerFactory recognizerFactory) throws Exception {
+		return setupStereoMicrophones(recognizerFactory, null);
+	}
+	
+	public Recognizer[] setupStereoMicrophones(RecognizerFactory recognizerFactory, String stereoDeviceName) throws Exception {
 		recognizerFactory.checkSupported();
 		Microphone stereo = new Microphone(stereoDeviceName, 16000, 2);
 		AudioPort leftChannel = new AudioChannel(stereo, 0);
 		AudioPort rightChannel = new AudioChannel(stereo, 1);
-		setupStereoMicrophones(recognizerFactory, leftChannel, rightChannel);
+		return setupStereoMicrophones(recognizerFactory, leftChannel, rightChannel);
 	}
 	
-	public void setupStereoMicrophones(RecognizerFactory recognizerFactory, String leftDeviceName, String rightDeviceName) throws Exception {
+	public Recognizer[] setupStereoMicrophones(RecognizerFactory recognizerFactory, String leftDeviceName, String rightDeviceName) throws Exception {
 		AudioPort leftChannel = new Microphone(leftDeviceName, 16000, 1);
 		AudioPort rightChannel = new Microphone(rightDeviceName, 16000, 1);
-		setupStereoMicrophones(recognizerFactory, leftChannel, rightChannel);
+		return setupStereoMicrophones(recognizerFactory, leftChannel, rightChannel);
 	}
 	
-	public void setupStereoMicrophones(RecognizerFactory recognizerFactory, AudioPort leftChannel, AudioPort rightChannel) throws Exception {
+	public Recognizer[] setupStereoMicrophones(RecognizerFactory recognizerFactory, AudioPort leftChannel, AudioPort rightChannel) throws Exception {
 		onlyOnce("Recognizer");
 		recognizerFactory.checkSupported();
 		RecognizerModule recognizerLeft = new RecognizerModule(
@@ -177,12 +198,17 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 			loggingModule.addLogger(new AudioLogger("mic-right", rightChannel, true));
 		}
 		addVADPanel(recognizerLeft.getRecognizer(), recognizerRight.getRecognizer());
+		return new Recognizer[]{recognizerLeft.getRecognizer(), recognizerRight.getRecognizer()};
+	}
+
+	public Recognizer setupMonoMicrophone(RecognizerFactory recognizerFactory) throws Exception {
+		return setupMonoMicrophone(recognizerFactory, null);
 	}
 	
-	public void setupMonoMicrophone(RecognizerFactory recognizerFactory) throws Exception {
+	public Recognizer setupMonoMicrophone(RecognizerFactory recognizerFactory, String deviceName) throws Exception {
 		onlyOnce("Recognizer");
 		recognizerFactory.checkSupported();
-		Microphone mic = new Microphone();
+		Microphone mic = new Microphone(deviceName);
 		RecognizerModule recognizer = new RecognizerModule(recognizerFactory.newRecognizer(mic));
 		//Associate the recognizer with the microphone
 		recognizer.setSensor(new Sensor("mic"), true);
@@ -192,15 +218,17 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 			loggingModule.addLogger(new AudioLogger("user", mic, true));
 		}
 		addVADPanel(recognizer.getRecognizer());
+		return recognizer.getRecognizer();
 	}
 	
-	public void setupKinectMicrophone(RecognizerFactory recognizerFactory) throws Exception {
+	public Recognizer setupKinectMicrophone(RecognizerFactory recognizerFactory) throws Exception {
 		onlyOnce("Recognizer");
 		recognizerFactory.checkSupported();
 		// Use the Kinect sensor for speech recognition 
 		RecognizerModule recognizer = new KinectRecognizerModule(kinectModule, recognizerFactory.newRecognizer(new KinectAudioSource(kinectModule.getKinect())));
 		addModule(recognizer);
 		addVADPanel(recognizer.getRecognizer());
+		return recognizer.getRecognizer();
 	}
 
 	public KinectModule getKinectModule() {

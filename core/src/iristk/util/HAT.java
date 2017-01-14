@@ -7,9 +7,9 @@ import iristk.audio.Sound;
 import iristk.audio.SoundAudioSource;
 import iristk.speech.EndpointerRecognizer;
 import iristk.speech.EnergyVAD;
-import iristk.speech.EnergyVAD.Listener;
 import iristk.speech.RecResult;
 import iristk.speech.RecognizerListener;
+import iristk.speech.VAD.Listener;
 import iristk.speech.google.GoogleRecognizerProcessor;
 import iristk.speech.nuancecloud.NuanceCloudRecognizerListener;
 import iristk.speech.prosody.ProsodyData;
@@ -311,18 +311,18 @@ public class HAT  {
 					AudioChannel audioChannel = new AudioChannel(audioSource, channel);
 
 					EnergyVAD vad = new EnergyVAD(audioChannel);
+					//VoicedAdaptiveVAD vad = new VoicedAdaptiveVAD(audioChannel);
 					vad.addVADListener(this);
 					
 					segments = new ArrayList<>();
 					
-					//vad.getParameters().deltaSpeech = (energyEndpointerThreshold);
-					//vad.getParameters().deltaSil = (energyEndpointerThreshold / 2);
 					if (speechThreshold == null) {
 						vad.adaptSpeechLevel.set(true);
 					} else {
 						vad.adaptSpeechLevel.set(false);
 						vad.speechLevel.set(speechThreshold);
 					}
+					
 					inSpeech = false;
 					endSilLength = 0;
 					lastPos = 0;
@@ -342,7 +342,7 @@ public class HAT  {
 
 					trackN++;
 					
-					console.println("  Silence level: " + vad.getSilenceLevel() + ", Speech threshold: " + vad.getSpeechLevel());
+					//console.println("  Silence level: " + vad.getSilenceLevel() + ", Speech threshold: " + vad.getSpeechLevel());
 				}
 				audioSource.close();
 			}

@@ -1,13 +1,11 @@
 package iristk.situated;
 
-import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import iristk.system.Event;
 import iristk.flow.*;
 import iristk.util.Record;
 import static iristk.util.Converters.*;
-import static iristk.flow.State.*;
 
 public class SystemAgentFlow extends iristk.flow.Flow {
 
@@ -373,7 +371,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		final State currentState = this;
 
 		public Integer dir = asInteger(1);
-		public Location nobody = (Location) systemAgent.getRelative(systemAgent.getNobody().getHeadLocation());
+		public Location nobody = systemAgent.getRelative(systemAgent.getNobody().getHeadLocation());
 
 		@Override
 		public void setFlowThread(FlowRunner.FlowThread flowThread) {
@@ -444,7 +442,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
-		public Agent gazeTarget = (Agent) systemAgent.getRandomUser();
+		public Agent gazeTarget = systemAgent.getRandomUser();
 		public Location middle;
 
 		@Override
@@ -889,7 +887,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 	public class gesture extends State {
 
 		final State currentState = this;
-		public boolean async = (boolean) true;
+		public boolean async = true;
 		public String name = asString("smile");
 		public String text = null;
 
@@ -1109,7 +1107,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 		final State currentState = this;
 		public String mode = asString("headpose");
 		public String target = asString("nobody");
-		public Location location = (Location) null;
+		public Location location = null;
 		public Double x = asDouble(null);
 		public Double y = asDouble(null);
 		public Double z = asDouble(null);
@@ -1700,12 +1698,12 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 
 		final State currentState = this;
 		public String text = null;
-		public boolean async = (boolean) false;
-		public boolean ifsilent = (boolean) false;
+		public boolean async = false;
+		public boolean ifsilent = false;
 		public String gesture = asString("brow_raise");
 		public String display = asString(null);
 		public String audio = asString(null);
-		public boolean abort = (boolean) false;
+		public boolean abort = false;
 
 		public void setText(Object value) {
 			if (value != null) {
@@ -1877,7 +1875,7 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 			}
 		}
 
-		public MultiSpeech multispeech = (MultiSpeech) new MultiSpeech(systemAgent);
+		public MultiSpeech multispeech = new MultiSpeech(systemAgent);
 		public String listenActionId = asString("");
 
 		@Override

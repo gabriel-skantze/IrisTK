@@ -1,6 +1,7 @@
 package iristk.util;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Histogram {
 
@@ -13,9 +14,9 @@ public class Histogram {
 		reset();
 	}
 	
-	public Histogram(int max, int rate) {
+	public Histogram(int max, int adaptRate) {
 		this(max);
-		setAdaptRate(rate);
+		setAdaptRate(adaptRate);
 	}
 
 	public void setAdaptRate(int rate) {
@@ -23,10 +24,12 @@ public class Histogram {
 	}
 
 	public void add(int value) {
+		if (value <= 0 || value >= histogram.length)
+			return;
 		histogram[value]++;
 		values++;
 		//if (adaptRate != null && values > adaptRate) {
-		if (adaptRate != null && histogram[value] >= adaptRate) {
+		if (adaptRate != null && size() >= adaptRate) {
 			//System.out.println("XXX");
 			values = 0;
 			for (int i = 0; i < histogram.length; i++) {
@@ -42,6 +45,12 @@ public class Histogram {
 		}
 	}
 
+	public void addAll(List<? extends Number> list) {
+		for (Number i : list) {
+			add(i.intValue());
+		}
+	}
+	
 	public Integer getPercentile(double perc) {
 		double sum = 0;
 		for (int i = 0; i < histogram.length; i++) {
@@ -86,6 +95,10 @@ public class Histogram {
 
 	public int size() {
 		return values;
+	}
+
+	public int getCount(int i) {
+		return histogram[i];
 	}
 
 }

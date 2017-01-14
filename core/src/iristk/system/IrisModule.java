@@ -104,7 +104,8 @@ public abstract class IrisModule implements Runnable, EventListener {
 					} else if (event.triggers("action.module.ping")) {
 						pingModule(event.getId());
 					}
-					onEvent(event);
+					if (enabled)
+						onEvent(event);
 				} catch (Exception e) {
 					logger.error("Problem processing event " + event.getName(), e);
 				}
@@ -155,10 +156,6 @@ public abstract class IrisModule implements Runnable, EventListener {
 
 	public String getDefaultName() {
 		return getClass().getSimpleName();
-	}
-
-	public boolean isEnabled() {
-		return enabled;
 	}
 	
 	public void setEnabled(boolean enabled) {

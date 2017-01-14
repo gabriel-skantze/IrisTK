@@ -1,13 +1,10 @@
 package iristk.app.quiz;
 
-import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import iristk.system.Event;
 import iristk.flow.*;
-import iristk.util.Record;
 import static iristk.util.Converters.*;
-import static iristk.flow.State.*;
 
 public class QuizFlow extends iristk.flow.Flow {
 
@@ -19,7 +16,7 @@ public class QuizFlow extends iristk.flow.Flow {
 	private int winningScore;
 
 	private void initVariables() {
-		system = (iristk.situated.SystemAgent) agent.getSystemAgent();
+		system = agent.getSystemAgent();
 		guess = asInteger(0);
 		winningScore = asInteger(3);
 	}

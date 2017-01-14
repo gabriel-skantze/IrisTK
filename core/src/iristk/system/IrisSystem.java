@@ -53,6 +53,8 @@ public class IrisSystem implements EventListener {
 
 	private ArrayList<String> distributedModules = new ArrayList<>();
 	private Map<String,HashSet<String>> pingMap = new HashMap<>();
+	
+	private List<EventFilter> eventFilters = new ArrayList<EventFilter>(); 
 
 	//private ErrorHandler errorHandler = new ErrorHandler() {
 	//	@Override
@@ -150,8 +152,11 @@ public class IrisSystem implements EventListener {
 	}
 
 	@Override
-	public void onEvent(Event event) {
+	public synchronized void onEvent(Event event) {
 		// An event from the broker
+		event = filterEvent(event);
+		if (event == null)
+			return;
 		distributeInternal(event);
 	}
 
@@ -193,7 +198,7 @@ public class IrisSystem implements EventListener {
 			listener.onEvent(event);
 		}
 		for (IrisModule module : modules) {
-			if (module.isEnabled() && module.subscribes.accepts(event.getName())) {
+			if (module.subscribes.accepts(event.getName())) {
 				module.invokeEvent(event);
 			}
 		}
@@ -219,15 +224,37 @@ public class IrisSystem implements EventListener {
 		send(event, getName());
 	}
 
-	public void send(Event event, String sender) {
+	public synchronized void send(Event event, String sender) {
 		if (event.getSender() == null)
 			event.setSender(sender);
 		if (event.getTime() == null)
 			event.setTime(getTimestamp());
 		if (event.getId() == null)
 			event.setId(generateEventId(sender));
+		event = filterEvent(event);
+		if (event == null)
+			return;
 		distributeInternal(event);
 		distributeExternal(event);
+	}
+	
+	public synchronized void addEventFilter(EventFilter filter) {
+		eventFilters.add(filter);
+	}
+	
+	public synchronized boolean removeEventFilter(EventFilter filter) {
+		return eventFilters.remove(filter);
+	}
+	
+	public synchronized void clearEventFilters() {
+		eventFilters.clear();
+	}
+	
+	private synchronized Event filterEvent(Event event) {
+		for (EventFilter filter : eventFilters) {
+			event = filter.filter(event);
+		}
+		return event;
 	}
 
 	public void monitorState(String sender, String[] states) {

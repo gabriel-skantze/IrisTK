@@ -3,9 +3,6 @@ package iristk.situated;
 import iristk.system.Event;
 import iristk.util.RandomList;
 
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

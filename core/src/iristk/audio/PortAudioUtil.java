@@ -15,14 +15,20 @@ import iristk.project.Package;
 import iristk.system.CorePackage;
 import iristk.system.IrisUtils;
 
+import org.slf4j.Logger;
+
 import com.portaudio.PortAudio;
 
 public class PortAudioUtil {
+	
+	private static Logger logger = IrisUtils.getLogger(PortAudioUtil.class);
 
-	private static Boolean initialized = false;
+	private static Boolean loaded = false;
+	private static Boolean running = false;
+	private static int startCount = 0;
 	
 	public static synchronized void initialize() throws Exception {
-		if (!initialized) {
+		if (!loaded) {
 			IrisUtils.addCoreLibPath();
 			Package pkg = CorePackage.PACKAGE;
 			if (Launcher.is64arch()) {
@@ -32,8 +38,30 @@ public class PortAudioUtil {
 				pkg.loadLib("x86/portaudio_x86.dll");
 				pkg.loadLib("x86/jportaudio_x86.dll");
 			}
+			loaded = true;
 			PortAudio.initialize();
-			initialized = true;
+			running = true;
 		}
 	}
+	
+	public static synchronized void restart() {
+		if (running) {
+			logger.info("Restarting PortAudio");
+			startCount++;
+			PortAudio.terminate();
+			PortAudio.initialize();
+		}
+	}
+	
+	public static int getStartCount() {
+		return startCount;
+	}
+
+	public static synchronized void terminate() {
+		logger.info("Terminating PortAudio");
+		if (running)
+			PortAudio.terminate();
+		running = false;
+	}
+	
 }

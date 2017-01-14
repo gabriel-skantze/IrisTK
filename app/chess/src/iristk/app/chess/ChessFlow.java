@@ -1,13 +1,11 @@
 package iristk.app.chess;
 
-import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import iristk.system.Event;
 import iristk.flow.*;
 import iristk.util.Record;
 import static iristk.util.Converters.*;
-import static iristk.flow.State.*;
 
 public class ChessFlow extends iristk.flow.Flow {
 

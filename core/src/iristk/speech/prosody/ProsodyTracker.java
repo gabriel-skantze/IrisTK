@@ -12,19 +12,21 @@ package iristk.speech.prosody;
 
 import iristk.audio.AudioListener;
 import iristk.audio.AudioUtil;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.sound.sampled.AudioFormat;
 
 public class ProsodyTracker implements AudioListener {
 
 	private final double threshold = 0.15;
 	private final double globalThreshold = 0.5;
-	private final double energyThreshold = 40;
+	private final double energyThreshold = 20;
 	private final int frameRate = 100;
 
 	private int minTau;
@@ -55,6 +57,7 @@ public class ProsodyTracker implements AudioListener {
 	
 	private double[] inputSamples = null;
 	private final int sampleSize;
+	private double prevSample = 0;
 	
 	public ProsodyTracker(AudioFormat audioFormat) {
 		this(audioFormat, 50, 500);
@@ -84,14 +87,27 @@ public class ProsodyTracker implements AudioListener {
 	private double energy() {
         double sumOfSquares = 0.0f;
         for (int i = 0; i < inputBuffer.length; i++) {
-            double sample = inputBuffer[i];
-            sumOfSquares += sample * sample;
+			double sample = inputBuffer[i] - prevSample ;
+			sumOfSquares += (sample * sample);
+			prevSample = inputBuffer[i];
         }
         double power = (10.0 * (Math.log10(sumOfSquares) - Math.log10(inputBuffer.length))) + 0.5;
+       // System.out.println(power);
 		if (power < 0) power = 1.0;
 		return power;
         //return  Math.sqrt(sumOfSquares/inputBuffer.length);
     }
+	
+	private int energy2() {
+		double sumOfSquares = 0.0f;
+		for (int i = 0; i < inputBuffer.length; i++) {
+			sumOfSquares += Math.pow(inputBuffer[i] / Short.MAX_VALUE, 2);
+		}
+		double power = 10.0 * Math.log10(Math.sqrt(sumOfSquares/inputBuffer.length)) + 50;
+		if (power < 0) power = 0.0;
+		if (power > 99) power = 99;
+		return (int)Math.round(power);
+	}
 	
 	/**
 	 * Implements the difference function as described
@@ -274,7 +290,7 @@ public class ProsodyTracker implements AudioListener {
 			if (samplesProcessed % bufferStepSize == 0) {
 				
 				yinBuffer = new double[maxTau];
-				double energy = energy();
+				double energy = energy2();
 				double pitch = getPitch(energy);
 				double conf = -1;
 				if (pitch > -1) {

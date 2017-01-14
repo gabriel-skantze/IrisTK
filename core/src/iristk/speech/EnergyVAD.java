@@ -10,7 +10,6 @@
  ******************************************************************************/
 package iristk.speech;
 
-import iristk.audio.AudioListener;
 import iristk.audio.AudioPort;
 import iristk.audio.AudioUtil;
 
@@ -22,7 +21,7 @@ import iristk.util.Histogram;
 import iristk.util.MedianFilter;
 import iristk.util.Parameter;
 
-public class EnergyVAD implements AudioListener {
+public class EnergyVAD implements VAD {
 
 	// The window size (in frames), which smoothes the result, but gives a lag
 	public static final int WINSIZE = 21;
@@ -50,8 +49,8 @@ public class EnergyVAD implements AudioListener {
 
 	private long streamPos = 0;
 
-	private Histogram silenceHistogram = new Histogram(100, 400); 
-	private Histogram speechHistogram = new Histogram(100, 50); 
+	private Histogram silenceHistogram = new Histogram(100, 2000); 
+	private Histogram speechHistogram = new Histogram(100, 300); 
 
 	private ArrayList<EnergyVAD.Listener> vadListeners = new ArrayList<>();
 
@@ -145,6 +144,7 @@ public class EnergyVAD implements AudioListener {
 	
 	*/
 
+	@Override
 	public void addVADListener(EnergyVAD.Listener vadListener) {
 		this.vadListeners.add(vadListener);
 	}
@@ -168,6 +168,7 @@ public class EnergyVAD implements AudioListener {
 		}
 		double power = 10.0 * Math.log10(Math.sqrt(sumOfSquares/samples.length)) + 50;
 		if (power < 0) power = 0.0;
+		if (power > 99) power = 99;
 		return (int)Math.round(power);
 	}
 	
@@ -242,7 +243,7 @@ public class EnergyVAD implements AudioListener {
 		AudioUtil.scaleDoubles(frame, Short.MAX_VALUE);
 		*/
 
-		int power = power3(frame);
+		int power = power2(frame);
 		
 		//System.out.println(silenceLevel + " " + power + " " + speechLevel.get());
 		
@@ -356,17 +357,6 @@ public class EnergyVAD implements AudioListener {
 	}
 	*/
 	
-	public static interface Listener {
-
-		/**
-		 * 
-		 * @param streamPos The position in the stream (counted in samples)
-		 * @param inSpeech Voice activity at position
-		 * @param energy Average energy at position
-		 */
-		public void vadEvent(long streamPos, boolean inSpeech, int energy);
-	}
-
 	public int getSilenceLevel() {
 		return silenceLevel;
 	}

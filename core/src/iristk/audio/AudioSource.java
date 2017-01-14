@@ -19,6 +19,7 @@ public abstract class AudioSource extends AudioPort implements Runnable {
 	private Thread runningThread = null;
 	private boolean contRunning;
 	private int bufferSize;
+	private boolean running = false;
 	
 	protected abstract void startSource();
 	
@@ -28,6 +29,7 @@ public abstract class AudioSource extends AudioPort implements Runnable {
 	
 	@Override
 	public void run() {
+		running  = true;
 		startSource();
 		startListeners();
 		// 100 frames per second
@@ -43,28 +45,35 @@ public abstract class AudioSource extends AudioPort implements Runnable {
 		}
 		stopSource();
 		stopListeners();
+		running = false;
 	}
 	
 	public void start() {
-		contRunning = true;
-		runningThread = new Thread(this);
-		runningThread.start();
+		if (!running) {
+			contRunning = true;
+			runningThread = new Thread(this);
+			runningThread.start();
+		}
 	}
 	
 	public void stop() {
-		contRunning = false;
-		try {
-			runningThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (running) {
+			contRunning = false;
+			try {
+				runningThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void waitFor() {
-		try {
-			runningThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (running) {
+			try {
+				runningThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

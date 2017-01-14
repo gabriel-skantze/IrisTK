@@ -1,7 +1,5 @@
 package iristk.situated;
 
-import java.util.List;
-
 public class Body extends Item {
 
 	@RecordField
