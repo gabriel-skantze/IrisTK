@@ -148,7 +148,7 @@ public class Language extends Record {
 		names.put("lt-LT","Lithuanian (Lithuania)");
 		names.put("hu-HU","Hungarian (Hungary)");
 		names.put("nl-NL","Dutch (Netherlands)");
-		names.put("nb-NO","Norwegian Bokmål (Norway)");
+		names.put("nb-NO","Norwegian Bokmï¿½l (Norway)");
 		names.put("pl-PL","Polish (Poland)");
 		names.put("pt-BR","Portuguese (Brazil)");
 		names.put("pt-PT","Portuguese (Portugal)");
@@ -195,6 +195,7 @@ public class Language extends Record {
 	}
 	
 	public Language(String code) {
+		code=code.trim();
 		if (!code.toLowerCase().matches("[a-z][a-z]-[a-z][a-z]"))
 			throw new RuntimeException("Bad language code: " + code);
 		if (!code.matches("[a-z][a-z]-[A-Z][A-Z]")) {
