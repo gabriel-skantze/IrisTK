@@ -64,7 +64,12 @@ public class Converters {
 		else
 			return object.toString();
 	}
-
+	/**
+	 * Returns object as a String, unless it is null in which case def is returned.
+	 * @param object to be stringed
+	 * @param def backup String
+	 * @return String version of object
+	 */
 	public static String asString(Object object, String def) {
 		if (object == null)
 			return def;
