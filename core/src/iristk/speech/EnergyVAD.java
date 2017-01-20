@@ -49,7 +49,7 @@ public class EnergyVAD implements VAD {
 
 	private long streamPos = 0;
 
-	private Histogram silenceHistogram = new Histogram(100, 2000); 
+	private Histogram silenceHistogram = new Histogram(100, 3000); 
 	private Histogram speechHistogram = new Histogram(100, 300); 
 
 	private ArrayList<EnergyVAD.Listener> vadListeners = new ArrayList<>();
@@ -247,17 +247,21 @@ public class EnergyVAD implements VAD {
 		
 		//System.out.println(silenceLevel + " " + power + " " + speechLevel.get());
 		
+		int tempSpeechLevel = speechLevel.get();
+		if (tempSpeechLevel < silenceLevel + 5)
+			tempSpeechLevel = silenceLevel + 5;
+		
 		int newState;
 		if (state == SPEECH) {
 			//parameters.silenceLevel + parameters.deltaSil
-			if (power <= ((speechLevel.get() - silenceLevel) / 2 + silenceLevel)) {
+			if (power <= ((tempSpeechLevel - silenceLevel) / 2 + silenceLevel)) {
 				newState = SILENCE;
 			} else {
 				newState = SPEECH;
 			}
 		} else {
 			//parameters.silenceLevel + parameters.deltaSpeech
-			if (power > (speechLevel.get())) {
+			if (power > (tempSpeechLevel)) {
 				newState = SPEECH;
 			} else {
 				newState = SILENCE;
@@ -270,8 +274,8 @@ public class EnergyVAD implements VAD {
 			int ind = silenceHistogram.getMax();
 			silenceLevel = ind;
 			double silenceFluct = Math.max(silenceHistogram.getNegStdDev(silenceLevel) * 2, 3);
-			if (speechLevel.get() < silenceLevel + 5)
-				speechLevel.set(silenceLevel + 5);
+			//if (speechLevel.get() < silenceLevel + 5)
+			//	speechLevel.set(silenceLevel + 5);
 			
 			if (adaptSpeechLevel.get() && power > silenceLevel + silenceFluct) {
 				speechHistogram.add(power);

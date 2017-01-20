@@ -293,6 +293,8 @@ public class Microphone extends AudioSource {
 	}
 
 	public static void main(String[] args) throws Exception {
+		System.out.println(getDevices());
+		/*
 		Microphone mic = new Microphone(null, 16000, 1, 0);
 		ProsodyTracker pro = new ProsodyTracker(mic.getAudioFormat());
 		mic.addAudioListener(pro);
@@ -302,6 +304,7 @@ public class Microphone extends AudioSource {
 				//System.out.println(pd.energy +  " "  + pd.conf);
 			}
 		});
+		*/
 	}
 
 }
