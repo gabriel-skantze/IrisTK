@@ -29,8 +29,8 @@ public class EnergyVAD implements VAD {
 	private static final int SPEECH = 1;
 	private static final int SILENCE = 0;
 
-	public static final int DEFAULT_SPEECH_LEVEL = 20;
-	public static final int DEFAULT_SILENCE_LEVEL = 10;
+	public static final int DEFAULT_SPEECH_LEVEL = 35;
+	public static final int DEFAULT_SILENCE_LEVEL = 20;
 	
 	private int[] stateWindow = new int[WINSIZE];
 	{
