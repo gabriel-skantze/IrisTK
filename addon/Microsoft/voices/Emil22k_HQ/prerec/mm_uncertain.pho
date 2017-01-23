@@ -1,0 +1,3 @@
+{"class":"iristk.speech.Transcription","phones":[
+{"class":"iristk.speech.Phone","prominent":false,"name":"P","start":0,"end":0.6},
+{"class":"iristk.speech.Phone","prominent":false,"name":"_s","start":0.6,"end":0.681}]}
