@@ -1,5 +1,6 @@
 package iristk.system;
 
+import iristk.audio.AudioLogger;
 import iristk.audio.AudioRecorder;
 import iristk.flow.FlowLogger;
 import iristk.util.NameFilter;
@@ -210,7 +211,7 @@ public class LoggingModule extends IrisModule {
 	}
 	
 	public synchronized void addLoggingTrigger(LoggingTrigger trigger) {
-		loggingTriggers .add(trigger);
+		loggingTriggers.add(trigger);
 	}
 
 	public static interface LoggingTrigger {
@@ -219,6 +220,14 @@ public class LoggingModule extends IrisModule {
 
 		boolean stopsLogging(Event event);
 		
+	}
+
+	public void removeLogger(AudioLogger logger) {
+		try {
+			logger.stopLogging();
+		} catch (IOException e) {
+		}
+		loggers.remove(logger);
 	}
 	
 }

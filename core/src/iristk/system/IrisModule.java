@@ -94,8 +94,8 @@ public abstract class IrisModule implements Runnable, EventListener {
 	
 	@Override
 	public final void run() {
-		while (running) {
-			try {
+		try {
+			while (running) {
 				Event event = eventQueue.take();
 				try {
 					if (!systemStarted  && event.triggers("monitor.system.start") && getSystem().getName().equals(event.getString("system"))) {
@@ -106,12 +106,11 @@ public abstract class IrisModule implements Runnable, EventListener {
 					}
 					if (enabled)
 						onEvent(event);
-				} catch (Exception e) {
+				} catch (Throwable e) {
 					logger.error("Problem processing event " + event.getName(), e);
 				}
-			} catch (InterruptedException e) {
-				break;
 			}
+		} catch (InterruptedException e) {
 		}
 	}
 	
@@ -120,7 +119,7 @@ public abstract class IrisModule implements Runnable, EventListener {
 		if (action != null)
 			ping.put("action", action);
 		ping.put("system", system.getName());
-		send(ping);
+		system.send(ping, getName());
 	}
 	
 	protected void systemStarted() {
