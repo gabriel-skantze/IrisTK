@@ -213,7 +213,7 @@ sensor				String			The ID of the recognizer
 
 Once the recognition is done, one event that matches sense.speech.rec\*\* is reported. See the different variants below. 
 
-If speech recognition is successful, sense.speech.rec will be generated (without suffix). Note that this includes cases where no grammar matched the recogniton, in which case the "text" parameter will be set to "\<NOMATCH\>". 
+If speech recognition is successful, sense.speech.rec will be generated (without suffix). Note that this includes cases where no grammar matched the recogniton, in which case the "text" parameter will be set to "NO_MATCH". 
 
 ----------			----			-------
 text				String			The result in text

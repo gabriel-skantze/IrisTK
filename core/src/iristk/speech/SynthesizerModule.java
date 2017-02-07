@@ -292,9 +292,10 @@ public class SynthesizerModule extends IrisModule {
 						setVoice(voices.getFirst());
 					}
 					
-					if (sa.text == null)
-						sa.text = "AUDIO";
-					
+					if (sa.text == null  || sa.text.equals("")){ //Changed.
+						logger.warn("AUDIO , sa.text is null or empty. Line 296 in synthesizermodule");
+						sa.text = "ha";
+					}
 					speaking = true;
 
 					final int startMsec = 0; //speechEvent.getInteger("start", 0);
@@ -357,8 +358,8 @@ public class SynthesizerModule extends IrisModule {
 
 					if (sa.abort) continue;
 
-					try {
-						Sound sound = new Sound(wavFile);
+					try { // this try catch causes ioexception
+						Sound sound = new Sound(wavFile); // Most likely cause of crash.
 
 						if (sound.getAudioFormat().getSampleRate() != 16000f) {
 							// TODO: should convert to mono as well
@@ -472,9 +473,9 @@ public class SynthesizerModule extends IrisModule {
 						}
 
 					} catch (UnsupportedAudioFileException e) {
-						logger.error("Unsupported audio file", e);
+						logger.error("Unsupported audio file: " + wavFile.getAbsolutePath(), e);
 					} catch (IOException e) {
-						logger.error("Problem opening file", e);
+						logger.error("Problem opening file: " + wavFile.getAbsolutePath(), e);
 					}
 
 				}
@@ -639,9 +640,14 @@ public class SynthesizerModule extends IrisModule {
 	public static Pair<Transcription,File> synthesizeToCache(String synthText, SynthesizerEngine engine) {
 		Transcription trans = null;
 		String cacheId = cacheId(synthText);
+		if (synthText==null || synthText.equals("")) {
+			System.err.println("SynthTextPassed to SynthesizeToCache was bad. So we changed it to ERROR NO SYNTH.");
+			cacheId = cacheId("ERROR NO SYNTH");
+		}
 		File cachePath = engine.getVoice().getCachePath();
 		File phoFile = new File(cachePath, cacheId + ".pho");
 		File wavFile = new File(cachePath, cacheId + ".wav");
+		
 		if (!wavFile.exists() || !phoFile.exists()) {
 			// Synthesize
 			trans = engine.synthesize(removeMarks(synthText), wavFile);
@@ -668,11 +674,13 @@ public class SynthesizerModule extends IrisModule {
 			} catch (UnsupportedAudioFileException e1) {
 				logger.error("Unsupported audio file", e1);
 			} catch (IOException e1) {
+				System.err.println("SynthModule wavFile is: "+ cachePath.toString() + " and "+ cacheId + " as both a .pho and .wav file.");
 				logger.error("Problem opening file", e1);
 			}
 			try {
 				Utils.writeTextFile(phoFile, trans.toJSON().toString());
 			} catch (FileNotFoundException e) {
+				System.err.println("SynthModule wavFile is: "+ cachePath.toString() + " and "+ cacheId + " as both a .pho and .wav file.");
 				logger.error("File not found", e);
 			} catch (IOException e) {
 				logger.error("Problem opening file", e);
@@ -681,6 +689,7 @@ public class SynthesizerModule extends IrisModule {
 			try {
 				trans = (Transcription) Record.fromJSON(Utils.readTextFile(phoFile));
 			} catch (FileNotFoundException e) {
+				System.err.println("SynthModule phoFile, readingfromTextFile is: "+ cachePath.toString() + " and "+ cacheId + " as both a .pho and .wav file.");
 				logger.error("File not found", e);
 			} catch (IOException e) {
 				logger.error("Problem opening file", e);
