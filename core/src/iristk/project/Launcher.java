@@ -130,7 +130,16 @@ public class Launcher {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void setupEclipse(Project proj, boolean independent) throws IOException {
+		System.out.println("Setting up Eclipse classpath for " + proj.getName());
+		File cpFile = new File(proj.getPath(), ".classpath").getCanonicalFile();
+		writeProjectClasspathFile(proj, cpFile, independent);
+		File projFile = new File(proj.getPath(), ".project").getCanonicalFile();
+		if (!projFile.exists()) {
+			writeProjectFile(projFile, proj.getName());
+		}
+	}
 
 	public static void setupEclipse(String[] args) {
 		try {
@@ -152,34 +161,7 @@ public class Launcher {
 				proj = Project.readProject(pfile);
 				proj.updatePackages();
 			}
-			System.out.println("Setting up Eclipse classpath for " + proj.getName());
-			File cpFile = new File(proj.getPath(), ".classpath").getCanonicalFile();
-			writeProjectClasspathFile(proj, cpFile, independent);
-			File projFile = new File(proj.getPath(), ".project").getCanonicalFile();
-			if (!projFile.exists()) {
-				writeProjectFile(projFile, proj.getName());
-			}
-			/*
-				File pkgFile = new File(new File(args[0]), "package.xml").getCanonicalFile();
-				
-				Package pkgXml = IrisUtils.readPackageXml(pkgFile);
-				File pkgPath = pkgFile.getParentFile();
-				String packageName = pkgXml.getName();
-				System.out.println("Setting up Eclipse classpath for package " + packageName);
-				if (pkgXml.getClasspath() != null) {
-					File cpFile = new File(pkgPath, ".classpath").getCanonicalFile();
-					writePackageClasspathFile(cpFile, pkgXml.getClasspath());
-				}
-				File projFile = new File(pkgPath, ".project").getCanonicalFile();
-				if (!projFile.exists()) {
-					writeProjectFile(projFile, "IrisTK - " + packageName);
-				}
-			} else {
-				System.out.println("Setting up Eclipse classpath for IrisTK");
-				File cpFile = new File(IrisUtils.getIristkPath(), ".classpath");
-				writeIrisTKClasspathFile(cpFile);
-			}
-			*/
+			setupEclipse(proj, independent);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

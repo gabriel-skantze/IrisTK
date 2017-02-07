@@ -20,7 +20,7 @@ public class RecResult extends RecHyp {
 	public static final String SILENCE = "silence";
 	public static final String MAXSPEECH = "maxspeech";
 	public static final String FAILED = "failed";
-	public static final String NOMATCH = "<NOMATCH>";
+	public static final String NOMATCH = "NOMATCH";
 	
 	@RecordField(name="type")
 	public String type = FINAL;

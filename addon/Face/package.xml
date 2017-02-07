@@ -1,4 +1,4 @@
-<package name="Face">
+<package name="Face" version="1.0">
 	<run>
 		<command name="gestures" class="iristk.agent.face.GestureBuilder"
 			descr="Run Gesture Builder GUI" />

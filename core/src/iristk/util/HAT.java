@@ -607,4 +607,14 @@ public class HAT  {
 		return null;
 	}
 
+
+	public static List<Segment> getSegmentsBySource(Annotation annot, String sourceId) {
+		List<Segment> result = new ArrayList<>();
+		for (Segment seg : annot.getSegments().getSegment()) {
+			if (seg.getSource().equals(sourceId))
+				result.add(seg);
+		}
+		return result;
+	}
+
 }
