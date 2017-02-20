@@ -279,7 +279,7 @@ public class HAT  {
 		private boolean inSpeech;
 		private float endSilLength;
 		private long lastPos;
-		private ArrayList<Segment> segments;
+		private ArrayList<Segment> segments = new ArrayList<>();
 
 		public MakeWithEndpointer(String outputFile, List<String> inputFiles, List<String> linkFiles, List<String> trackNames, String appendFile, Integer speechThreshold, int endSil) throws Exception {
 			if (trackNames != null && trackNames.size() != inputFiles.size())
@@ -314,8 +314,6 @@ public class HAT  {
 					//VoicedAdaptiveVAD vad = new VoicedAdaptiveVAD(audioChannel);
 					vad.addVADListener(this);
 					
-					segments = new ArrayList<>();
-					
 					if (speechThreshold == null) {
 						vad.adaptSpeechLevel.set(true);
 					} else {
@@ -329,6 +327,8 @@ public class HAT  {
 
 					audioSource.start();
 					audioSource.waitFor();
+					
+					//Thread.sleep(3000);
 					
 					// Fix overlapping segments
 					for (int i = 0; i < segments.size(); i++) {
@@ -351,6 +351,7 @@ public class HAT  {
 
 		@Override
 		public void vadEvent(long streamPos, boolean vadSpeech, int energy) {
+			//System.out.println(vadSpeech);
 			if (vadSpeech) {
 				if (!inSpeech) {
 					startOfSpeech = (streamPos / 16000f) - 0.2f;

@@ -204,7 +204,7 @@ Once the grammar is loaded, you can press Listen and say something to see the re
     type: hamburger}}}
 ```
 
-Examine the grammar and try to understand what it allows. Remember that the Speech Grammar must match exactly what you say. You could for example try:   
+Examine the grammar and try to understand how it works. Try with different utterances, such as:   
 
 * "I would like to order a strawberry milkshake please"
 * "I want to have two large hamburgers and a sallad"
@@ -224,7 +224,7 @@ To use the recognizer in your system, you must replace the recognizer setup in t
 // Here we use Google, but you can instead use the NuanceCloudRecognizerFactory if you want
 system.setupRecognizer(new GoogleRecognizerFactory());
 system.loadContext("default", new OpenVocabularyContext(system.getLanguage()));
-system.loadContext("default", new SemanticGrammarContext(new SRGSGrammar(getClass().getResource("BurgerGrammar.xml").toURI())));
+system.loadContext("default", new SemanticGrammarContext(new SRGSGrammar(system.getPackageFile("BurgerGrammar.xml"))));
 ```
 
 As you can see, we associate both an open vocabulary grammar and a semantic grammar to the context "default".
