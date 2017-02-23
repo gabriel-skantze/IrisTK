@@ -113,7 +113,7 @@ public class HAT  {
 							}
 						}
 					}
-					normalizer.filter(60);
+					normalizer.filter();
 					
 					for (Segment segment : annotation.getSegments().getSegment()) {
 						if (segment.getTrack().equals(track.getId())) {

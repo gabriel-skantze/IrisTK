@@ -24,6 +24,8 @@ import javax.sound.sampled.AudioFormat;
 
 public class ProsodyTracker implements AudioListener {
 
+	private static double FILTER_ENERGY_THRESHOLD = 20;
+	
 	private final double threshold = 0.15;
 	private final double globalThreshold = 0.5;
 	private final double energyThreshold = 20;
@@ -326,7 +328,7 @@ public class ProsodyTracker implements AudioListener {
 		return clone;
 	}
 	
-	public static List<ProsodyData> filter(List<ProsodyData> list, double energyThreshold) {
+	public static List<ProsodyData> filter(List<ProsodyData> list) {
 		List<ProsodyData> result = new ArrayList<>();
 		List<ProsodyData> cluster = new ArrayList<>();
 		double lp = Double.MAX_VALUE;
@@ -336,7 +338,7 @@ public class ProsodyTracker implements AudioListener {
 			if (pd.pitch != -1) {
 				if (gap <= 1 && (Math.abs(lp - pd.pitch) < 200)) {
 				} else {
-					addCluster(result, cluster, energyThreshold);
+					addCluster(result, cluster);
 					cluster = new ArrayList<>();
 				}
 				lp = pd.pitch;
@@ -346,11 +348,11 @@ public class ProsodyTracker implements AudioListener {
 			}
 			cluster.add(new ProsodyData(pd));
 		}
-		addCluster(result, cluster, energyThreshold);
+		addCluster(result, cluster);
 		return result;
 	}
 	
-	private static void addCluster(List<ProsodyData> result, List<ProsodyData> cluster, double energyThreshold) {
+	private static void addCluster(List<ProsodyData> result, List<ProsodyData> cluster) {
 		int voiced = 0;
 		double maxEnergy = Double.MIN_VALUE;
 		for (ProsodyData pd : cluster) {
@@ -360,12 +362,12 @@ public class ProsodyTracker implements AudioListener {
 			}
 		}
 		//System.out.println(voiced + " " +maxEnergy);
-		if (voiced < 6 || maxEnergy < energyThreshold) {
+		if (voiced < 6 || maxEnergy < FILTER_ENERGY_THRESHOLD) {
 			for (ProsodyData pd : cluster) {
 				pd.pitch = -1;
 				pd.conf = -1;
 			}
-		}
+		} 
 		result.addAll(cluster);
 	}
 

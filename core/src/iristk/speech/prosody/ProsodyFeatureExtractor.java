@@ -38,7 +38,7 @@ public class ProsodyFeatureExtractor implements ProsodyListener {
 		List<Double> pitchZall = new LinkedList<>();
 		List<Double> energyZall = new LinkedList<>();
 		
-		List<ProsodyData> newList = ProsodyTracker.filter(dataList, 60);
+		List<ProsodyData> newList = ProsodyTracker.filter(dataList);
 		
 		Integer length = null;
 		for (int i = newList.size()-1; i >= 0; i--) {
@@ -109,7 +109,7 @@ public class ProsodyFeatureExtractor implements ProsodyListener {
 	}
 
 	public List<ProsodyData> getData() {
-		return ProsodyTracker.filter(dataList, 60);
+		return ProsodyTracker.filter(dataList);
 	}
 	
 

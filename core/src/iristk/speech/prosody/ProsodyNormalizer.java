@@ -71,8 +71,8 @@ public class ProsodyNormalizer implements ProsodyListener {
 		}
 	}
 	
-	public void filter(double energyThreshold) {
-		buffer = ProsodyTracker.filter(buffer, energyThreshold);
+	public void filter() {
+		buffer = ProsodyTracker.filter(buffer);
 	}
 
 	public double getPitchHzLowerBound() {
