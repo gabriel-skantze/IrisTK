@@ -758,11 +758,17 @@ public class Record {
 	public void toProperties(File file) throws IOException {
 		Properties prop = new Properties();
 		writeProperties(prop, "", this);
-		if (!file.getParentFile().exists())
-			file.getParentFile().mkdirs();
+		if (file.getParent() != null) //Without this line it will throw a NullPointer when no parent is directly specified when creating the new file
+		{
+			if (!file.getParentFile().exists())
+			{
+				file.getParentFile().mkdirs();
+			}
+		}
 		OutputStream out = new FileOutputStream(file);
-		prop.store(out, null);
+		prop.store(out, "");
 		out.close();
+		
 	}
 
 	private static void writeProperties(Properties prop, String key, Record rec) {
