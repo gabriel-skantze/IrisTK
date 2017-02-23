@@ -32,7 +32,8 @@ public class Mapper extends HashMap<String,String> {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			String line;
 			while ((line = reader.readLine()) != null) {
-				String[] cols = line.trim().split("\\s+");
+				line = line.replaceFirst("//.*", "").trim();
+				String[] cols = line.split("\\s+");
 				add(cols);
 			}
 			reader.close();
@@ -61,12 +62,11 @@ public class Mapper extends HashMap<String,String> {
 	}
 
 	public String map(String label, String def) {
-		label = map(label);
-		if (label == null) {
+		if (containsKey(label)) {
+			return get(label);
+		} else {
 			logger.warn(name + " could not map '" + label + "'");
 			return def;
-		} else {
-			return label;
 		}
 	}
 

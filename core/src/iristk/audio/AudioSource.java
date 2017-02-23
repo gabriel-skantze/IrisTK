@@ -29,7 +29,6 @@ public abstract class AudioSource extends AudioPort implements Runnable {
 	
 	@Override
 	public void run() {
-		running  = true;
 		startSource();
 		startListeners();
 		// 100 frames per second
@@ -48,8 +47,9 @@ public abstract class AudioSource extends AudioPort implements Runnable {
 		running = false;
 	}
 	
-	public void start() {
+	public  void start() {
 		if (!running) {
+			running  = true;
 			contRunning = true;
 			runningThread = new Thread(this);
 			runningThread.start();

@@ -16,15 +16,13 @@ The basic package includes the core package, plus addons for:
 	* Kinect
 * Google cloud-based recognizer 
 * Nuance cloud-based recognizer
-* Nuance 9 recognizer (requires Nuance 9 to be installed)
+* Nuance 9 recognizer (requires Nuance 9 to be installed and 32-bit Java)
 * Facial animation
 * Chess and Quiz example applications
 
-Latest version (**2016-11-11**):
+Latest version (**2017-01-27**):
 
-<a href="download/iristk-basic-2016-11-11.exe" class="button radius success"  onClick="ga('send', 'event', 'download', 'click');" target="_blank">Download IrisTK basic installer</a>
-
-You can also <a href="download/iristk-basic-2016-11-11.zip" onClick="ga('send', 'event', 'download_zip', 'click');" target="_blank">download it as a zip file</a>, if you have problems with the installer, or want to explore the source code on a non-Windows computer.
+<a href="download/iristk-basic-2017-01-27.exe" class="button radius success"  onClick="ga('send', 'event', 'download', 'click');" target="_blank">Download IrisTK basic installer</a>
 
 ### Older versions
 

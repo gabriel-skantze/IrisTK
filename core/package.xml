@@ -18,6 +18,7 @@
 		<command name="srgs2abnf" class="iristk.cfg.CfgUtils" method="srgs2abnf" descr="Convert SRGS grammar to ABNF"/>
 		<command name="audiorecorder" class="iristk.audio.AudioRecordingGUI" descr="Start audio recording GUI"/>
 		<command name="hat" class="iristk.util.HAT" descr="Tools for Higgins Annotation Files"/>
+		<command name="keysender" class="iristk.util.KeySenderUtil" descr="Sending key stroke events to another system"/>
 	</run>
 	<classpath>
 		<src path="src" output="bin"/>

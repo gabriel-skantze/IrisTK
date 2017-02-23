@@ -154,7 +154,7 @@ public class IrisSystem implements EventListener {
 	@Override
 	public synchronized void onEvent(Event event) {
 		// An event from the broker
-		event = filterEvent(event);
+		event = filterEvent(event, "broker");
 		if (event == null)
 			return;
 		distributeInternal(event);
@@ -225,13 +225,7 @@ public class IrisSystem implements EventListener {
 	}
 
 	public synchronized void send(Event event, String sender) {
-		if (event.getSender() == null)
-			event.setSender(sender);
-		if (event.getTime() == null)
-			event.setTime(getTimestamp());
-		if (event.getId() == null)
-			event.setId(generateEventId(sender));
-		event = filterEvent(event);
+		event = filterEvent(event, sender);
 		if (event == null)
 			return;
 		distributeInternal(event);
@@ -250,7 +244,13 @@ public class IrisSystem implements EventListener {
 		eventFilters.clear();
 	}
 	
-	private synchronized Event filterEvent(Event event) {
+	private synchronized Event filterEvent(Event event, String sender) {
+		if (event.getSender() == null)
+			event.setSender(sender);
+		if (event.getTime() == null)
+			event.setTime(getTimestamp());
+		if (event.getId() == null)
+			event.setId(generateEventId(sender));
 		for (EventFilter filter : eventFilters) {
 			event = filter.filter(event);
 		}

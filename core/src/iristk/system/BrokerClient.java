@@ -85,7 +85,8 @@ public class BrokerClient {
 							Record record = Record.fromJSON(new String(bytes));
 							if (record != null && record instanceof Event) {
 								//System.out.println(((Event)record).getName());
-								callback.onEvent((Event)record);
+								Event event = (Event) record;
+								callback.onEvent(event);
 							}
 						} catch (JsonToRecordException e) {
 							System.out.println("Error parsing JSON: " + e.getMessage());

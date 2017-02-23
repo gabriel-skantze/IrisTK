@@ -10,9 +10,6 @@
  ******************************************************************************/
 package iristk.audio;
 
-import iristk.speech.prosody.ProsodyData;
-import iristk.speech.prosody.ProsodyListener;
-import iristk.speech.prosody.ProsodyTracker;
 import iristk.system.InitializationException;
 import iristk.system.IrisUtils;
 
