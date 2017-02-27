@@ -315,7 +315,9 @@ public class HAT  {
 					vad.addVADListener(this);
 					
 					if (speechThreshold == null) {
-						vad.adaptSpeechLevel.set(true);
+						//vad.adaptSpeechLevel.set(true);
+						vad.adaptSpeechLevel.set(false);
+						vad.speechLevel.set(EnergyVAD.DEFAULT_SPEECH_LEVEL);
 					} else {
 						vad.adaptSpeechLevel.set(false);
 						vad.speechLevel.set(speechThreshold);
@@ -351,7 +353,7 @@ public class HAT  {
 
 		@Override
 		public void vadEvent(long streamPos, boolean vadSpeech, int energy) {
-			//System.out.println(vadSpeech);
+			//System.out.println(vadSpeech + " " + energy);
 			if (vadSpeech) {
 				if (!inSpeech) {
 					startOfSpeech = (streamPos / 16000f) - 0.2f;

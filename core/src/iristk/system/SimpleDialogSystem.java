@@ -1,5 +1,7 @@
 package iristk.system;
 
+import java.io.File;
+
 import iristk.agent.face.FaceModule;
 import iristk.audio.AudioLogger;
 import iristk.audio.Microphone;
@@ -17,6 +19,10 @@ public class SimpleDialogSystem extends AbstractDialogSystem {
 	private SynthesizerModule synthesizerModule;
 	private Console console;
 	private FaceModule faceModule;
+	
+	public SimpleDialogSystem(String name, File path) throws Exception {
+		super(name, path);
+	}
 	
 	public SimpleDialogSystem(Class<?> packageClass) throws Exception {
 		super(packageClass);

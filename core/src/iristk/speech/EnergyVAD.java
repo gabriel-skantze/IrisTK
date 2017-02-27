@@ -267,7 +267,7 @@ public class EnergyVAD implements VAD {
 				newState = SILENCE;
 			}			   
 		}
-		
+
 		silenceHistogram.add(power);
 		if (silenceHistogram.size() > 100) {
 			// Adapt silence level

@@ -24,7 +24,7 @@ public class Histogram {
 	}
 
 	public void add(int value) {
-		if (value <= 0 || value >= histogram.length)
+		if (value < 0 || value >= histogram.length)
 			return;
 		histogram[value]++;
 		values++;

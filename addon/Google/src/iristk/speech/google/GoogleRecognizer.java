@@ -30,7 +30,7 @@ public class GoogleRecognizer extends EndpointerRecognizer implements OpenVocabu
 	private HashSet<String> activeContexts = new HashSet<>();
 	private HashMap<String,OpenVocabularyContext> loadedContexts = new HashMap<>();
 	
-	public GoogleRecognizer(AudioPort audioPort, File credentials) throws RecognizerException {
+	GoogleRecognizer(AudioPort audioPort, File credentials) throws RecognizerException {
 		super(new EnergyEndpointer(audioPort));
 		google = new GoogleRecognizerProcessor(credentials);
 		addRecognizerListener(google, RecognizerListeners.PRIORITY_RECOGNIZER);
