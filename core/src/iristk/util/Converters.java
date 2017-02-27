@@ -218,7 +218,7 @@ public class Converters {
 		if (object == null) {
 			return null;
 		} else if (object instanceof Number) {
-			return ((Long)object).longValue();
+			return ((Number)object).longValue();
 		} else if (object instanceof String) {
 			try {
 				return Long.parseLong((String)object);

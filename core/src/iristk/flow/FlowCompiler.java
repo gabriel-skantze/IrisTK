@@ -101,9 +101,9 @@ public class FlowCompiler {
 	}
 
 	public void compileToStream(OutputStream out) throws FlowCompilerException {
-		if (useUniqueNames)
+		if (useUniqueNames){
 			uniqueNameSuffix++;
-
+		}
 		code = new CodeStream(out);
 
 		String flowName = getLocalFlowName();
@@ -227,8 +227,9 @@ public class FlowCompiler {
 
 	private boolean stateExists(String name) {
 		for (iristk.xml.flow.State state: flowXml.getStates()) {
-			if (state.getId().equals(name))
+			if (state.getId().equals(name)){
 				return true;
+			}
 		}
 		return false;
 	}
@@ -242,15 +243,19 @@ public class FlowCompiler {
 			}
 			code.println();
 			String decl = "";
-			if (state.isPublic() || flowXml.getInitial().equals(state.getId()))
+			if (state.isPublic() || flowXml.getInitial().equals(state.getId())){
 				decl += "public";
-			else
+			}
+			else{
 				decl += "private";
-			if (state.isStatic())
+			}
+			if (state.isStatic()){
 				decl += " static";
+			}
 			decl += " class " + currentState + " extends " + ext;
-			if (flowXml.getInitial() != null && flowXml.getInitial().equals(state.getId())) 
+			if (flowXml.getInitial() != null && flowXml.getInitial().equals(state.getId())) {
 				decl += " implements Initial";
+			}
 			code.println(decl + " {");
 			code.println();
 			code.println("final State currentState = this;");
@@ -447,6 +452,8 @@ public class FlowCompiler {
 			return "asRecord(" + value + ")";
 		} else if (type.equals("Boolean")) {
 			return "asBoolean(" + value + ")";
+		}else if (type.equals("Long")) {
+			return "asLong(" + value + ")";
 		} else if (type.equals("Integer") || type.equals("int")) {
 			return "asInteger(" + value + ")";
 		} else if (type.equals("Float") || type.equals("float")) {
