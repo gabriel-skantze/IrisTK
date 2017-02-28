@@ -14,10 +14,12 @@ import static iristk.util.Converters.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -506,6 +508,10 @@ public class Record {
 	}
 	 */
 
+	/**
+	 * Converts the Record to a JSONObject
+	 * @return JSONObject
+	 */
 	public JsonObject toJSON() {
 		JsonObject json = new JsonObject();
 		if (this.getClass() != Record.class) {
@@ -539,6 +545,28 @@ public class Record {
 		}
 		return json;
 	}
+	
+	/**
+	 * Saves the record in JSON format to a file. If the file already exists, the content in the file is overwritten with the new record data.
+	 * 
+	 * @param file The file the record data are stored in
+	 * @throws IOException
+	 */
+	public void toJSON(File file) throws IOException
+	{
+		if (file.getParent() != null) //Without this line it will throw a NullPointer when no parent is directly specified when creating the new file
+		{
+			if (!file.getParentFile().exists())
+			{
+				file.getParentFile().mkdirs();
+			}
+		}
+		System.out.println(file.getAbsolutePath());
+		OutputStream out = new FileOutputStream(file);
+		final PrintStream printStream = new PrintStream(out);
+		printStream.print(toJSON().toString());
+		printStream.close();
+	}
 
 	private static JsonArray toJsonArray(List list) {
 		JsonArray arr = new JsonArray();
@@ -570,6 +598,14 @@ public class Record {
 		return fromJSON(IOUtils.toString(resource.openStream(), "UTF-8"));
 	}
 	
+	/**
+	 * Reads a Record from a Properties file.
+	 * 
+	 * @param file JSON file with Record data
+	 * @return Record
+	 * @throws IOException
+	 * @throws JsonToRecordException
+	 */
 	public static Record fromJSON(File file) throws IOException, JsonToRecordException {
 		return fromJSON(Utils.readTextFile(file));
 	}
@@ -749,15 +785,25 @@ public class Record {
 	}
 	 */
 
+	/**
+	 * Converts the Record data to properties format.
+	 * 
+	 * @return Properties object with the record data
+	 */
 	public Properties toProperties() {
 		Properties prop = new Properties();
 		writeProperties(prop, "", this);
 		return prop;
 	}
 
+	/**
+	 * Saves the record in a properties file. If the file already exists, the content in the file is overwritten with the new record data.
+	 * 
+	 * @param file The file the record data are stored in
+	 * @throws IOException
+	 */
 	public void toProperties(File file) throws IOException {
-		Properties prop = new Properties();
-		writeProperties(prop, "", this);
+		Properties prop = toProperties();
 		if (file.getParent() != null) //Without this line it will throw a NullPointer when no parent is directly specified when creating the new file
 		{
 			if (!file.getParentFile().exists())
@@ -787,13 +833,23 @@ public class Record {
 		}
 	}
 	
-
+	/**
+	 * Converts an InputStream of a Properties file into a Record object.
+	 * 
+	 * @param inputStream InputStream from properties file with Record data
+	 * @return Record
+	 */
 	public static Record fromProperties(InputStream inputStream) throws IOException {
 		Properties prop = new Properties();
 		prop.load(inputStream);
 		return fromProperties(prop);
 	}
 
+	/**
+	 * Converts a Properties object into a Record object.
+	 * @param prop Properties file with Record data
+	 * @return Record
+	 */
 	public static Record fromProperties(Properties prop) {
 		Record rec = new Record();
 		for (Object key : prop.keySet()) {
@@ -802,6 +858,13 @@ public class Record {
 		return rec;
 	}
 
+	/**
+	 * Reads a Record from a Properties file.
+	 * 
+	 * @param file A file with record data in properties format
+	 * @return Record
+	 * @throws IOException
+	 */
 	public static Record fromProperties(File file) throws IOException {
 		return fromProperties(new FileInputStream(file));
 	}

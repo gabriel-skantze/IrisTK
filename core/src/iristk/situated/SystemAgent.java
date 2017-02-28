@@ -269,6 +269,10 @@ public class SystemAgent extends Agent {
 		users.remove(user.id);
 	}
 	
+	/**
+	 * Removes an agent from the current list of users when the agent leaves.
+	 * @param userId
+	 */
 	public void removeUser(String userId) {
 		users.remove(userId);
 	}

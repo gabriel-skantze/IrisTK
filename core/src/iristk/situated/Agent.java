@@ -24,6 +24,9 @@ public class Agent extends Body {
 	@RecordField
 	public boolean speaking = false;
 	
+	@RecordField
+	public AgentData agentdata;
+	
 	public Agent(String id) {
 		super(id);
 	}
@@ -77,6 +80,11 @@ public class Agent extends Body {
 			locations[i] = users.get(i).getHeadLocation();
 		}
 		return Location.mean(locations);
+	}
+	
+	public void setAgentData(AgentData agentdata)
+	{
+		this.agentdata = agentdata;
 	}
 	
 	/*
