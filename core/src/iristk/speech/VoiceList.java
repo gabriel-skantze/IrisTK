@@ -14,6 +14,8 @@ import iristk.speech.Voice.Gender;
 import iristk.util.Language;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class VoiceList extends ArrayList<Voice> {
 
@@ -26,6 +28,18 @@ public class VoiceList extends ArrayList<Voice> {
 		if (result.size() == 0)
 			throw new VoiceNotFoundException("No voice with the name '" + name + "' was found");
 		return result;
+	}
+	/**
+	 * Returns the Set of all Languages in this VoiceList.
+	 * <p> Iterates through all the voices, adds their langauge to a HashSet
+	 * @return the set of all Languages in the VoiceList
+	 */
+	public Set<Language> getAllLanguages(){
+		Set<Language> languages = new HashSet<Language>();
+		for (Voice voice : this) {
+			languages.add(voice.getLanguage());
+		}
+		return languages;
 	}
 	
 	public VoiceList getByLanguage(Language lang) throws VoiceNotFoundException {
