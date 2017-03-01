@@ -14,8 +14,8 @@ import iristk.speech.Voice.Gender;
 import iristk.util.Language;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class VoiceList extends ArrayList<Voice> {
 
@@ -30,12 +30,12 @@ public class VoiceList extends ArrayList<Voice> {
 		return result;
 	}
 	/**
-	 * Returns the Set of all Languages in this VoiceList.
-	 * <p> Iterates through all the voices, adds their langauge to a HashSet
+	 * Returns the sorted Set of all Languages in this VoiceList.
+	 * <p> Iterates through all the voices, adds their langauge to a TreeSet
 	 * @return the set of all Languages in the VoiceList
 	 */
 	public Set<Language> getAllLanguages(){
-		Set<Language> languages = new HashSet<Language>();
+		Set<Language> languages = new TreeSet<Language>();
 		for (Voice voice : this) {
 			languages.add(voice.getLanguage());
 		}
