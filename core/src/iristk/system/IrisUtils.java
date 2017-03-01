@@ -144,8 +144,7 @@ public class IrisUtils {
 		*/
 	}
 
-	public static void createFromTemplate(String[] args) {
-		try {
+	public static void createFromTemplate(String[] args) throws IOException{
 			if (args.length < 2) {
 				System.out.println("Usage: " + Launcher.getExecutable().getName() + " create [template] [name] [path]\n");
 				System.out.println("Available templates:");
@@ -156,10 +155,6 @@ public class IrisUtils {
 			} else {
 				createFromTemplate(args[0], args[1], args.length > 2 ? args[2] : null);
 			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-			return;
-		}
 	}
 	
 	public static void createFromTemplate(String templateName, String name, String path) throws IOException {
