@@ -10,7 +10,10 @@
  ******************************************************************************/
 package iristk.util;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Language extends Record {
@@ -245,6 +248,20 @@ public class Language extends Record {
 
 	public static String[] getCodes() {
 		return names.keySet().toArray(new String[0]);
+	}
+	/**
+	 * Returns a lexicographically sorted List of all Language codes. 
+	 * @return List of Language codes in String form.
+	 */
+	public static List<String> getSortedCodes(){
+		List<String> sortedKeys = Arrays.asList(Language.getCodes());
+		sortedKeys.sort(new Comparator<String>(){
+			@Override
+			public int compare(String o1, String o2) {
+				return o1.compareTo(o2);
+			}
+		});
+		return sortedKeys;
 	}
 	
 }
