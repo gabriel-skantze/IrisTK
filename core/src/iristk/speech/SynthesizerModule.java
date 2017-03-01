@@ -292,9 +292,12 @@ public class SynthesizerModule extends IrisModule {
 						setVoice(voices.getFirst());
 					}
 					
-					if (sa.text == null  || sa.text.equals("")){ //Changed.
-						logger.warn("AUDIO , sa.text is null or empty. Line 296 in synthesizermodule");
-						sa.text = "ha";
+					if (sa.text == null ){ //Changed.
+						logger.warn("AUDIO , sa.text is null Line 296 in synthesizermodule");
+						sa.text = "";
+					} else if(sa.text.equals("")){
+						logger.warn("AUDIO , sa.text is empty Line 299 in synthesizermodule");
+						sa.text="";
 					}
 					speaking = true;
 
