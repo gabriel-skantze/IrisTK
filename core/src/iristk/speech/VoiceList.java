@@ -14,8 +14,10 @@ import iristk.speech.Voice.Gender;
 import iristk.util.Language;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
+
 
 public class VoiceList extends ArrayList<Voice> {
 
@@ -35,7 +37,12 @@ public class VoiceList extends ArrayList<Voice> {
 	 * @return the set of all Languages in the VoiceList
 	 */
 	public Set<Language> getAllLanguages(){
-		Set<Language> languages = new TreeSet<Language>();
+		Set<Language> languages = new TreeSet<Language>( new Comparator<Language>(){
+			@Override
+			public int compare(Language a, Language b) {
+				return (a.getCode()).compareTo(b.getCode());
+			}
+		});
 		for (Voice voice : this) {
 			languages.add(voice.getLanguage());
 		}
