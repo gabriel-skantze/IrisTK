@@ -32,9 +32,17 @@ public class Package {
 	public String getName() {
 		return spec.getName();
 	}
-	
+	/**
+	 * Returns version of this Package
+	 * @return version number, 0 if no version property.
+	 */
 	public String getVersion() {
-		return spec.getVersion();
+		String version = spec.getVersion();
+		if(version.equals(null)){
+			return "0";
+		}else{			
+			return version;
+		}
 	}
 	
 	public File getPath() {
