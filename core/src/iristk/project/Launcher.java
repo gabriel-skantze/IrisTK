@@ -57,7 +57,6 @@ public class Launcher {
 			e.printStackTrace();
 		}
 	}
-	
 	public static void install(String[] args) {
 		try {
 			if (!new File(new File(System.getProperty("user.dir")), getExecutable().getName()).exists()) {
@@ -105,7 +104,6 @@ public class Launcher {
 		//value = value.replace("%", "~");
 		//String result = getCmd("reg add HKCU\\Environment /f /v " + name + " /t " + type + " /d \"" + value + "\"").trim();
 		String result = ProcessRunner.eval("setx " + name + " \"" + value + "\"").trim();
-		//if (!result.contains("successfully")) {
 		if (!result.contains("SUCCESS")) {
 			throw new Exception(result);
 		}
@@ -153,9 +151,11 @@ public class Launcher {
 			if (rest.size() == 0) {
 				proj = Project.main;
 			} else {
+				String newFront= rest.get(0).substring(0, 1).replaceAll("[\\./]","");
+				rest.set(0, newFront+rest.get(0).substring(2));
 				File pfile = new File(rest.get(0), "project.properties");
 				if (!pfile.exists()) {
-					System.out.println("Could not find " + pfile.getAbsolutePath());
+					//System.out.println("Could not find " + pfile.getAbsolutePath());
 					System.exit(0);
 				}
 				proj = Project.readProject(pfile);
