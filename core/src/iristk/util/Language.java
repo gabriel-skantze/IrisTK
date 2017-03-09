@@ -11,11 +11,14 @@
 package iristk.util;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Record class that encapsulates Language information. 
+ * <p> Language codes are according ot the IETF standard.
+ *
+ */
 public class Language extends Record {
 
 	public static final Language AFRIKAANS = new Language("af-ZA");
@@ -199,8 +202,9 @@ public class Language extends Record {
 	
 	public Language(String code) {
 		code=code.trim();
-		if (!code.toLowerCase().matches("[a-z][a-z]-[a-z][a-z]"))
+		if (!code.toLowerCase().matches("[a-z][a-z]-[a-z][a-z]")){
 			throw new RuntimeException("Bad language code: " + code);
+		}
 		if (!code.matches("[a-z][a-z]-[A-Z][A-Z]")) {
 			code = code.substring(0, 2).toLowerCase() + "-" + code.substring(3, 5).toUpperCase();
 		}
@@ -236,7 +240,9 @@ public class Language extends Record {
 	}
 	
 	/**
-	 * @return The main part of the code (such as "en")
+	 * Returns the langauge code without the dialect.
+	 * <p> For example, 'en-US-' and 'en-GB' are both returned as 'en'.
+	 * @return The primar language of this <code> Language </code>.
 	 */
 	public String getMain() {
 		return getCode().substring(0, 2);
@@ -249,18 +255,14 @@ public class Language extends Record {
 	public static String[] getCodes() {
 		return names.keySet().toArray(new String[0]);
 	}
+	
 	/**
 	 * Returns a lexicographically sorted List of all Language codes. 
 	 * @return List of Language codes in String form.
 	 */
 	public static List<String> getSortedCodes(){
 		List<String> sortedKeys = Arrays.asList(Language.getCodes());
-		sortedKeys.sort(new Comparator<String>(){
-			@Override
-			public int compare(String o1, String o2) {
-				return o1.compareTo(o2);
-			}
-		});
+		sortedKeys.sort( (first, second) -> first.compareTo(second) );
 		return sortedKeys;
 	}
 	
