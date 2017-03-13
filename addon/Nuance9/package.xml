@@ -1,4 +1,4 @@
-<package name="Nuance9">
+<package name="Nuance9"  version="1.0">
 	<provide>
 		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.nuance9.NuanceRecognizerFactory"/>
 	</provide>

@@ -57,6 +57,7 @@ public class Launcher {
 			e.printStackTrace();
 		}
 	}
+	
 	public static void install(String[] args) {
 		try {
 			if (!new File(new File(System.getProperty("user.dir")), getExecutable().getName()).exists()) {
@@ -94,8 +95,9 @@ public class Launcher {
 		String value = ProcessRunner.eval("reg query HKCU\\Environment /v " + name).trim();
 		for (String line : value.split("\n")) {
 			Matcher m = Pattern.compile(name + " +[^ ]+ +(.*)", Pattern.CASE_INSENSITIVE).matcher(line.trim());
-			if (m.matches())
+			if (m.matches()){
 				return m.group(1);
+			}
 		}
 		return null;
 	}
@@ -211,10 +213,12 @@ public class Launcher {
 					continue;
 				}
 				String path = pack.getPath().getAbsolutePath().replace(root, "").replace("\\", "/");
-				if (path.startsWith("/"))
+				if (path.startsWith("/")){
 					path = path.substring(1);
-				if (path.length() > 0 && !path.endsWith("/"))
+				}
+				if (path.length() > 0 && !path.endsWith("/")){
 					path = path += "/";
+				}
 				for (Object entry : pack.getSpec().getClasspath().getLibOrSrcOrDll()) {
 					if (entry instanceof Lib) {
 						pw.println("<classpathentry exported=\"true\" kind=\"lib\" path=\"" + path + ((Lib)entry).getPath() + "\"/>");
@@ -270,7 +274,9 @@ public class Launcher {
 				System.out.println("\n" + pack.getName() + ":");
 				for (Command command : pack.getSpec().getRun().getCommand()) {
 					String descr = "";
-					if (command.getDescr() != null) descr = command.getDescr();
+					if (command.getDescr() != null){
+						descr = command.getDescr();
+					}
 					System.out.println("  " + Utils.pad(command.getName(), 15) + descr);
 				}
 			}
@@ -307,7 +313,6 @@ public class Launcher {
 				}
 			} else {
 				//runJava(command.isArch32(), command.getClazz(), args, System.out, System.err, true, null);
-
 				Class<?>[] paramTypes = new Class<?>[1];
 				paramTypes[0] = String[].class;
 				Method method = Class.forName(command.getClazz()).getMethod("main", paramTypes);
@@ -398,7 +403,9 @@ public class Launcher {
 	}
 	
 	private static String[] cropArgs(String[] args, int n) {
-		if (n > args.length) n = args.length;
+		if (n > args.length){
+			n = args.length;
+		}
 		String[] result = new String[args.length - n];
 		System.arraycopy(args, n, result, 0, result.length);
 		return result;
@@ -414,7 +421,7 @@ public class Launcher {
 		outputDir.mkdirs();
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
 		StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, Locale.US, null);
-		List<String> files = new ArrayList<>();
+		List<String> files = new ArrayList<String>();
 		Utils.listFiles(new File(packagePath, "src").getAbsolutePath(), files, ".*\\.java$");
 		for (String f: files) {
 			System.out.println("Compiling " + f);
@@ -442,8 +449,9 @@ public class Launcher {
 	public static ProcessRunner runCommand(String name, String... args) throws Exception {
 		ArrayList<String> cmd = new ArrayList<String>();
 		cmd.add(name);
-		for (String a : args)
+		for (String a : args){
 			cmd.add(a);
+		}
 		return runJava(false, Launcher.class.getName(), null, cmd.toArray(new String[0]), System.out, System.err, false, null, null);
 	}
 
@@ -453,19 +461,22 @@ public class Launcher {
 		cmd.add("-cp");
 		cmd.add(Project.main.getClasspath());
 		cmd.add("-Diristk.project=\"" + Project.main.getPath() + "\"");
-		if (options != null)
+		if (options != null){
 			for (String op : options) {
 				cmd.add(op);
 			}
+		}
 		cmd.add(mainClass);
-		if (args != null)
+		if (args != null){
 			for (String arg : args) {
 				cmd.add(arg);
 			}
+		}
 		//String cmd = "\"" + javaCmd + "\" -cp \"" + IrisUtils.getClasspath() + "\" " + mainClass + " " + StringUtils.join(args, " ");
 		ProcessRunner proc = new ProcessRunner(cmd, stdout, stderr, listener, workingDir);
-		if (waitFor)
+		if (waitFor){
 			proc.waitFor();
+		}
 		return proc;
 	}
 
@@ -480,15 +491,17 @@ public class Launcher {
 			cmd.add("-cp");
 			cmd.add(Project.main.getClasspath());
 			cmd.add("-v");
-			if ((Boolean)parser.get("r"))
+			if ((Boolean)parser.get("r")){
 				cmd.add("-R");
+			}
 			cmd.add(pack.getPath("bin").getAbsolutePath());
 			ProcessRunner proc = new ProcessRunner(cmd, null, System.err, new ProcessListener() {
 
 				@Override
 				public void processOutput(String line) {
-					if (line.contains("not found"))
+					if (line.contains("not found")){
 						System.out.println(line);
+					}
 				}
 
 				@Override

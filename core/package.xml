@@ -1,4 +1,4 @@
-<package name="core">
+<package name="core"  version="1.0">
 	<run>
 		<command name="packages" class="iristk.project.Launcher" method="listPackages" descr="List packages"/>
 		<command name="eclipse" class="iristk.project.Launcher" method="setupEclipse" descr="Set up the eclipse classpath"/>

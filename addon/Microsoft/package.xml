@@ -1,4 +1,4 @@
-<package name="Microsoft">
+<package name="Microsoft"  version="1.0">
 	<provide>
 		<class type="iristk.speech.Synthesizer" name="iristk.speech.windows.WindowsSynthesizer"/>
 		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.windows.WindowsRecognizerFactory"/>

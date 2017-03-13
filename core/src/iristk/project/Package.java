@@ -15,10 +15,10 @@ import javax.xml.stream.XMLStreamException;
 public class Package {
 
 	private static XmlMarshaller<iristk.xml._package.Package> packageReader = new XmlMarshaller<>("iristk.xml._package");
-	
+
 	private iristk.xml._package.Package spec;
 	private File path;
-	
+
 	//public Package(iristk.xml._package.Package pack, File path) {
 	//	this.xml = pack;
 	//	this.path = path;
@@ -38,13 +38,13 @@ public class Package {
 	 */
 	public String getVersion() {
 		String version = spec.getVersion();
-		if(version.equals(null)){
+		if(version==null){
 			return "0";
 		}else{			
 			return version;
 		}
 	}
-	
+
 	public File getPath() {
 		return path;
 	}
@@ -52,7 +52,7 @@ public class Package {
 	public File getPath(String subpath) {
 		return new File(getPath(), subpath);
 	}
-	
+
 	public File getLibPath(String sub) {
 		return getPath("lib/" + sub);
 	}
@@ -60,7 +60,7 @@ public class Package {
 	public File getLibPath() {
 		return getPath("lib");
 	}
-	
+
 	public iristk.xml._package.Package getSpec() {
 		return spec;
 	}
@@ -77,7 +77,7 @@ public class Package {
 		}
 		return result;
 	}
-	
+
 	public void loadLibs() {
 		if (spec.getClasspath() != null) {
 			for (Object entry : spec.getClasspath().getLibOrSrcOrDll()) {
@@ -95,6 +95,6 @@ public class Package {
 		System.load(getLibPath(pathWithinLib).getAbsolutePath());
 	}
 
-	
-	
+
+
 }

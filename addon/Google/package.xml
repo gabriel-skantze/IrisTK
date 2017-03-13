@@ -1,4 +1,4 @@
-<package name="Google">
+<package name="Google"  version="1.0">
 	<provide>
 		<class type="iristk.speech.RecognizerFactory" name="iristk.speech.google.GoogleRecognizerFactory"/>
 	</provide>
