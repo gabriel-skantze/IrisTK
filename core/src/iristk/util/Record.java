@@ -14,10 +14,12 @@ import static iristk.util.Converters.*;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -27,6 +29,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -44,6 +48,9 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.ParseException;
+
+import javafx.util.converter.LocalDateStringConverter;
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 /**
  * A Record is essentially a map of key-value pairs (much like any java {@link java.util.Map}). However, it supports a convenient way of adding and accessing values deep in the hierarchy by using colon (:) notation.
@@ -313,7 +320,13 @@ public class Record {
 				Field setField = info.classFields.get(field);
 				if (setField != null) {
 					try {
-						setField.set(this, asType(value, setField.getType()));
+						if(setField.getType().equals(java.time.LocalDate.class)) {
+							setField.set(this, new LocalDateStringConverter().fromString((String) value));
+						} else if(setField.getType().equals(java.time.LocalDateTime.class)) {
+							setField.set(this, new LocalDateTimeStringConverter().fromString((String) value));
+						} else {
+							setField.set(this, asType(value, setField.getType()));
+						}
 						return;
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
@@ -506,6 +519,10 @@ public class Record {
 	}
 	 */
 
+	/**
+	 * Converts the Record to a JSONObject
+	 * @return JSONObject
+	 */
 	public JsonObject toJSON() {
 		JsonObject json = new JsonObject();
 		if (this.getClass() != Record.class) {
@@ -532,12 +549,37 @@ public class Record {
 					json.add(key, ((Record)val).toJSON());
 				} else if (val instanceof List) {
 					json.add(key, toJsonArray((List)val));
+				} else if (val instanceof LocalDateTime) {
+					json.add(key, new LocalDateTimeStringConverter().toString((LocalDateTime) val));
+				} else if (val instanceof LocalDate) {
+					json.add(key, new LocalDateStringConverter().toString((LocalDate) val));
 				} else {
 					System.err.println("Warning: could not convert " + val.getClass() + " to JSON");
 				}
 			}
 		}
 		return json;
+	}
+	
+
+	
+	/**
+	 * Saves the record in JSON format to a file. If the file already exists, the content in the file is overwritten with the new record data.
+	 * 
+	 * @param inputJSONfile The file the record data are stored in
+	 * @throws IOException
+	 */
+	public void toJSON (File inputJSONfile) throws IOException {
+		//Without the if the method will throw a NullPointer when no parent is directly specified when creating the new file
+		if (inputJSONfile.getParent() != null) {
+			if (!inputJSONfile.getParentFile().exists()) {
+				inputJSONfile.getParentFile().mkdirs();
+			}
+		}
+		OutputStream out = new FileOutputStream(inputJSONfile);
+		final PrintStream printStream = new PrintStream(out);
+		printStream.print(toJSON().toString());
+		printStream.close();
 	}
 
 	private static JsonArray toJsonArray(List list) {
@@ -559,6 +601,10 @@ public class Record {
 				arr.add(((Record)val).toJSON());
 			} else if (val instanceof List) {
 				arr.add(toJsonArray((List)val));
+			} else if (val instanceof LocalDateTime) {
+				arr.add(new LocalDateTimeStringConverter().toString((LocalDateTime) val));
+			} else if (val instanceof LocalDate) {
+				arr.add(new LocalDateStringConverter().toString((LocalDate) val));
 			} else {
 				System.err.println("Warning: could not convert " + val.getClass() + " to JSON");
 			}
@@ -570,6 +616,14 @@ public class Record {
 		return fromJSON(IOUtils.toString(resource.openStream(), "UTF-8"));
 	}
 	
+	/**
+	 * Reads a Record from a Properties file.
+	 * 
+	 * @param file JSON file with Record data
+	 * @return Record
+	 * @throws IOException
+	 * @throws JsonToRecordException
+	 */
 	public static Record fromJSON(File file) throws IOException, JsonToRecordException {
 		return fromJSON(Utils.readTextFile(file));
 	}
@@ -749,19 +803,28 @@ public class Record {
 	}
 	 */
 
+	/**
+	 * Converts the Record data to properties format.
+	 * 
+	 * @return Properties object with the record data
+	 */
 	public Properties toProperties() {
 		Properties prop = new Properties();
 		writeProperties(prop, "", this);
 		return prop;
 	}
 
+	/**
+	 * Saves the record in a properties file. If the file already exists, the content in the file is overwritten with the new record data.
+	 * 
+	 * @param file The file the record data are stored in
+	 * @throws IOException
+	 */
 	public void toProperties(File file) throws IOException {
-		Properties prop = new Properties();
-		writeProperties(prop, "", this);
-		if (file.getParent() != null) //Without this line it will throw a NullPointer when no parent is directly specified when creating the new file
-		{
-			if (!file.getParentFile().exists())
-			{
+		Properties prop = toProperties();
+		 //Without the if the method will throw a NullPointer when no parent is directly specified when creating the new file
+		if (file.getParent() != null) {
+			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
 			}
 		}
@@ -787,13 +850,23 @@ public class Record {
 		}
 	}
 	
-
+	/**
+	 * Converts an InputStream of a Properties file into a Record object.
+	 * 
+	 * @param inputStream InputStream from properties file with Record data
+	 * @return Record
+	 */
 	public static Record fromProperties(InputStream inputStream) throws IOException {
 		Properties prop = new Properties();
 		prop.load(inputStream);
 		return fromProperties(prop);
 	}
 
+	/**
+	 * Converts a Properties object into a Record object.
+	 * @param prop Properties file with Record data
+	 * @return Record
+	 */
 	public static Record fromProperties(Properties prop) {
 		Record rec = new Record();
 		for (Object key : prop.keySet()) {
@@ -802,6 +875,13 @@ public class Record {
 		return rec;
 	}
 
+	/**
+	 * Reads a Record from a Properties file.
+	 * 
+	 * @param file A file with record data in properties format
+	 * @return Record
+	 * @throws IOException
+	 */
 	public static Record fromProperties(File file) throws IOException {
 		return fromProperties(new FileInputStream(file));
 	}

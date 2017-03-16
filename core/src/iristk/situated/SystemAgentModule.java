@@ -5,6 +5,7 @@ import iristk.system.InitializationException;
 import iristk.util.ListMap;
 import iristk.util.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +16,10 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 	private ListMap<String,Agent> bodyUserMap = new ListMap<>();
 	private int userIdCount = 0;
 	private ListMap<String,String> userSpaces = new ListMap<>();
+	private File staticFilePath;
 
-	public SystemAgentModule(String id) {
-		this.systemAgent = new SystemAgent(id, situation);
+	public SystemAgentModule(String id, File staticFilePath) {
+		this.systemAgent = new SystemAgent(id, situation, staticFilePath);
 		situation.getSystemAgents().put(id, systemAgent);
 		situation.addSituationListener(this);
 	}
@@ -323,6 +325,11 @@ public class SystemAgentModule extends SituationModule implements SituationListe
 
 	public SystemAgent getSystemAgent() {
 		return systemAgent;
+	}
+	
+	public void setStaticFilePath(File f)
+	{
+		this.staticFilePath = f;
 	}
 
 }

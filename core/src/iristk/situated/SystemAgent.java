@@ -3,6 +3,7 @@ package iristk.situated;
 import iristk.system.Event;
 import iristk.util.RandomList;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ public class SystemAgent extends Agent {
 	private Agent currentUser;
 	private Situation situation;
 	
+	private File staticFolder;
+	
 	private HashMap<String,Item> items = new HashMap<>(); 
 
 	public SystemAgentModule systemAgentModule = null;
@@ -31,6 +34,19 @@ public class SystemAgent extends Agent {
 		super(id);
 		this.expire = -1;
 		this.situation = situation;
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param situation
+	 * @param staticFolder The static folder of the system where the user data shall be stored in
+	 */
+	public SystemAgent(String id, Situation situation, File staticFolder) {
+		super(id);
+		this.expire = -1;
+		this.situation = situation;
+		this.staticFolder = staticFolder;
 	}
 	
 	public void setInteractionSpaces(Space... spaces) {
@@ -265,12 +281,31 @@ public class SystemAgent extends Agent {
 			currentUser = user;
 	}
 
+	/** 
+	 * Removes the agent from the users HashMap and saves the personal data of the agent.
+	 * @param user The user leaving
+	 */
 	public void removeUser(Agent user) {
+		if (user.has("AgentData")) {
+			user.agentdata.setLastSeen(); // sets the field lastSeen to the current timestamp
+			user.agentdata.save(staticFolder); // saves the user data
+		}
 		users.remove(user.id);
 	}
 	
+	/**
+	 * Removes an agent from the current list of users when the agent leaves.
+	 * @param userId The id of the user leaving
+	 */
 	public void removeUser(String userId) {
-		users.remove(userId);
+		if (users.containsKey(userId)) {
+			Agent user = users.get(userId);
+			if (user.agentdata != null) {
+				user.agentdata.setLastSeen(); // sets the field lastSeen to the current timestamp
+				user.agentdata.save(staticFolder); // saves the user data
+			}
+			users.remove(userId);
+		}
 	}
 
 	/**
