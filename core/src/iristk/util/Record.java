@@ -29,6 +29,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,6 +48,9 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.ParseException;
+
+import javafx.util.converter.LocalDateStringConverter;
+import javafx.util.converter.LocalDateTimeStringConverter;
 
 /**
  * A Record is essentially a map of key-value pairs (much like any java {@link java.util.Map}). However, it supports a convenient way of adding and accessing values deep in the hierarchy by using colon (:) notation.
@@ -315,7 +320,13 @@ public class Record {
 				Field setField = info.classFields.get(field);
 				if (setField != null) {
 					try {
-						setField.set(this, asType(value, setField.getType()));
+						if(setField.getType().equals(java.time.LocalDate.class)) {
+							setField.set(this, new LocalDateStringConverter().fromString((String) value));
+						} else if(setField.getType().equals(java.time.LocalDateTime.class)) {
+							setField.set(this, new LocalDateTimeStringConverter().fromString((String) value));
+						} else {
+							setField.set(this, asType(value, setField.getType()));
+						}
 						return;
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
@@ -538,6 +549,10 @@ public class Record {
 					json.add(key, ((Record)val).toJSON());
 				} else if (val instanceof List) {
 					json.add(key, toJsonArray((List)val));
+				} else if (val instanceof LocalDateTime) {
+					json.add(key, new LocalDateTimeStringConverter().toString((LocalDateTime) val));
+				} else if (val instanceof LocalDate) {
+					json.add(key, new LocalDateStringConverter().toString((LocalDate) val));
 				} else {
 					System.err.println("Warning: could not convert " + val.getClass() + " to JSON");
 				}
@@ -546,23 +561,22 @@ public class Record {
 		return json;
 	}
 	
+
+	
 	/**
 	 * Saves the record in JSON format to a file. If the file already exists, the content in the file is overwritten with the new record data.
 	 * 
-	 * @param file The file the record data are stored in
+	 * @param inputJSONfile The file the record data are stored in
 	 * @throws IOException
 	 */
-	public void toJSON(File file) throws IOException
-	{
-		if (file.getParent() != null) //Without this line it will throw a NullPointer when no parent is directly specified when creating the new file
-		{
-			if (!file.getParentFile().exists())
-			{
-				file.getParentFile().mkdirs();
+	public void toJSON (File inputJSONfile) throws IOException {
+		//Without the if the method will throw a NullPointer when no parent is directly specified when creating the new file
+		if (inputJSONfile.getParent() != null) {
+			if (!inputJSONfile.getParentFile().exists()) {
+				inputJSONfile.getParentFile().mkdirs();
 			}
 		}
-		System.out.println(file.getAbsolutePath());
-		OutputStream out = new FileOutputStream(file);
+		OutputStream out = new FileOutputStream(inputJSONfile);
 		final PrintStream printStream = new PrintStream(out);
 		printStream.print(toJSON().toString());
 		printStream.close();
@@ -587,6 +601,10 @@ public class Record {
 				arr.add(((Record)val).toJSON());
 			} else if (val instanceof List) {
 				arr.add(toJsonArray((List)val));
+			} else if (val instanceof LocalDateTime) {
+				arr.add(new LocalDateTimeStringConverter().toString((LocalDateTime) val));
+			} else if (val instanceof LocalDate) {
+				arr.add(new LocalDateStringConverter().toString((LocalDate) val));
 			} else {
 				System.err.println("Warning: could not convert " + val.getClass() + " to JSON");
 			}
@@ -804,10 +822,9 @@ public class Record {
 	 */
 	public void toProperties(File file) throws IOException {
 		Properties prop = toProperties();
-		if (file.getParent() != null) //Without this line it will throw a NullPointer when no parent is directly specified when creating the new file
-		{
-			if (!file.getParentFile().exists())
-			{
+		 //Without the if the method will throw a NullPointer when no parent is directly specified when creating the new file
+		if (file.getParent() != null) {
+			if (!file.getParentFile().exists()) {
 				file.getParentFile().mkdirs();
 			}
 		}

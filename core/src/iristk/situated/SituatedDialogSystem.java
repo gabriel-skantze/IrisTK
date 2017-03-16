@@ -33,6 +33,7 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 	private SituationPanel topPanel;
 	private SituationPanel sidePanel;
 	private SystemAgent systemAgent;
+	private File staticFilePath;
 
 	public SituatedDialogSystem(String name) throws Exception {
 		super(name);
@@ -65,7 +66,7 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 	 */
 	public SystemAgentFlow addSystemAgent(String name) throws InitializationException {
 		onlyOnce("Agent '" + name + "'");
-		SystemAgentModule systemAgentModule = new SystemAgentModule(name);
+		SystemAgentModule systemAgentModule = new SystemAgentModule(name, staticFilePath);
 		systemAgent = systemAgentModule.getSystemAgent();
 		situation = systemAgent.getSituation();
 		systemAgent.setInteractionDistance(2);
@@ -247,6 +248,13 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 		if (positionsFile.exists()) {
 			SituationModule.loadPositions(this, positionsFile);
 		}
+	}
+	
+	/**
+	 * @param staticFolder Path to the static folder of the system
+	 */
+	public void setStaticFilePath(File staticFolder) {
+		this.staticFilePath = staticFolder;
 	}
 
 }
