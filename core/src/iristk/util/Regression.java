@@ -44,6 +44,18 @@ public class Regression {
 	public double getMeanY() {
 		return mean_y;
 	}
+
+	public static Regression fromPairs(List<Pair<Double, Double>> pairs) {
+		double[] x = new double[pairs.size()];
+		double[] y = new double[pairs.size()];
+		int i = 0;
+		for (Pair<Double, Double> p : pairs) {
+			x[i] = p.getFirst();
+			y[i] = p.getSecond();
+			i++;
+		}
+		return new Regression(x, y, pairs.size());
+	}
 	
 	public static Regression fromList(List<Float> list, float xFactor) {
 		double[] x = new double[list.size()];
@@ -126,6 +138,8 @@ public class Regression {
 		//System.out.println("SSR  = " + ssr);
 	}
 	
+
+	
 	public static void main(String[] args) {
 		float[] fa = new float[] {
 		-0.03438535f,
@@ -151,5 +165,10 @@ public class Regression {
 		
 		System.out.println(Regression.fromArray(fa, 0.1f).getSlope());
 	}
+
+	public double getR() {
+		return Math.sqrt(R2);
+	}
+
 
 }

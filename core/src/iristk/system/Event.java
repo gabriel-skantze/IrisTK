@@ -46,6 +46,10 @@ public class Event extends Record {
 		setName(name);
 	}
 	
+	public Event(Event event) {
+		this(event.getName(), event.getEventParams());
+	}
+	
 	@RecordField(name="event_id")
 	public void setId(String id) {
 		this.id = id;
