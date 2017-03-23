@@ -66,6 +66,7 @@ import java.lang.String;
 import java.lang.Object;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 
 public class FlowCompiler {
 
@@ -1410,7 +1411,7 @@ public class FlowCompiler {
 			throw new FlowCompilerException("Directory " + outputDir.getAbsolutePath() + " does not exist");
 		}	
 		DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-		StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, Locale.US, null);
+		StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, Locale.US, StandardCharsets.UTF_8);
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager.getJavaFileObjectsFromStrings(Arrays.asList(srcFile.getAbsolutePath()));
 		Iterable<String> args = Arrays.asList("-d", outputDir.getAbsolutePath());
 		JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, diagnostics, args, null, compilationUnits);
