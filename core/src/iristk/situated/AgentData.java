@@ -51,6 +51,9 @@ public class AgentData extends Record {
 
 	@RecordField
 	public String affiliation;
+	
+	@RecordField
+	public String slackName;
 
 	public AgentData(String id) {
 		super(id);
@@ -225,6 +228,22 @@ public class AgentData extends Record {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Returns the slack user name of the user
+	 * @return slackName
+	 */
+	public String getSlackName() {
+		return slackName;
+	}
+
+	/**
+	 * Sets the slack user name of the user
+	 * @param slackName
+	 */
+	public void setSlackName(String slackName) {
+		this.slackName = slackName;
 	}
 
 }
