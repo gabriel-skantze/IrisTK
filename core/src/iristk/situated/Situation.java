@@ -126,7 +126,8 @@ public class Situation {
 				//System.out.println(item.id + " " + item.location);
 				//System.out.println(sensor.id + " " + sensor.location);
 				item.location = locate(sensor, item.location);
-				item.rotation = item.rotation.add(sensor.rotation);
+				if (sensor != null)
+					item.rotation = item.rotation.add(sensor.rotation);
 				items.put(itemId, item);
 			}
 		}

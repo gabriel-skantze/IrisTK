@@ -142,33 +142,31 @@ public class Launcher {
 	}
 
 	public static void setupEclipse(String[] args) {
-		try {
-			ArgParser parser = new ArgParser();
-			parser.allowRestArguments(true);
-			parser.addBooleanArg("i", "Independent project");
-			parser.parse(args);
-			boolean independent = (Boolean)parser.get("i");
-			List<String> rest = parser.getRestArguments();
-			Project proj = null;
-			if (rest.size() == 0) {
-				proj = Project.main;
-			} else {
-				String newFront= rest.get(0).substring(0, 1).replaceAll("[\\./]","");
-				rest.set(0, newFront+rest.get(0).substring(2));
-				File pfile = new File(rest.get(0), "project.properties");
-				if (!pfile.exists()) {
-					//System.out.println("Could not find " + pfile.getAbsolutePath());
-					System.exit(0);
-				}
-				proj = Project.readProject(pfile);
-				proj.updatePackages();
-			}
-			setupEclipse(proj, independent);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+        try {
+            ArgParser parser = new ArgParser();
+            parser.allowRestArguments(true);
+            parser.addBooleanArg("i", "Independent project");
+            parser.parse(args);
+            boolean independent = (Boolean)parser.get("i");
+            List<String> rest = parser.getRestArguments();
+            Project proj = null;
+            if (rest.size() == 0) {
+                proj = Project.main;
+            } else {
+                File pfile = new File(new File(rest.get(0)).getCanonicalPath(), "project.properties");
+                if (!pfile.exists()) {
+                    System.out.println("Could not find " + pfile.getAbsolutePath());
+                    System.exit(0);
+                }
+                proj = Project.readProject(pfile);
+                proj.updatePackages();
+            }
+            setupEclipse(proj, independent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}	
+	
 	private static void writeProjectFile(File file, String projectName) throws IOException {
 		System.out.println("Creating file " + file.getAbsolutePath());
 		Utils.writeTextFile(file, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"

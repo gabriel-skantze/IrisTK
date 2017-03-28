@@ -159,6 +159,12 @@ public class Sound {
 		return AudioUtil.bytesToShort(getAudioFormat(), soundBytes[p], soundBytes[p + 1]);
 	}
 	
+	public void setSample(int pos, int channel, short sample) {
+		int p = pos * getAudioFormat().getFrameSize() + channel * 2;
+		double[] db = new double[]{(double)sample / Short.MAX_VALUE};
+		AudioUtil.doublesToBytes(getAudioFormat(), db, 0, 1, soundBytes, p);
+	}
+	
 	public float getSecondsLength() {
 		return getSampleLength() / audioFormat.getSampleRate();
 	}
@@ -257,6 +263,25 @@ public class Sound {
 		byte[] buf = new byte[(((int) ((getBytes().length) * (sampleRate / getAudioFormat().getSampleRate()))) / 2) * 2];
 		AudioUtil.resample(getBytes(), getAudioFormat(), buf, sampleRate);
 		Sound s = new Sound(buf, AudioUtil.setSampleRate(getAudioFormat(), sampleRate));
+		return s;
+	}
+
+	public Sound mix(Sound sound) {
+		byte[] buf = new byte[soundBytes.length];
+		Sound s = new Sound(buf, getAudioFormat());
+		for (int i = 0; i < getSampleLength() && i < sound.getSampleLength(); i++) {
+			s.setSample(i, 0, (short) ((getSample(i, 0) + sound.getSample(i, 0)) / 2));
+		}
+		return s;
+		
+	}
+
+	public Sound amplify(double d) {
+		byte[] buf = new byte[soundBytes.length];
+		Sound s = new Sound(buf, getAudioFormat());
+		for (int i = 0; i < getSampleLength(); i++) {
+			s.setSample(i, 0, (short) ((getSample(i, 0) * d)));
+		}
 		return s;
 	}
 	
