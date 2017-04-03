@@ -133,4 +133,11 @@ public class Graph<Vertex, Edge> {
 		weights.put(e, weight);
 	}
 
+	public static void main(String[] args) {
+		Graph<Integer,String> g = new Graph<>();
+		g.addEdge("a", 0, 1, 1);
+		g.addEdge("b", 1, 2, 1);
+		System.out.println(g.getShortestPath(0, 2));
+	}
+	
 }

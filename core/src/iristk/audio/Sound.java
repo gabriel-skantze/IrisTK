@@ -22,6 +22,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+
 
 public class Sound {
 
@@ -273,7 +275,17 @@ public class Sound {
 			s.setSample(i, 0, (short) ((getSample(i, 0) + sound.getSample(i, 0)) / 2));
 		}
 		return s;
-		
+	}
+	
+	public Sound mixStereo(Sound sound) {
+		byte[] buf = new byte[soundBytes.length * 2];
+		Arrays.fill(buf, (byte)0);
+		Sound s = new Sound(buf, AudioUtil.setChannels(getAudioFormat(), 2));
+		for (int i = 0; i < getSampleLength() && i < sound.getSampleLength(); i++) {
+			s.setSample(i, 0, (short) getSample(i, 0));
+			s.setSample(i, 1, (short) sound.getSample(i, 0));
+		}
+		return s;
 	}
 
 	public Sound amplify(double d) {
