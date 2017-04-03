@@ -41,6 +41,10 @@ public class Sound {
 	}
 	
 	public Sound(File file, float start, float length, int channel) throws UnsupportedAudioFileException, IOException {
+		if (start < 0) {
+			length += start;
+			start = 0;
+		}
 		load(AudioSystem.getAudioInputStream(file), start, length, channel);
 	}
 	

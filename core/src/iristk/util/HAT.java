@@ -70,14 +70,18 @@ public class HAT  {
 			for (Segment segment : annotation.getSegments().getSegment()) {
 				if (trackIds == null || trackIds.contains(segment.getTrack())) {
 					Source source = getSource(annotation, segment.getSource());
-					Sound sound = getSound(source, segment);
-					RecResult result = EndpointerRecognizer.recognizeSound(sound, listener);
-					String text = result.getString("text", "").replace(RecResult.NOMATCH, "").trim();
-					if (asrFeature == null)
-						setText(segment, text);
-					else
-						setFeature(segment, asrFeature, text);
-					System.out.println(segment.getId() + " " + text);
+					try {
+						Sound sound = getSound(source, segment);
+						RecResult result = EndpointerRecognizer.recognizeSound(sound, listener);
+						String text = result.getString("text", "").replace(RecResult.NOMATCH, "").trim();
+						if (asrFeature == null)
+							setText(segment, text);
+						else
+							setFeature(segment, asrFeature, text);
+						System.out.println(segment.getId() + " " + text);
+					} catch (Exception e) {
+						System.out.println(segment.getId() + " COULD NOT READ SOUND");
+					}
 				}
 			}
 			writeAnnotation(new File(outputFile), annotation);
