@@ -76,6 +76,7 @@ public class Language extends Record {
 	public static final Language SLOVENIAN = new Language("sl-SI");
 	public static final Language FINNISH = new Language("fi-FI");
 	public static final Language SWEDISH = new Language("sv-SE");
+	public static final Language SWEDISH_FI = new Language("sv-FI");
 	public static final Language VIETNAMESE = new Language("vi-VN");
 	public static final Language TURKISH = new Language("tr-TR");
 	public static final Language GREEK = new Language("el-GR");
@@ -104,6 +105,7 @@ public class Language extends Record {
 	public static final Language THAI = new Language("th-TH");
 	public static final Language KOREAN = new Language("ko-KR");
 	public static final Language JAPANESE = new Language("ja-JP");
+	public static final Language MANDARIN = new Language("zh-cn");
 
 	private static Map<String,String> names = new HashMap<>();
 	
@@ -163,6 +165,7 @@ public class Language extends Record {
 		names.put("sl-SI","Slovenian (Slovenia)");
 		names.put("fi-FI","Finnish (Finland)");
 		names.put("sv-SE","Swedish (Sweden)");
+		names.put("sv-FI", "Swedish (Finland)");
 		names.put("vi-VN","Vietnamese (Vietnam)");
 		names.put("tr-TR","Turkish (Turkey)");
 		names.put("el-GR","Greek (Greece)");
@@ -191,7 +194,7 @@ public class Language extends Record {
 		names.put("th-TH","Thai (Thailand)");
 		names.put("ko-KR","Korean (South Korea)");
 		names.put("ja-JP","Japanese (Japan)");
-
+		names.put("zh-cn", "Chinese (Mandarin)");
 	}
 	
 	@RecordField
