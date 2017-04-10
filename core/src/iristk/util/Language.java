@@ -67,6 +67,7 @@ public class Language extends Record {
 	public static final Language LITHUANIAN = new Language("lt-LT");
 	public static final Language HUNGARIAN = new Language("hu-HU");
 	public static final Language DUTCH = new Language("nl-NL");
+	public static final Language DUTCH_BE = new Language("nl-BE");
 	public static final Language NORWEGIAN = new Language("nb-NO");
 	public static final Language POLISH = new Language("pl-PL");
 	public static final Language PORTUGUESE_BR = new Language("pt-BR");
