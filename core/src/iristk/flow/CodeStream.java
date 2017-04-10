@@ -32,8 +32,9 @@ public class CodeStream extends PrintWriter {
 				println(line);
 			}
 		} else {
-			if (string.startsWith("break") && lastLine.startsWith("break"))
+			if (string.startsWith("break") && lastLine.startsWith("break")){
 				return;
+			}
 			lastLine = string;
 			int ind = indent;
 			if (string.startsWith("}")) {

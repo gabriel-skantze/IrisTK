@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 public class SystemAgent extends Agent {
 	/** Maximum number of users the system will interact with.*/
 	private int maxUsers = 2;
@@ -38,9 +40,9 @@ public class SystemAgent extends Agent {
 	
 	/**
 	 * 
-	 * @param id
-	 * @param situation
-	 * @param staticFolder The static folder of the system where the user data shall be stored in
+	 * @param id - identification of this SystemAgent.
+	 * @param situation - as situation model this SystemAgent exists in.
+	 * @param staticFolder - folder where user data shall be stored.
 	 */
 	public SystemAgent(String id, Situation situation, File staticFolder) {
 		super(id);
@@ -54,8 +56,9 @@ public class SystemAgent extends Agent {
 		for (Space space : spaces) {
 			interactionSpaces.add(space);
 		}
-		if (systemAgentModule != null)
+		if (systemAgentModule != null) { 
 			systemAgentModule.sendSenseSituation();
+		}
 	}
 
 	public void setInteractionDistance(double d) {
@@ -71,8 +74,9 @@ public class SystemAgent extends Agent {
 	 * Determines whether a body is in a specific interaction space
 	 */
 	public boolean isInInteractionSpace(String spaceName, Body body) {
-		if (interactionSpaces.size() == 0 || spaceName == null)
+		if (interactionSpaces.size() == 0 || spaceName == null) {
 			return true;
+		}
 		for (Space space : interactionSpaces) {
 			if (space.name.equals(spaceName) && space.contains(body.getHeadLocation().subtract(this.getHeadLocation()))) {
 				return true;
@@ -85,8 +89,9 @@ public class SystemAgent extends Agent {
 	 * Determines whether a body is in any interaction space
 	 */
 	public boolean isInInteractionSpace(Body body) {
-		if (interactionSpaces.size() == 0)
+		if (interactionSpaces.size() == 0) {
 			return true;
+		}
 		for (Space space : interactionSpaces) {
 			if (space.contains(body.getHeadLocation().subtract(this.getHeadLocation()))) {
 				return true;
@@ -101,8 +106,9 @@ public class SystemAgent extends Agent {
 	public List<String> getInteractionSpaceNames() {
 		List<String> names = new ArrayList<>();
 		for (Space space : interactionSpaces) {
-			if (!names.contains(space.name))
+			if (!names.contains(space.name)) {
 				names.add(space.name);
+			}
 		}
 		return names;
 	}
@@ -157,28 +163,34 @@ public class SystemAgent extends Agent {
 	 * it must match. If a tag has a - prefix, it must not match. 
 	 */
 	public boolean isSelected(Agent agent, String selection) {
-		if (selection == null)
+		if (selection == null) {
 			return true;
+		}
 		selection = selection.trim();
-		if (selection.isEmpty())
+		if (selection.isEmpty()) {
 			return true;
+		}
 		boolean oneof = false;
 		boolean onehit = false;
 		for (String tag : selection.split(" ")) {
-			if (tag.isEmpty())
+			if (tag.isEmpty()) {
 				continue;
+			}
 			if (tag.startsWith("+")) {
 				tag = tag.substring(1);
-				if (!hasTag(agent, tag))
+				if (!hasTag(agent, tag)) {
 					return false;
+				}
 			} else if (tag.startsWith("-")) {
 				tag = tag.substring(1);
-				if (hasTag(agent, tag))
+				if (hasTag(agent, tag)) {
 					return false;
+				}
 			} else {
 				oneof = true;
-				if (hasTag(agent, tag))
+				if (hasTag(agent, tag)) {
 					onehit = true;
+				}
 			}
 		}
 		if (oneof) {
@@ -195,10 +207,12 @@ public class SystemAgent extends Agent {
 	 * agent (matches if it evaluated to true). 
 	 */
 	public boolean hasTag(Agent agent, String tag) {
-		if (agent.getBoolean(tag))
+		if (agent.getBoolean(tag)) {
 			return true;
-		if (isInInteractionSpace(tag, agent))
-			return true;
+		}
+		if (isInInteractionSpace(tag, agent)) {
+			return true; 
+		}
 		return false;
 	}
 
@@ -215,8 +229,9 @@ public class SystemAgent extends Agent {
 	public int getNumUsers(String selection) {
 		int num = 0;
 		for (Agent user : users.values()) {
-			if (isSelected(user, selection))
+			if (isSelected(user, selection)) {
 				num++;
+			}
 		}
 		return num;
 	}
@@ -226,17 +241,19 @@ public class SystemAgent extends Agent {
 	}
 	
 	public Agent getUser(String agentId) {
-		if (isUser(agentId))
+		if (isUser(agentId)) {
 			return users.get(agentId);
-		else
-			return getNobody();
+		} else {
+			return getNobody(); 
+		}
 	}
 	
 	public Agent getUser(int i) {
-		if (i < users.size())
+		if (i < users.size()) {
 			return new ArrayList<Agent>(users.values()).get(i);
-		else
+		} else {
 			return getNobody();
+		}
 	}
 
 	public Agent getNobody() {
@@ -251,10 +268,12 @@ public class SystemAgent extends Agent {
 	 * If the "sensor" parameter is provided, it is used to identify the most likely agent through the situation model.
 	 */
 	public String getUserId(Event event) {
-		if (event.get("user") != null)
+		if (event.get("user") != null) {
 			return event.getString("user");
-		if (event.get("sensor") == null)
+		}
+		if (event.get("sensor") == null) {
 			return Agent.NOBODY;
+		}
 		Sensor sensor = situation.getSensors().get(event.get("sensor"));
 		Agent minAgent = null;
 		double minDist = Double.MAX_VALUE;
@@ -265,10 +284,11 @@ public class SystemAgent extends Agent {
 				minDist = dist;
 			}
 		}
-		if (minAgent == null)
+		if (minAgent == null) {
 			return Agent.NOBODY;
-		else		
+		} else {		
 			return minAgent.id;
+		}
 	}
 	
 	public Agent getUser(Event event) {
@@ -277,8 +297,9 @@ public class SystemAgent extends Agent {
 	
 	public void addUser(Agent user) {
 		users.put(user.id, user);
-		if (currentUser == null)
+		if (currentUser == null) {
 			currentUser = user;
+		}
 	}
 
 	/** 
@@ -323,14 +344,16 @@ public class SystemAgent extends Agent {
 	 */
 	public Agent getOtherUserThan(String agentId, String selection) {
 		List<Agent> users = getUsers(selection);
-		if (users.size() == 0)
+		if (users.size() == 0) {
 			return getNobody();
-		else if (users.size() == 1)
+		} else if (users.size() == 1) {
 			return users.get(0);
+		}
 		RandomList.shuffle(users);
 		for (Agent user : users) {
-			if (!user.id.equals(agentId))
+			if (!user.id.equals(agentId)) {
 				return user;
+			}
 		}
 		return null;
  	}
@@ -378,45 +401,51 @@ public class SystemAgent extends Agent {
 
 	public boolean hasUserAttending() {
 		for (Agent agent : getUsers()) {
-			if (agent.isAttending(id))
+			if (agent.isAttending(id)) {
 				return true;
+			}
 		}
 		return false;
 	}
 	
 	public Agent getAttendedUser() {
 		for (Agent agent : getUsers()) {
-			if (isOnlyAttending(agent.id))
+			if (isOnlyAttending(agent.id)) {
 				return agent;
+			}
 		}
 		return null;
 	}
 	
 	public Agent getCurrentUser() {
-		if (currentUser != null && isUser(currentUser))
+		if (currentUser != null && isUser(currentUser)) {
 			return currentUser;
-		else
+		} else {
 			return getNobody();
+		}
 	}
 
 	public Agent getRandomUser() {
-		if (users.size() == 0)
+		if (users.size() == 0) {
 			return getNobody();
+		}
 		return new ArrayList<Agent>(users.values()).get(new Random().nextInt(users.size()));
 	}
 	
 	public Agent getRandomUser(String selection) {
 		List<Agent> users = getUsers(selection);
-		if (users.size() == 0)
+		if (users.size() == 0) {
 			return getNobody();
+		}
 		return new ArrayList<Agent>(users).get(new Random().nextInt(users.size()));
 	}
 	
 	@Override
 	public void setAttending(String target) {
 		super.setAttending(target);
-		if (hasUser(target))
+		if (hasUser(target)) {
 			currentUser = getUser(target);
+		}
 	}
 	
 	public boolean isAttending(Event event) {
@@ -445,8 +474,9 @@ public class SystemAgent extends Agent {
 	public List<Agent> getUsers(String selection) {
 		List<Agent> list = new ArrayList<Agent>();
 		for (Agent user : users.values()) {
-			if (isSelected(user, selection))
+			if (isSelected(user, selection)) {
 				list.add(user);
+			}
 		}
 		return list;
 	}
@@ -473,8 +503,9 @@ public class SystemAgent extends Agent {
 	}
 
 	public static String processDisplay(String text, String display) {
-		if (display == null)
+		if (display == null) {
 			display = text;
+		}
 		if (display != null) {
 			display = display.replaceAll("<.*?>", "");
 			display = display.replaceAll("\\s+", " ");

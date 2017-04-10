@@ -48,7 +48,7 @@ import iristk.util.Record;
 import iristk.util.Utils;
 
 public class SynthesizerModule extends IrisModule {
-	
+
 	private static Logger logger = IrisUtils.getLogger(SynthesizerModule.class);
 
 	//private Synthesizer synthesizer;
@@ -64,7 +64,7 @@ public class SynthesizerModule extends IrisModule {
 	//private HashMap<Integer,SoundPlayer> soundPlayers = new HashMap<>();
 
 	private boolean speaking = false;
-	
+
 	private VoiceList voices = new VoiceList();
 
 	private List<Synthesizer> synthesizers = new ArrayList<>();
@@ -75,7 +75,7 @@ public class SynthesizerModule extends IrisModule {
 	public SynthesizerModule() {
 		this.player = new SoundPlayer(AudioUtil.getAudioFormat(16000, 1));
 	}
-	
+
 	public SynthesizerModule(AudioTarget audioTarget) {
 		this.player = new SoundPlayer(audioTarget);
 	}
@@ -98,7 +98,7 @@ public class SynthesizerModule extends IrisModule {
 		this.synthesizer = synthesizer;
 		//setSoundplayer();
 	}
-	*/
+	 */
 
 	/*
 	private void setSoundplayer() throws InitializationException {
@@ -118,7 +118,7 @@ public class SynthesizerModule extends IrisModule {
 			this.player = soundPlayers.get(sampleRate);
 		}
 	}
-	*/
+	 */
 
 	//public void setPreferredAudioDevice(String deviceName) {
 	//	this.preferredAudioDevice = deviceName;
@@ -235,7 +235,7 @@ public class SynthesizerModule extends IrisModule {
 		speechQueue.clear();
 		abortSpeechAction();
 	}
-	
+
 	private void abortSpeechAction() {
 		if (speechThread != null) {
 			speechThread.abortSpeechAction();
@@ -286,12 +286,12 @@ public class SynthesizerModule extends IrisModule {
 				while (true) {
 					sa = null;
 					sa = speechQueue.take();
-					
+
 					if (currentVoice == null) {
 						logger.info("No voice selected, using " + voices.getFirst().getName());
 						setVoice(voices.getFirst());
 					}
-					
+
 					if (sa.text == null ){ //Changed.
 						logger.warn("AUDIO , sa.text is null Line 296 in synthesizermodule");
 						sa.text = "";
@@ -305,8 +305,7 @@ public class SynthesizerModule extends IrisModule {
 
 					Transcription trans = null;
 					File wavFile = null;
-
-					if (sa.audio != null) {
+					if (sa.audio != null) {//when is this block true?
 						wavFile = getAudioFile(sa.audio, currentVoice);
 						if (wavFile != null) {
 							if (sa.phones != null) {
@@ -319,14 +318,14 @@ public class SynthesizerModule extends IrisModule {
 						} else {
 							logger.error("Audio file not found: " + sa.audio);
 						}
-					}
+					} 
 
 					if (wavFile == null) {
 						Pair<Transcription,File> pair = synthesizeToCache(sa.text, currentEngine); 
 						trans = pair.getFirst();
 						wavFile = pair.getSecond();
 					}
-					
+
 					String[] textWords = getTextWords(sa.text);
 					String[] transWords = trans.getWords().toArray(new String[0]);
 					EditDistance trans2text = new EditDistance(transWords, textWords) {
@@ -340,11 +339,13 @@ public class SynthesizerModule extends IrisModule {
 
 						Event lipsync = new Event("action.lipsync");
 						lipsync.put("action", sa.action);
-						if (startMsec > 0)
+						if (startMsec > 0) {
 							lipsync.put("start", startMsec);
+						}
 						lipsync.put("phones", trans);
-						if (agentName != null)
+						if (agentName != null) {
 							lipsync.put("agent", agentName);
+						}
 						send(lipsync);
 						AWAIT_LIPSYNC:
 							while (true) {
@@ -357,7 +358,7 @@ public class SynthesizerModule extends IrisModule {
 									break AWAIT_LIPSYNC;
 								}
 							}
-					}
+					} 
 
 					if (sa.abort) continue;
 
@@ -369,7 +370,7 @@ public class SynthesizerModule extends IrisModule {
 							sound = sound.resample(16000);
 							sound.save(wavFile);
 						}
-						
+
 						long startTime = System.currentTimeMillis();
 						//if (player.getAudioFormat().getSampleRate() != sound.getAudioFormat().getSampleRate()) {
 						//	try {
@@ -393,13 +394,15 @@ public class SynthesizerModule extends IrisModule {
 						Event onset = new Event("monitor.speech.start");
 						onset.put("action", sa.action);
 						onset.put("text", sa.text);
-						if (startMsec > 0)
+						if (startMsec > 0) {
 							onset.put("start", startMsec);
+						}
 						onset.put("length", (int)(sound.getSecondsLength() * 1000f));
 						//if (prominence != null)
 						//	onset.put("prominence", prominence);
-						if (agentName != null)
+						if (agentName != null) {
 							onset.put("agent", agentName);
+						}
 						onset.putIfNotNull("display", sa.display);
 						onset.putIfNotNull("audio", sa.audio);
 						send(onset);
@@ -439,10 +442,12 @@ public class SynthesizerModule extends IrisModule {
 										wordpos++;
 									}
 									transpos++;
-									if (transpos < trans.phones.size())
+									if (transpos < trans.phones.size()) {
 										phone = trans.phones.get(transpos);
-									else
+									}
+									else {
 										phone = null;
+									}
 								}
 								Thread.sleep(10);
 							}
@@ -452,7 +457,7 @@ public class SynthesizerModule extends IrisModule {
 							}
 						}
 						//System.out.println("Done");
-						
+
 						if (markpos >= 0) {
 							Event prom = new Event("monitor.speech.mark");
 							prom.put("name", textWords[markpos].replace("/", ""));
@@ -466,10 +471,10 @@ public class SynthesizerModule extends IrisModule {
 						if (trans != null && endPosition < trans.length() - 100) {
 							offset.put("stopped", endPosition);
 						}
-						if (agentName != null)
+						if (agentName != null) {
 							offset.put("agent", agentName);
+						}
 						send(offset);
-
 						if (speechQueue.size() == 0) {
 							speaking = false;
 							monitorDone();
@@ -484,6 +489,7 @@ public class SynthesizerModule extends IrisModule {
 				}
 
 			} catch (InterruptedException e1) {
+				//Ignoring interruptedException
 			} catch (VoiceNotFoundException e) {
 				logger.error("No voice found");
 			} catch (InitializationException e) {
@@ -526,6 +532,7 @@ public class SynthesizerModule extends IrisModule {
 				id = id.substring(0, 100) + text.hashCode();
 			}
 		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 			id = "" + text.hashCode();
 		}
 		return id;
@@ -533,29 +540,32 @@ public class SynthesizerModule extends IrisModule {
 
 	public static int findMark(int startPos, String[] words) {
 		for (int i = startPos; i < words.length; i++) {
-			if (words[i].startsWith("/"))
+			if (words[i].startsWith("/")) {
 				return i;
+			}
 		}
 		return -1;
 	}
 
 	public void monitorDone() {
 		Event done = new Event("monitor.speech.done");
-		if (agentName != null)
+		if (agentName != null) {
 			done.put("agent", agentName);
+		}
 		send(done);
 	}
-	
+
 	public static void main(String[] args) throws URISyntaxException {
 		URI uri = new URI("iristk://sing/songs/hej");
 		System.out.println(uri.getHost());;
 		System.out.println(uri.getPath());;
 		System.out.println("c:\\".matches("\\w:.*"));;
 	}
-	
+
 	public static File getAudioFile(String audio, Voice voice) {
-		if (!audio.toLowerCase().endsWith(".wav"))
+		if (!audio.toLowerCase().endsWith(".wav")) {
 			audio = audio + ".wav";
+		}
 		if (audio.matches("https?:.*")) {
 			FileOutputStream fos = null;
 			try {
@@ -577,6 +587,7 @@ public class SynthesizerModule extends IrisModule {
 					try {
 						fos.close();
 					} catch (IOException e) {
+						//Ignoring IOException
 					}
 				}
 			}
@@ -584,26 +595,29 @@ public class SynthesizerModule extends IrisModule {
 		} 
 		if (audio.matches("\\w:.*")) {
 			// A local file with absolute path
-			if (new File(audio).exists())
+			if (new File(audio).exists()) {
 				return new File(audio);
-			else
+			} else {
 				return null;
+			}
 		}
 		File file = Project.parseURI(audio);
 		if (file != null) {
 			// iristk://...
-			if (file.exists())
+			if (file.exists()) {
 				return file;
-			else
+			} else {
 				return null;
+			}
 		} 
 		File prerecFile = new File(voice.getPrerecPath(), audio);
 		// A file in the prerec folder
-		if (prerecFile.exists())
+		if (prerecFile.exists()) {
 			return prerecFile;
+		}
 		return null;
 	}
-	
+
 	private static Transcription getTranscription(File audioFile, SynthesizerEngine engine, String text) {
 		Transcription trans = null;
 		try {
@@ -626,7 +640,7 @@ public class SynthesizerModule extends IrisModule {
 		}
 		return trans;
 	}
-	
+
 	private static String[] getTextWords(String str) {
 		return str.replaceAll(" *<mark name=\"(.*?)\"/> *", " /$1/ ").
 				replaceAll("<.*?>", "").
@@ -639,7 +653,7 @@ public class SynthesizerModule extends IrisModule {
 	//	String[] words = getWords("hej <mark id=\"point\"/>, what's <break/>  <usel ke=\"ss\">is</usel> your name");
 	//	System.out.println(Arrays.asList(words));
 	//}
-	
+
 	public static Pair<Transcription,File> synthesizeToCache(String synthText, SynthesizerEngine engine) {
 		Transcription trans = null;
 		String cacheId = cacheId(synthText);
@@ -650,7 +664,7 @@ public class SynthesizerModule extends IrisModule {
 		File cachePath = engine.getVoice().getCachePath();
 		File phoFile = new File(cachePath, cacheId + ".pho");
 		File wavFile = new File(cachePath, cacheId + ".wav");
-		
+
 		if (!wavFile.exists() || !phoFile.exists()) {
 			// Synthesize
 			trans = engine.synthesize(removeMarks(synthText), wavFile);
@@ -662,7 +676,7 @@ public class SynthesizerModule extends IrisModule {
 				double max = Double.MIN_VALUE;
 				Phone maxphone = null;
 				for (Phone phone : trans.phones) {
-					if (phone.name.matches(".*[AOUEIY].*")) {
+					if (phone.name.matches(".*[AOUEIY].*")) {//?
 						double power = AudioUtil.power(samples, 
 								AudioUtil.secondLengthToSamples(sound.getAudioFormat(), phone.start), 
 								AudioUtil.secondLengthToSamples(sound.getAudioFormat(), phone.end - phone.start));
@@ -712,11 +726,11 @@ public class SynthesizerModule extends IrisModule {
 	public void setVoice(Language language, Gender gender) throws VoiceNotFoundException, InitializationException {
 		setVoice(voices.getByLanguage(language).getByGender(gender).getFirst());
 	}
-	
+
 	public void setVoice(String name) throws VoiceNotFoundException, InitializationException {
 		setVoice(voices.getByName(name).getFirst());
 	}
-	
+
 	public void setVoice(Gender gender) throws VoiceNotFoundException, InitializationException {
 		if (currentVoice != null) {
 			setVoice(voices.getByGender(gender).getFirst());
@@ -724,20 +738,18 @@ public class SynthesizerModule extends IrisModule {
 			setVoice(voices.getByLanguage(currentVoice.getLanguage()).getByGender(gender).getFirst());
 		}
 	}
-	
+
 	public void setVoice(Voice voice) throws VoiceNotFoundException, InitializationException {
 		for (Synthesizer synth : synthesizers) {
-			for (Voice v : synth.getVoices()) {
-				if (voice == v) {
-					if (engines.containsKey(voice)) {
-						currentEngine = engines.get(voice);
-					} else {
-						currentEngine = synth.getEngine(voice);
-						engines.put(voice, currentEngine);
-					}
-					this.currentVoice = voice;
-					return;
+			if (synth.getVoices().contains(voice)) {
+				if (engines.containsKey(voice)) {
+					currentEngine = engines.get(voice);
+				} else {
+					currentEngine = synth.getEngine(voice);
+					engines.put(voice, currentEngine);
 				}
+				this.currentVoice = voice;
+				return;
 			}
 		}
 		throw new VoiceNotFoundException(voice);
@@ -750,11 +762,11 @@ public class SynthesizerModule extends IrisModule {
 	public Voice getCurrentVoice() {
 		return currentVoice;
 	}
-	
+
 	public SynthesizerEngine getCurrentEngine() {
 		return currentEngine;
 	}
-	
+
 	public void setAgentName(String name) {
 		this.agentName = name;
 	}

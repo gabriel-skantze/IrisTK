@@ -54,7 +54,7 @@ public class SituatedDialogSystem extends AbstractDialogSystem {
 
 	/**
 	 * Adds a default system agent with the name "system"
-	 * @return The created SystemAgentModule
+	 * @return created SystemAgentFlow
 	 */
 	public SystemAgentFlow addSystemAgent() throws InitializationException {
 		return addSystemAgent("system");

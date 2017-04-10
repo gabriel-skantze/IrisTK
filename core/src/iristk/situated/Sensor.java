@@ -15,19 +15,19 @@ import iristk.util.Record;
 
 public class Sensor extends Item {
 
-	// Creates a sensor with direction and FOV
+	/** Creates a sensor with direction and FOV */
 	public Sensor(String id, Location location, Rotation rotation) {
 		super(id);
 		this.location = location;
 		this.rotation = rotation;
 	}
 
-	// Creates a sensor without location or direction
+	/** Creates a sensor without location or direction */
 	public Sensor(String id) {
 		this(id, null, null);
 	}
 
-	// Creates a sensor without direction
+	/** Creates a sensor without direction */
 	public Sensor(String id, Location location) {
 		this(id, location, null);
 	}
