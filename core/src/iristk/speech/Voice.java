@@ -70,9 +70,13 @@ public class Voice {
 	}
 	
 	public String getUniqueName() {
-		return synthesizer.getName() + " - " + getName() + " - " + getLanguage().getCode();
+		return synthesizer.getName() + " - " + getName();
 	}
 
+	public Synthesizer getSynthesizer() {
+		return synthesizer;
+	}
+	
 	boolean supportsTranscription() { 
 		return supportsTranscription;
 	}
