@@ -70,7 +70,8 @@ public class Voice {
 	}
 	
 	public String getUniqueName() {
-		return synthesizer.getName() + " - " + getName();
+		// voice.getName() + " ("+voice.getLanguage().getCode()+") - "+synthesizer.getName()
+		return getName() + " ("+getLanguage().getCode()+") - "+synthesizer.getName();
 	}
 
 	public Synthesizer getSynthesizer() {
