@@ -26,6 +26,11 @@ public class SystemAgent extends Agent {
 	private File staticFolder;
 	
 	private HashMap<String,Item> items = new HashMap<>(); 
+	
+	//The blinking is enabled in all skills by default
+	private boolean blinkingEnabled = true;
+	//The random face movements are enabled in all skills by default
+	private boolean randomMovementsEnabled = true;
 
 	public SystemAgentModule systemAgentModule = null;
 	
@@ -511,6 +516,44 @@ public class SystemAgent extends Agent {
 			display = display.replaceAll("\\s+", " ");
 		}
 		return display;
+	}
+
+	/**
+	 * Returns if the agent should perform the blinking action or not
+	 * 
+	 * @return blinkingEnabled
+	 */
+	public boolean shouldBlink() {
+		return blinkingEnabled;
+	}
+	
+
+	/**
+	 * Controls if the agent should perform the blinking movement
+	 * 
+	 * @param b true if the agent should blink, false otherwise
+	 */
+	public void enableBlinking(boolean b) {
+		blinkingEnabled = b;
+	}
+	
+	/**
+	 * Returns if the agent should perform the random facial movements or not
+	 * 
+	 * @return randomMovementsEnabled
+	 */
+	public boolean shouldPerformRandomMovements() {
+		return randomMovementsEnabled;
+	}
+	
+
+	/**
+	 * Controls if the agent should perform the random facial movements.
+	 * 
+	 * @param b true if the agent should perform random movements, false otherwise
+	 */
+	public void enableRandomMovements(boolean b) {
+		randomMovementsEnabled = b;
 	}
 	
 }
