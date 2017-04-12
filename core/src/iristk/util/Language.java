@@ -68,6 +68,8 @@ public class Language extends Record {
 	public static final Language HUNGARIAN = new Language("hu-HU");
 	public static final Language DUTCH = new Language("nl-NL");
 	public static final Language DUTCH_BE = new Language("nl-BE");
+	public static final Language FRENCH_BE = new Language("fr-BE");
+	public static final Language FRENCH_CA = new Language("fr-CA");
 	public static final Language NORWEGIAN = new Language("nb-NO");
 	public static final Language POLISH = new Language("pl-PL");
 	public static final Language PORTUGUESE_BR = new Language("pt-BR");
@@ -149,6 +151,8 @@ public class Language extends Record {
 		names.put("es-VE","Spanish (Venezuela)");
 		names.put("eu-ES","Basque (Spain)");
 		names.put("fr-FR","French (France)");
+		names.put("fr-BE", "French (Belgium)");
+		names.put("fr-CA", "French (Canadian");
 		names.put("gl-ES","Galician (Spain)");
 		names.put("hr-HR","Croatian (Croatia)");
 		names.put("zu-ZA","Zulu (South Africa)");
@@ -157,6 +161,7 @@ public class Language extends Record {
 		names.put("lt-LT","Lithuanian (Lithuania)");
 		names.put("hu-HU","Hungarian (Hungary)");
 		names.put("nl-NL","Dutch (Netherlands)");
+		names.put("nl-BE","Dutch (Belgium)");
 		names.put("nb-NO","Norwegian Bokm�l (Norway)");
 		names.put("pl-PL","Polish (Poland)");
 		names.put("pt-BR","Portuguese (Brazil)");
