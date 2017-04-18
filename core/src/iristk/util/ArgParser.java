@@ -70,13 +70,6 @@ public class ArgParser {
 		addVerboseLink(fullName, name);
 	}
 	
-	public void addVerboseLink(String linkName, String name) throws IllegalArgumentException{
-		if (!argList.contains(name)) {
-			throw new IllegalArgumentException(name+" is not a known argument");
-		}
-		verboseArgList.put(linkName, name);
-	}
-	
 	public void addBooleanArg(String name, String desc) {
 		this.argList.add(name);
 		this.descs.put(name, desc);
@@ -84,12 +77,20 @@ public class ArgParser {
 		this.required.put(name, false);
 		this.defaults.put(name, false);
 	}
+	public void addVerboseLink(String linkName, String name) throws IllegalArgumentException{
+		if (!argList.contains(name)) {
+			throw new IllegalArgumentException(name+" is not a known argument");
+		}
+		verboseArgList.put(linkName, name);
+	}
+	
 
 	public Object get(String name) {
-		if (has(name))
+		if (has(name)) {
 			return args.get(name);
-		else
+		} else {
 			return defaults.get(name);
+		}
 	}
 
 	public boolean has(String name) {
@@ -107,6 +108,7 @@ public class ArgParser {
 	public void allowRestArguments(boolean b) {
 		this.allowRestArguments = b;
 	}
+	
 	public void parse(String[] cmdargs) {
 		try {
 			String name = null;
@@ -114,9 +116,11 @@ public class ArgParser {
 				String value = cmdargs[i];
 				//if verboseArgList.contains(name) then name is verboseArgList.get(name)
 				if (value.startsWith("-")) {
+					//First check if verbose name. Denoted with --
 					if(value.startsWith("--")){
 						String fullname = value.substring(2);
 						if(verboseArgList.containsKey(fullname)) {
+							//Set the argument 'name' to the name linked by 'fullName'
 							name = verboseArgList.get(fullname);
 						} else {
 							throw new ParseException("Cannot recognise argument: --"+ name);
@@ -142,22 +146,24 @@ public class ArgParser {
 						((List)get(name)).add(value);	
 					} else {
 						Object cval = Converters.asType(value, types.get(name));
-						if (cval == null)
+						if (cval == null) {
 							throw new ParseException("Argument '" + value + "' is of incorrect type");
+						}
 						args.put(name, cval);
 						name = null;
 					}
 				} else {
 					if (allowRestArguments) {
-						restArguments .add(value);
+						restArguments.add(value);
 					} else {
-						throw new ParseException("Could not parse: " + value);
+						throw new ParseException("Invalid rest argument: " + value +". See below for available arguments");
 					}
 				}
 			}
 			for (String arg : argList) {
-				if (required.get(arg) && !has(arg))
-					throw new ParseException("Required argument '" + arg + "' is missing");
+				if (required.get(arg) && !has(arg)) {
+					throw new ParseException("Required argument '" + arg + "' is missing"); 
+				}
 			}
 		} catch (ParseException e) {
 			System.err.println(e.getMessage());
@@ -177,16 +183,18 @@ public class ArgParser {
 		StringBuilder help = new StringBuilder();
 		for (String arg : argList) {
 			String use = "-" + arg;
-			if (tokens.containsKey(arg))
+			if (tokens.containsKey(arg)) {
 				use += " [" + tokens.get(arg) + "]";
+			}
 			for (int i = use.length(); i < 20; i++) {
 				use += " ";
 			}
 			help.append("  " + use + descs.get(arg));
-			if (required.get(arg)) 
+			if (required.get(arg)) { 
 				help.append(" (required)");
-			else
+			} else {
 				help.append(" (optional)");
+			}
 			help.append("\n");
 		}
 		return help.toString();
