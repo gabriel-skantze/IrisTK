@@ -39,6 +39,6 @@
 		<lib path="lib/xuggle-xuggler-5.4.jar"/>
 		<lib path="lib/webcam-capture-0.3.10.jar"/>
 		<lib path="lib/bridj-0.6.2.jar"/>		
-		<lib path="lib/furhat-proxy.jar"/>
+		<lib path="lib/furhat-skill.jar"/>		
 	</classpath>
 </package>

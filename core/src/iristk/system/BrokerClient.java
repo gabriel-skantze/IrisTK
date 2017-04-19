@@ -18,9 +18,13 @@ import iristk.util.Record.JsonToRecordException;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BrokerClient {
 
+	private static org.slf4j.Logger logger = IrisUtils.getLogger(BrokerClient.class);
+	
 	private Socket socket;
 	private ParsedInputStream inFromServer;
 	private DataOutputStream outToServer;
@@ -33,6 +37,8 @@ public class BrokerClient {
 	private NameFilter brokerSubscribes = NameFilter.NONE;
 	private String clientName;
 	private boolean running;
+
+	private Set<String> warnedClass = new HashSet<>();
 
 	public BrokerClient(String ticket, String clientName, String serverHost, int serverPort, EventListener callback) {
 		this.serverHost = serverHost;
@@ -89,7 +95,11 @@ public class BrokerClient {
 								callback.onEvent(event);
 							}
 						} catch (JsonToRecordException e) {
-							System.out.println("Error parsing JSON: " + e.getMessage());
+							if (!warnedClass.contains(e.getMessage())) {
+								logger.warn("Could not parse event: " + e.getMessage());
+								warnedClass.add(e.getMessage());
+							}
+							//System.out.println("Error parsing JSON: " + e.getMessage());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

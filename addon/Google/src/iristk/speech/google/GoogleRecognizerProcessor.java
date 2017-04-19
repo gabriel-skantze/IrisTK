@@ -82,8 +82,10 @@ public class GoogleRecognizerProcessor extends RecognizerProcessor {
 
 		@Override
 		public void onNext(StreamingRecognizeResponse response) {
+			//System.out.println("onNext " + response.getResultsCount() + " " + response.getResultIndex());
 			if (response.getResultsCount() > 0) {
 				responseCount = response.getResultIndex() + 1;
+				//System.out.println(response.getResultIndex() + " " + response);
 				responses.put(response.getResultIndex(), response);
 				if (partialResults) {
 					generatePartialResult();
@@ -102,6 +104,7 @@ public class GoogleRecognizerProcessor extends RecognizerProcessor {
 		@Override
 		public void onCompleted() {
 			//logger.info("recognize completed.");
+			//System.out.println("Completed");
 			finishLatch.countDown();
 		}
 	};
@@ -263,7 +266,7 @@ public class GoogleRecognizerProcessor extends RecognizerProcessor {
 	public void recognitionResult(RecResult result) {
 		if (inSpeech) {
 			try {
-				finishLatch.await(2, TimeUnit.SECONDS);
+				finishLatch.await(10, TimeUnit.SECONDS);
 				if (responseCount > 0) {
 					generateResult(result);
 				}
@@ -282,12 +285,14 @@ public class GoogleRecognizerProcessor extends RecognizerProcessor {
 		float conf = 1.0f;
 		for (int i = 0; i < responseCount; i++) {
 			StreamingRecognizeResponse response = responses.get(i);
-			for (int j = 0; j < response.getResultsCount(); j++) {
-				StreamingRecognitionResult result = response.getResults(j);
-				if (text.length() > 0)
-					text += " ";
-				text += result.getAlternatives(0).getTranscript().trim();
-				conf = Math.min(conf, result.getAlternatives(0).getConfidence());
+			if (response != null) {
+				for (int j = 0; j < response.getResultsCount(); j++) {
+					StreamingRecognitionResult result = response.getResults(j);
+					if (text.length() > 0)
+						text += " ";
+					text += result.getAlternatives(0).getTranscript().trim();
+					conf = Math.min(conf, result.getAlternatives(0).getConfidence());
+				}
 			}
 		}
 		if (maxAlternatives > 1 && recresult.isFinal()) {

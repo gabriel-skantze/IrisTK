@@ -5,20 +5,11 @@
 	xmlns:this="iristk.situated.SystemAgentFlow"
 	xsi:schemaLocation="iristk.flow flow.xsd">
 	
-	<import class="iristk.util.IIRFilter"/>
-	<import class="java.util.Random"/>
-	
 	<param name="systemAgent" type="SystemAgent"/>
 	
 	<var name="agent" type="String" value="systemAgent.id"/>
 	<var name="gestures" type="Record" value="new Record()"/>
 	<var name="speechTextProcessor" type="iristk.speech.SpeechTextProcessor"/>
-	
-	<var name="xfilter1" type="IIRFilter" value="IIRFilter.newLowPassFilter()"/>
-	<var name="xfilter2" type="IIRFilter" value="IIRFilter.newLowPassFilter()"/>
-	<var name="xfilter3" type="IIRFilter" value="IIRFilter.newLowPassFilter()"/>
-	
-	<var name="random" type="Random" value="new Random()"/>
 			
 	<state id="Base">
 		<onevent name="action.attend" cond="eq(event:target,'nobody') and eq(event:agent, agent)">
@@ -50,7 +41,6 @@
 				<send event="action.gesture" p:name="gestures:(event:action)"/>
 			</if>
 		</onevent>
-		<!-- The following manages the blinking every 1 - 5 seconds if the blinking is enabled -->
 		<ontime interval="1000-5000">
 			<if cond="systemAgent.shouldBlink()">
 				<raise event="blink"/>

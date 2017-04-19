@@ -35,7 +35,7 @@ import iristk.util.Utils;
 
 public class IrisUtils {
 	
-	private static Logger logger = LoggerFactory.getLogger(IrisUtils.class);
+	private static Logger logger = getLogger(IrisUtils.class);
 
 	private static boolean logInitialized = false;
 
@@ -49,9 +49,11 @@ public class IrisUtils {
 	
 	private static void initLogger() {
 		if (!logInitialized) {
-			Package core = CorePackage.PACKAGE;
-			if (core != null && core.getPath("log4j.properties").exists())
-				PropertyConfigurator.configure(core.getPath("log4j.properties").getAbsolutePath());
+			//Package core = CorePackage.PACKAGE;
+			//if (core != null && core.getPath("log4j.properties").exists())
+			//	PropertyConfigurator.configure(core.getPath("log4j.properties").getAbsolutePath());
+			//else
+			PropertyConfigurator.configure(IrisUtils.class.getResource("log4j.properties"));
 			//Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
 			logInitialized = true;
 		}

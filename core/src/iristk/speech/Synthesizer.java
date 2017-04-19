@@ -20,12 +20,12 @@ public interface Synthesizer {
 	VoiceList getVoices();
 	
 	/**
-	 * @return a synthesizer engine for the voice
+	 * @return a synthesizer engine for the given voice
 	 */
 	SynthesizerEngine getEngine(Voice voice) throws InitializationException;
 	
 	/**
-	 * @return a pretty name for the synthesizer
+	 * @return the name of the synthesizer
 	 */
 	String getName();
 	

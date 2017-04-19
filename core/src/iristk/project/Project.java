@@ -44,7 +44,9 @@ public class Project {
 				main = readProject(projectFile);
 				main.updatePackages();
 			} else {
-				System.out.println("No project found");
+				main = new Project();
+				main.name = "No project";
+				//System.out.println("No project found");
 			}
 		}
 	}

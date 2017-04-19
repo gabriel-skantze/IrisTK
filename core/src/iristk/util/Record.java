@@ -724,11 +724,14 @@ public class Record {
 		String result = "{";
 		int n = 0;
 		for (String key : getFields()) {
+			Object val = get(key);
+			if (val == null)
+				continue;
 			if (n > 0) {
 				result += "\n" + indent(level + 1);
 			}
 			result += key + ": ";
-			String value = value(get(key), level + 2);
+			String value = value(val, level + 2);
 			if (value.contains("\n")) {
 				result += "\n" + indent(level + 2) + value;
 			} else {

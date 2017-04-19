@@ -70,14 +70,18 @@ public class HAT  {
 			for (Segment segment : annotation.getSegments().getSegment()) {
 				if (trackIds == null || trackIds.contains(segment.getTrack())) {
 					Source source = getSource(annotation, segment.getSource());
-					Sound sound = getSound(source, segment);
-					RecResult result = EndpointerRecognizer.recognizeSound(sound, listener);
-					String text = result.getString("text", "").replace(RecResult.NOMATCH, "").trim();
-					if (asrFeature == null)
-						setText(segment, text);
-					else
-						setFeature(segment, asrFeature, text);
-					System.out.println(segment.getId() + " " + text);
+					try {
+						Sound sound = getSound(source, segment);
+						RecResult result = EndpointerRecognizer.recognizeSound(sound, listener);
+						String text = result.getString("text", "").replace(RecResult.NOMATCH, "").trim();
+						if (asrFeature == null)
+							setText(segment, text);
+						else
+							setFeature(segment, asrFeature, text);
+						System.out.println(segment.getId() + " " + text);
+					} catch (Exception e) {
+						System.out.println(segment.getId() + " COULD NOT READ SOUND");
+					}
 				}
 			}
 			writeAnnotation(new File(outputFile), annotation);
@@ -389,7 +393,7 @@ public class HAT  {
 			argParser.addOptionalArg("n", "Track name(s)", "names", List.class, null);
 			argParser.addRequiredArg("o", "Output XML file", "file", String.class);
 			argParser.addOptionalArg("a", "Append tracks to file", "file", String.class, null);
-			argParser.addOptionalArg("e", "Energy endpointer threshold (default adaptive)", "treshold", Integer.class, null);
+			argParser.addOptionalArg("e", "Energy endpointer threshold (default adaptive)", "threshold", Integer.class, null);
 			argParser.addOptionalArg("s", "Set the end silence threshold (default 500 msec)", "msec", Integer.class, 500);
 			argParser.parse(args, 1, args.length-1);
 			new MakeWithEndpointer((String)argParser.get("o"), 
