@@ -349,20 +349,20 @@ public class SystemAgentFlow extends iristk.flow.Flow {
 					// Line: 61
 					if (systemAgent.shouldPerformRandomMovements()) {
 						// Line: 62
-						Event sendEvent10 = new Event("action.face.param");
+						Event sendEvent10 = new Event("action.face.param.adj");
 						sendEvent10.putIfNotNull("name", "BROW_UP_LEFT");
 						sendEvent10.putIfNotNull("value", Math.max(0, 0.4 + 2*xfilter1.flow(random.nextDouble() - 0.5)));
-						flowRunner.sendEvent(sendEvent10, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\IrisTK\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 62, 135)));
+						flowRunner.sendEvent(sendEvent10, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\IrisTK\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 62, 139)));
 						// Line: 63
-						Event sendEvent11 = new Event("action.face.param");
+						Event sendEvent11 = new Event("action.face.param.adj");
 						sendEvent11.putIfNotNull("name", "BROW_UP_RIGHT");
 						sendEvent11.putIfNotNull("value", Math.max(0, 0.4 + 2*xfilter2.flow(random.nextDouble() - 0.5)));
-						flowRunner.sendEvent(sendEvent11, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\IrisTK\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 63, 136)));
+						flowRunner.sendEvent(sendEvent11, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\IrisTK\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 63, 140)));
 						// Line: 64
-						Event sendEvent12 = new Event("action.face.param");
+						Event sendEvent12 = new Event("action.face.param.adj");
 						sendEvent12.putIfNotNull("name", "SMILE_CLOSED");
 						sendEvent12.putIfNotNull("value", Math.max(0, 0.4 + 2*xfilter3.flow(random.nextDouble() - 0.5)));
-						flowRunner.sendEvent(sendEvent12, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\IrisTK\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 64, 135)));
+						flowRunner.sendEvent(sendEvent12, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\IrisTK\\core\\src\\iristk\\situated\\SystemAgentFlow.xml"), 64, 139)));
 					}
 				}
 				if (eventResult != EVENT_IGNORED) return eventResult;

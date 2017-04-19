@@ -59,9 +59,9 @@
 		<!-- The following manages the random facial movements every about 20 ms if the random movements are enabled -->
 		<ontime interval="18-20">
 			<if cond="systemAgent.shouldPerformRandomMovements()">
-				<send event="action.face.param" p:name="'BROW_UP_LEFT'" p:value="Math.max(0, 0.4 + 2*xfilter1.flow(random.nextDouble() - 0.5))" />
-				<send event="action.face.param" p:name="'BROW_UP_RIGHT'" p:value="Math.max(0, 0.4 + 2*xfilter2.flow(random.nextDouble() - 0.5))" />
-				<send event="action.face.param" p:name="'SMILE_CLOSED'" p:value="Math.max(0, 0.4 + 2*xfilter3.flow(random.nextDouble() - 0.5))" />
+				<send event="action.face.param.adj" p:name="'BROW_UP_LEFT'" p:value="Math.max(0, 0.4 + 2*xfilter1.flow(random.nextDouble() - 0.5))" />
+				<send event="action.face.param.adj" p:name="'BROW_UP_RIGHT'" p:value="Math.max(0, 0.4 + 2*xfilter2.flow(random.nextDouble() - 0.5))" />
+				<send event="action.face.param.adj" p:name="'SMILE_CLOSED'" p:value="Math.max(0, 0.4 + 2*xfilter3.flow(random.nextDouble() - 0.5))" />
 			</if>	
 		</ontime>
 		<onevent name="blink">
