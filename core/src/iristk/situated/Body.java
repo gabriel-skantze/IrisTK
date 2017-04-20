@@ -18,8 +18,8 @@ public class Body extends Item {
 	public String recId;
 	/** tolerance that 2 bodies are the same body.*/
 	@RecordField
-	public double proximity = 0.3; 
-
+	public double proximity = 0.3; // Proximity estimate that 2 bodies are the same body.
+	
 	@RecordField
 	public double priority = 10;
 
