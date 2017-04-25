@@ -277,6 +277,11 @@ public class SystemAgent extends Agent {
 		if (event.get("sensor") == null) {
 			return Agent.NOBODY;
 		}
+		//if the we have a currently selected user, assume they are responsible for the event.
+		if (this.getCurrentUser() != null && !isAttendingNobody()) {
+			return this.getCurrentUser().id;
+		}
+		//TODO: change this code. Currently picks user closest to the sensor.
 		Sensor sensor = situation.getSensors().get(event.get("sensor"));
 		Agent minAgent = null;
 		double minDist = Double.MAX_VALUE;
