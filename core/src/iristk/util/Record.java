@@ -654,9 +654,13 @@ public class Record {
 		try {
 			Record record;
 			if (json.get("class") != null) {
-				Constructor<?> constructor = Class.forName(json.get("class").asString()).getDeclaredConstructor();
-				constructor.setAccessible(true);
-				record = (Record) constructor.newInstance(null);
+				try {
+					Constructor<?> constructor = Class.forName(json.get("class").asString()).getDeclaredConstructor();
+					constructor.setAccessible(true);
+					record = (Record) constructor.newInstance(null);
+				} catch (ClassNotFoundException e) {
+					record = new Record();
+				}
 			} else {
 				record = new Record();
 			}
@@ -668,8 +672,8 @@ public class Record {
 			}
 			//System.out.println(json + " " + record);
 			return record;
-		} catch (ClassNotFoundException e) {
-			throw new JsonToRecordException("Class not found: " + e.getMessage());
+		//} catch (ClassNotFoundException e) {
+		//	throw new JsonToRecordException("Class not found: " + e.getMessage());
 		} catch (InstantiationException e) {
 			throw new JsonToRecordException("Could not create: " + e.getMessage());
 		} catch (IllegalAccessException e) {
@@ -721,7 +725,7 @@ public class Record {
 	}
 
 	protected String toStringIndent(int level) {
-		String result = "{";
+		String result = getClass().getSimpleName() + "{";
 		int n = 0;
 		for (String key : getFields()) {
 			Object val = get(key);

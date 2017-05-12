@@ -258,6 +258,7 @@ public class SystemAgent extends Agent {
 		Sensor sensor = situation.getSensors().get(event.get("sensor"));
 		Agent minAgent = null;
 		double minDist = Double.MAX_VALUE;
+		// Find the user closest to the system agent
 		for (Agent user : users.values()) {
 			double dist = sensor == null ? 0 : sensor.distance(this, user, event);
 			if (dist < minDist) {

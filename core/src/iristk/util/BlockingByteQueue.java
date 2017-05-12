@@ -147,6 +147,41 @@ public class BlockingByteQueue {
 			return 0;
 		}
 	}
+
+	public int peek(byte[] bytes, int pos, int len) throws InterruptedException {
+		synchronized (this) {
+			while (len > overhead && writing) {
+				// Reading faster than writing, block
+				this.wait();
+			}
+			if (len > overhead) {
+				// Reaching end of stream (!writing)
+				len = overhead;
+			}
+			if (len > 0) {
+				if (readPos + len > capacity()) {
+					// Reached the end of the buffer, restart at the beginning
+					int split = capacity() - readPos;
+					if (bytes != null) {
+						System.arraycopy(buffer, readPos, bytes, pos, split);
+						System.arraycopy(buffer, 0, bytes, pos + split, len - split);
+					} 
+					//readPos = len - split;
+				} else {
+					if (bytes != null) {
+						System.arraycopy(buffer, readPos, bytes, pos, len);
+					} 
+					//readPos += len;
+				}
+				//overhead -= len;
+			} else if (!writing) {
+				len = -1;
+			} else {
+				len = 0;
+			}
+			return len;
+		}
+	}
 	
 	private int read(byte[] bytes, int pos, int len, OutputStream stream) throws InterruptedException, IOException {
 		synchronized (this) {
@@ -255,5 +290,6 @@ public class BlockingByteQueue {
 	public byte[] getBuffer() {
 		return buffer;
 	}
+
 
 }

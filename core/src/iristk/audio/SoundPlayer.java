@@ -20,6 +20,8 @@ public class SoundPlayer {
 	private AudioTarget audioTarget;
 	private AudioFormat audioFormat;
 
+	private int pos;
+
 	public SoundPlayer(AudioFormat format) {
 		this(new Speaker(format));
 	}
@@ -52,7 +54,7 @@ public class SoundPlayer {
 		else
 			endPos = startPos + (int) (msecLength
 					* (audioFormat.getSampleRate() / 1000) * audioFormat.getFrameSize());
-		int pos = startPos;
+		pos = startPos;
 		int frameSize = 320;
 		int len = frameSize;
 		PLAYING: {
@@ -68,6 +70,10 @@ public class SoundPlayer {
 		audioTarget.stopListening();
 		playing = false;
 		return pos;
+	}
+	
+	public int getSamplePosition() {
+		return pos / (audioFormat.getFrameSize());
 	}
 	
 	public boolean isPlaying() {
