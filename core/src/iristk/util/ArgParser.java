@@ -18,33 +18,58 @@ import java.util.List;
 public class ArgParser {
 
 	HashMap<String,Object> args = new HashMap<String,Object>();
+	/**Maps the verbose name of an argument to the simple argument. (--port maps to -p, or --independent to -i) */
 	HashMap<String,String> descs = new HashMap<String,String>();
 	HashMap<String,String> tokens = new HashMap<String,String>();
 	HashMap<String,Class<?>> types = new HashMap<String,Class<?>>();
 	HashMap<String,Boolean> required = new HashMap<String,Boolean>();
 	HashMap<String,Object> defaults = new HashMap<String,Object>();
+	HashMap<String,String> verboseArgList = new HashMap<String,String>(); 
 	ArrayList<String> argList = new ArrayList<String>();
-	
+
 	private boolean allowRestArguments = false;
 	private List<String> restArguments = new ArrayList<>();
 
-	public void addRequiredArg(String name, String desc, String token, Class<?> type) {
+	/** Helper method for default argument setup, used when adding required and optional arguments 
+	 * @param name - argument name, in a short form.
+	 * @param desc - a description of the argument
+	 * @param token - token to be used inside the description, in the form "-name [token] desc"
+	 * @param type - type of the argument, used for parsing the value.
+	 */
+	private void setupArg(String name, String desc, String token, Class<?> type){
 		this.argList.add(name);
 		this.descs.put(name, desc);
 		this.types.put(name, type);
 		this.tokens.put(name, token);
+	}
+	
+	public void addRequiredArg(String name, String desc, String token, Class<?> type) {
+		setupArg(name, desc, token, type);
 		this.required.put(name, true);
 	}
-
+	
 	public void addOptionalArg(String name, String desc, String token, Class<?> type, Object defaultv) {
-		this.argList.add(name);
-		this.descs.put(name, desc);
-		this.types.put(name, type);
-		this.tokens.put(name, token);
+		setupArg(name, desc, token, type);
 		this.required.put(name, false);
 		this.defaults.put(name, defaultv);
 	}
-
+	
+	/**
+	 * Adds a required argument, with a verbose name. 
+	 */
+	public void addRequiredArg(String fullName, String name, String desc, String token, Class<?> type) {
+		addRequiredArg(name, desc, token, type);
+		addVerboseLink(fullName, name);
+	}
+	
+	/**
+	 * Adds an optional argument, with a verbose name. 
+	 */
+	public void addOptionalArg(String fullName, String name, String desc, String token, Class<?> type, Object defaultv) {
+		addOptionalArg(name, desc, token, type, defaultv);
+		addVerboseLink(fullName, name);
+	}
+	
 	public void addBooleanArg(String name, String desc) {
 		this.argList.add(name);
 		this.descs.put(name, desc);
@@ -52,12 +77,20 @@ public class ArgParser {
 		this.required.put(name, false);
 		this.defaults.put(name, false);
 	}
+	public void addVerboseLink(String linkName, String name) throws IllegalArgumentException{
+		if (!argList.contains(name)) {
+			throw new IllegalArgumentException(name+" is not a known argument");
+		}
+		verboseArgList.put(linkName, name);
+	}
+	
 
 	public Object get(String name) {
-		if (has(name))
+		if (has(name)) {
 			return args.get(name);
-		else
+		} else {
 			return defaults.get(name);
+		}
 	}
 
 	public boolean has(String name) {
@@ -67,11 +100,11 @@ public class ArgParser {
 	public void parse(String[] cmdargs, int pos, int len) {
 		parse(Arrays.copyOfRange(cmdargs, pos, len+pos));
 	}
-	
+
 	public List<String> getRestArguments() {
 		return restArguments;
 	}
-	
+
 	public void allowRestArguments(boolean b) {
 		this.allowRestArguments = b;
 	}
@@ -81,8 +114,22 @@ public class ArgParser {
 			String name = null;
 			for (int i = 0; i < cmdargs.length; i++) {
 				String value = cmdargs[i];
+				//if verboseArgList.contains(name) then name is verboseArgList.get(name)
 				if (value.startsWith("-")) {
-					name = value.substring(1);
+					//First check if verbose name. Denoted with --
+					if(value.startsWith("--")){
+						String fullname = value.substring(2);
+						if(verboseArgList.containsKey(fullname)) {
+							//Set the argument 'name' to the name linked by 'fullName'
+							name = verboseArgList.get(fullname);
+						} else {
+							throw new ParseException("Cannot recognise argument: --"+ name);
+						}
+
+					} else { 
+						name = value.substring(1);
+					}
+
 					if (argList.contains(name)) {
 						if (types.get(name) == Boolean.class) {
 							args.put(name, true);
@@ -99,22 +146,24 @@ public class ArgParser {
 						((List)get(name)).add(value);	
 					} else {
 						Object cval = Converters.asType(value, types.get(name));
-						if (cval == null)
+						if (cval == null) {
 							throw new ParseException("Argument '" + value + "' is of incorrect type");
+						}
 						args.put(name, cval);
 						name = null;
 					}
 				} else {
 					if (allowRestArguments) {
-						restArguments .add(value);
+						restArguments.add(value);
 					} else {
-						throw new ParseException("Could not parse: " + value);
+						throw new ParseException("Invalid rest argument: " + value +". See below for available arguments");
 					}
 				}
 			}
 			for (String arg : argList) {
-				if (required.get(arg) && !has(arg))
-					throw new ParseException("Required argument '" + arg + "' is missing");
+				if (required.get(arg) && !has(arg)) {
+					throw new ParseException("Required argument '" + arg + "' is missing"); 
+				}
 			}
 		} catch (ParseException e) {
 			System.err.println(e.getMessage());
@@ -123,7 +172,7 @@ public class ArgParser {
 			System.exit(0);
 		}
 	}
-	
+
 	private class ParseException extends Exception {
 		public ParseException(String msg) {
 			super(msg);
@@ -134,16 +183,18 @@ public class ArgParser {
 		StringBuilder help = new StringBuilder();
 		for (String arg : argList) {
 			String use = "-" + arg;
-			if (tokens.containsKey(arg))
+			if (tokens.containsKey(arg)) {
 				use += " [" + tokens.get(arg) + "]";
+			}
 			for (int i = use.length(); i < 20; i++) {
 				use += " ";
 			}
 			help.append("  " + use + descs.get(arg));
-			if (required.get(arg)) 
+			if (required.get(arg)) { 
 				help.append(" (required)");
-			else
+			} else {
 				help.append(" (optional)");
+			}
 			help.append("\n");
 		}
 		return help.toString();

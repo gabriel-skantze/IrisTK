@@ -15,17 +15,17 @@ import iristk.system.InitializationException;
 public interface Synthesizer {
 	
 	/**
-	 * @return a list of voices supported by this synthesizer
+	 * @return the list of voices supported by this synthesizer
 	 */
 	VoiceList getVoices();
 	
 	/**
-	 * @return a synthesizer engine for the voice
+	 * @return a synthesizer engine for the given voice
 	 */
 	SynthesizerEngine getEngine(Voice voice) throws InitializationException;
 	
 	/**
-	 * @return a pretty name for the synthesizer
+	 * @return the name of the synthesizer
 	 */
 	String getName();
 	

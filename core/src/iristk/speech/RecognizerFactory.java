@@ -41,7 +41,7 @@ public abstract class RecognizerFactory {
 	 */
 	public boolean supportsLanguage(Language language) {
 		for (Language lang : getSupportedLanguages()) {
-			if (lang.equals(language)) {
+			if (lang.equalsIgnoreDialect(language)) {
 				return true;
 			}
 		}

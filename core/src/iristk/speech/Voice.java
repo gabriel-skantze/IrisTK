@@ -19,7 +19,7 @@ import iristk.util.Language;
 public class Voice {
 
 	public enum Gender {
-		MALE, FEMALE;
+		MALE, FEMALE, NEUTRAL;
 
 		public static Gender fromString(String string) {
 			for (Gender gender : values()) {
@@ -27,6 +27,19 @@ public class Voice {
 					return gender;
 			}
 			return null;
+		}
+		
+		public static Gender fromInt(int value){
+			switch(value){
+				case 0:
+					return NEUTRAL;
+				case 1:
+					return FEMALE;
+				case 2:
+					return MALE;
+				default:
+					return null;
+			}
 		}
 	}
 
@@ -57,9 +70,14 @@ public class Voice {
 	}
 	
 	public String getUniqueName() {
-		return synthesizer.getName() + " - " + getName();
+		// voice.getName() + " ("+voice.getLanguage().getCode()+") - "+synthesizer.getName()
+		return getName() + " ("+getLanguage().getCode()+") - "+synthesizer.getName();
 	}
 
+	public Synthesizer getSynthesizer() {
+		return synthesizer;
+	}
+	
 	boolean supportsTranscription() { 
 		return supportsTranscription;
 	}

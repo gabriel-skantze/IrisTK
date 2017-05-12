@@ -65,11 +65,18 @@ public class Agent extends Body {
 	public boolean isSpeaking() {
 		return speaking;
 	}
-
+	/**
+	 * Used to check between the 'nobody' Agent and other Agents.
+	 */
 	public boolean isNobody() {
 		return id.equals(NOBODY);
 	}
 	
+	/**
+	 * Used to differentiate between Furhats and human Agents. 
+	 * <p> Use isNobody() instead to verify that Agent isn't 'null'
+	 * @return
+	 */
 	public boolean isHuman() {
 		return true;
 	}

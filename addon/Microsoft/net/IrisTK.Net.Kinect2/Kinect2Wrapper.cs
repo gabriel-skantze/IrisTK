@@ -40,6 +40,8 @@ namespace IrisTK.Net.Kinect2
         private int depthPixelsWidth;
         private int depthPixelsHeight;
 
+        private Object thisLock = new Object();
+
         public void start()
         {
             kinectSensor = KinectSensor.GetDefault();
@@ -115,17 +117,21 @@ namespace IrisTK.Net.Kinect2
 
         public void addColorFrameListener(ColorFrameListener listener)
         {
-            colorFrameListeners.Add(listener);
-            if (colorFrameListeners.Count == 1)
+            lock (thisLock)
             {
-                this.colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
-                this.colorPixelsWidth = colorFrameDescription.Width;
-                this.colorPixelsHeight = colorFrameDescription.Height;
-                this.colorPixelsLength = colorFrameDescription.Width * colorFrameDescription.Height;
-                this.colorBytesLength = colorPixelsLength * colorFrameDescription.BytesPerPixel;
-                colorPixels = new byte[colorBytesLength];
-                colorFrameReader = kinectSensor.ColorFrameSource.OpenReader();
-                colorFrameReader.FrameArrived += this.colorFrameArrived;
+                colorFrameListeners.Add(listener);
+
+                if (colorFrameListeners.Count == 1)
+                {
+                    this.colorFrameDescription = this.kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+                    this.colorPixelsWidth = colorFrameDescription.Width;
+                    this.colorPixelsHeight = colorFrameDescription.Height;
+                    this.colorPixelsLength = colorFrameDescription.Width * colorFrameDescription.Height;
+                    this.colorBytesLength = colorPixelsLength * colorFrameDescription.BytesPerPixel;
+                    colorPixels = new byte[colorBytesLength];
+                    colorFrameReader = kinectSensor.ColorFrameSource.OpenReader();
+                    colorFrameReader.FrameArrived += this.colorFrameArrived;
+                }
             }
         }
 
@@ -176,12 +182,16 @@ namespace IrisTK.Net.Kinect2
                     {
                         colorFrame.CopyConvertedFrameDataToArray(colorPixels, ColorImageFormat.Bgra);
                     }
-                    unsafe
+                    lock (thisLock)
                     {
-                        fixed (byte* p = colorPixels)
+                        unsafe
                         {
-                            foreach (ColorFrameListener listener in colorFrameListeners)
-                                listener.onColorFrameReady((IntPtr)p, colorFrameDescription.Width, colorFrameDescription.Height, ColorFormat.BGRA);
+                            fixed (byte* p = colorPixels)
+                            {
+
+                                foreach (ColorFrameListener listener in colorFrameListeners)
+                                    listener.onColorFrameReady((IntPtr)p, colorFrameDescription.Width, colorFrameDescription.Height, ColorFormat.BGRA);
+                            }
                         }
                     }
                 }
@@ -191,7 +201,7 @@ namespace IrisTK.Net.Kinect2
         private Dictionary<ulong, FaceFrameSource> faceFrameSource = new Dictionary<ulong, FaceFrameSource>();
         private Dictionary<ulong, FaceFrameReader> faceFrameReader = new Dictionary<ulong, FaceFrameReader>();
         private Dictionary<ulong, FaceFrameResult> faceFrameResult = new Dictionary<ulong, FaceFrameResult>();
-        private Object thisLock = new Object();
+        
 
         void faceFrameArrived(object sender, FaceFrameArrivedEventArgs e)
         {

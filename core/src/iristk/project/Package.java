@@ -77,7 +77,9 @@ public class Package {
 		}
 		return result;
 	}
-
+	/**
+	 * System.loads all dll's in the Classpath of spec.
+	 */
 	public void loadLibs() {
 		if (spec.getClasspath() != null) {
 			for (Object entry : spec.getClasspath().getLibOrSrcOrDll()) {

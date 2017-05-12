@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 
 public class IrisSystem implements EventListener {
-	
+
 	private static Logger logger = IrisUtils.getLogger(IrisSystem.class);
 
 	private ArrayList<IrisModule> modules = new ArrayList<IrisModule>();
@@ -53,7 +53,7 @@ public class IrisSystem implements EventListener {
 
 	private ArrayList<String> distributedModules = new ArrayList<>();
 	private Map<String,HashSet<String>> pingMap = new HashMap<>();
-	
+
 	private List<EventFilter> eventFilters = new ArrayList<EventFilter>(); 
 
 	//private ErrorHandler errorHandler = new ErrorHandler() {
@@ -84,22 +84,22 @@ public class IrisSystem implements EventListener {
 		logger.info("Initializing system " + systemName);
 		startAsync();
 	}
-	
+
 	public IrisSystem(Package pack) throws Exception {
 		this(pack.getName(), pack);
 	}
-	
+
 	public IrisSystem(String name) throws Exception {
 		this(name, (File)null);
 	}
-	
+
 	//public IrisSystem(String name, Class<?> packageClass) throws Exception {
 	//	this(name, Project.main.getPackage(packageClass).getPath());
 	//}
 
-//	public IrisSystem(Class<?> packageClass) throws Exception {
-//		this(packageClass.getSimpleName(), packageClass);
-//	}
+	//	public IrisSystem(Class<?> packageClass) throws Exception {
+	//		this(packageClass.getSimpleName(), packageClass);
+	//	}
 
 	//public void setErrorHandler(ErrorHandler errorHandler) {
 	//	this.errorHandler = errorHandler;
@@ -125,10 +125,8 @@ public class IrisSystem implements EventListener {
 			}
 			module.setName(module.getUniqueName());
 		} else {
-			int i = 0;
 			String name = baseName;	
-			while (getModule(name) != null) {
-				i++;
+			for(int i=0; getModule(name) != null; i++){
 				name = baseName + "-" + i; 
 			}
 			module.setName(name);
@@ -145,8 +143,9 @@ public class IrisSystem implements EventListener {
 
 	public synchronized IrisModule getModule(String name) {
 		for (IrisModule module : modules) {
-			if (module.getName().equals(name))
+			if (module.getName().equals(name)) {
 				return module;
+			}
 		}
 		return null;
 	}
@@ -155,8 +154,9 @@ public class IrisSystem implements EventListener {
 	public synchronized void onEvent(Event event) {
 		// An event from the broker
 		event = filterEvent(event, "broker");
-		if (event == null)
+		if (event == null) {
 			return;
+		}
 		distributeInternal(event);
 	}
 
@@ -177,9 +177,8 @@ public class IrisSystem implements EventListener {
 	}
 
 	public void connectToBroker(String ticket, String host, int port) throws IOException {
-		setBrokerHost(host);
 		setBrokerPort(port);
-		connectToBroker(ticket);
+		connectToBroker(ticket, host);
 	}
 
 	private void distributeExternal(Event event) {
@@ -226,31 +225,35 @@ public class IrisSystem implements EventListener {
 
 	public synchronized void send(Event event, String sender) {
 		event = filterEvent(event, sender);
-		if (event == null)
+		if (event == null) {
 			return;
+		}
 		distributeInternal(event);
 		distributeExternal(event);
 	}
-	
+
 	public synchronized void addEventFilter(EventFilter filter) {
 		eventFilters.add(filter);
 	}
-	
+
 	public synchronized boolean removeEventFilter(EventFilter filter) {
 		return eventFilters.remove(filter);
 	}
-	
+
 	public synchronized void clearEventFilters() {
 		eventFilters.clear();
 	}
-	
+
 	private synchronized Event filterEvent(Event event, String sender) {
-		if (event.getSender() == null)
+		if (event.getSender() == null) {
 			event.setSender(sender);
-		if (event.getTime() == null)
-			event.setTime(getTimestamp());
-		if (event.getId() == null)
+		}
+		if (event.getTime() == null) {
+			event.setTime(getTimestamp()); 
+		}
+		if (event.getId() == null) {
 			event.setId(generateEventId(sender));
+		}
 		for (EventFilter filter : eventFilters) {
 			event = filter.filter(event);
 		}
@@ -301,8 +304,9 @@ public class IrisSystem implements EventListener {
 							} else if (event.triggers("monitor.system.disconnected")) {
 								String dissys = event.getString("system", "");
 								for (String name : new ArrayList<>(distributedModules)) {
-									if (name.startsWith(dissys + ":"))
+									if (name.startsWith(dissys + ":")) {
 										distributedModules.remove(name);
+									}
 								}
 								//System.out.println(distributedModules);
 							} else if (event.triggers("monitor.module.stop")) {
@@ -336,13 +340,14 @@ public class IrisSystem implements EventListener {
 			pingModules.add(mod);
 		}
 		send(event);
-		int i = 0;
 		try {
+			int i = 0;
 			while (pingModules.size() > 0) {
 				Thread.sleep(10);
 				i++;
-				if (i * 10 > timeout)
+				if (i * 10 > timeout) {
 					throw new InitializationException("Not all modules were ready: " + new ArrayList<>(pingModules));
+				}
 			}
 		} catch (InterruptedException e) {
 			throw new InitializationException(e.getMessage());
@@ -393,7 +398,7 @@ public class IrisSystem implements EventListener {
 	public File getPackageDir() {
 		return packageDir;
 	}
-	
+
 	public File getPackageFile(String path) {
 		return new File(getPackageDir(), path);
 	}
@@ -418,10 +423,11 @@ public class IrisSystem implements EventListener {
 	public static void startConsole() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			for (;;) {
+			for (;;) { //forever
 				String line = br.readLine();
-				if (line == null)
+				if (line == null) {
 					break;
+				}
 				line = line.trim();
 				if (line.equalsIgnoreCase("exit")) {
 					System.exit(0);

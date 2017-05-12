@@ -393,7 +393,7 @@ public class HAT  {
 			argParser.addOptionalArg("n", "Track name(s)", "names", List.class, null);
 			argParser.addRequiredArg("o", "Output XML file", "file", String.class);
 			argParser.addOptionalArg("a", "Append tracks to file", "file", String.class, null);
-			argParser.addOptionalArg("e", "Energy endpointer threshold (default adaptive)", "treshold", Integer.class, null);
+			argParser.addOptionalArg("e", "Energy endpointer threshold (default adaptive)", "threshold", Integer.class, null);
 			argParser.addOptionalArg("s", "Set the end silence threshold (default 500 msec)", "msec", Integer.class, 500);
 			argParser.parse(args, 1, args.length-1);
 			new MakeWithEndpointer((String)argParser.get("o"), 

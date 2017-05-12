@@ -89,10 +89,23 @@ public abstract class Flow {
 		return result;
 	}
 	
+	/**
+	 * Returns true if <code>s1</code> equals <code>s2</code>.
+	 * <p> Equality check is null protected. Checked both by <code>s1</code>==<code>s2</code> and <code>s1.equals(s2)</code>
+	 * @param s1 - first object to be checked
+	 * @param s2 - second object to be checked
+	 * @return true if and only if <code>s1</code> is equal to <code>s2</code>
+	 */
 	protected static boolean eq(Object s1, Object s2) {
 		return (s1 == s2 || (s1 != null && s2 != null && s1.equals(s2)));
 	}
 	
+	/**
+	 * 
+	 * @param s1
+	 * @param s2
+	 * @return
+	 */
 	protected static boolean eqnn(Object s1, Object s2) {
 		return (s1 != null && s2 != null && s1.equals(s2));
 	}
@@ -110,10 +123,11 @@ public abstract class Flow {
 	}
 	
 	protected String lastMatch(int group) {
-		if (matcher != null)
+		if (matcher != null) {
 			return matcher.group(0);
-		else
+		} else {
 			return null;
+		}
 	}
 	
 	protected String lastMatch() {

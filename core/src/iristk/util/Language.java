@@ -67,6 +67,9 @@ public class Language extends Record {
 	public static final Language LITHUANIAN = new Language("lt-LT");
 	public static final Language HUNGARIAN = new Language("hu-HU");
 	public static final Language DUTCH = new Language("nl-NL");
+	public static final Language DUTCH_BE = new Language("nl-BE");
+	public static final Language FRENCH_BE = new Language("fr-BE");
+	public static final Language FRENCH_CA = new Language("fr-CA");
 	public static final Language NORWEGIAN = new Language("nb-NO");
 	public static final Language POLISH = new Language("pl-PL");
 	public static final Language PORTUGUESE_BR = new Language("pt-BR");
@@ -76,6 +79,7 @@ public class Language extends Record {
 	public static final Language SLOVENIAN = new Language("sl-SI");
 	public static final Language FINNISH = new Language("fi-FI");
 	public static final Language SWEDISH = new Language("sv-SE");
+	public static final Language SWEDISH_FI = new Language("sv-FI");
 	public static final Language VIETNAMESE = new Language("vi-VN");
 	public static final Language TURKISH = new Language("tr-TR");
 	public static final Language GREEK = new Language("el-GR");
@@ -104,6 +108,7 @@ public class Language extends Record {
 	public static final Language THAI = new Language("th-TH");
 	public static final Language KOREAN = new Language("ko-KR");
 	public static final Language JAPANESE = new Language("ja-JP");
+	public static final Language MANDARIN = new Language("zh-cn");
 
 	private static Map<String,String> names = new HashMap<>();
 	
@@ -146,6 +151,8 @@ public class Language extends Record {
 		names.put("es-VE","Spanish (Venezuela)");
 		names.put("eu-ES","Basque (Spain)");
 		names.put("fr-FR","French (France)");
+		names.put("fr-BE", "French (Belgium)");
+		names.put("fr-CA", "French (Canadian");
 		names.put("gl-ES","Galician (Spain)");
 		names.put("hr-HR","Croatian (Croatia)");
 		names.put("zu-ZA","Zulu (South Africa)");
@@ -154,6 +161,7 @@ public class Language extends Record {
 		names.put("lt-LT","Lithuanian (Lithuania)");
 		names.put("hu-HU","Hungarian (Hungary)");
 		names.put("nl-NL","Dutch (Netherlands)");
+		names.put("nl-BE","Dutch (Belgium)");
 		names.put("nb-NO","Norwegian Bokm�l (Norway)");
 		names.put("pl-PL","Polish (Poland)");
 		names.put("pt-BR","Portuguese (Brazil)");
@@ -163,6 +171,7 @@ public class Language extends Record {
 		names.put("sl-SI","Slovenian (Slovenia)");
 		names.put("fi-FI","Finnish (Finland)");
 		names.put("sv-SE","Swedish (Sweden)");
+		names.put("sv-FI", "Swedish (Finland)");
 		names.put("vi-VN","Vietnamese (Vietnam)");
 		names.put("tr-TR","Turkish (Turkey)");
 		names.put("el-GR","Greek (Greece)");
@@ -191,7 +200,7 @@ public class Language extends Record {
 		names.put("th-TH","Thai (Thailand)");
 		names.put("ko-KR","Korean (South Korea)");
 		names.put("ja-JP","Japanese (Japan)");
-
+		names.put("zh-cn", "Chinese (Mandarin)");
 	}
 	
 	@RecordField
