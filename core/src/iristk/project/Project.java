@@ -232,9 +232,9 @@ public class Project {
 			if (pack.getSpec().getClasspath() != null) {
 				for (Object entry : pack.getSpec().getClasspath().getLibOrSrcOrDll()) {
 					if (entry instanceof Lib) {
-						classpath.append(new File(pack.getPath(), ((Lib)entry).getPath()).getAbsolutePath() + ";");
+						classpath.append(new File(pack.getPath(), ((Lib)entry).getPath()).getAbsolutePath() + File.pathSeparator);
 					} else if (entry instanceof Src) {
-						classpath.append(new File(pack.getPath(), ((Src)entry).getOutput()).getAbsolutePath() + ";");
+						classpath.append(new File(pack.getPath(), ((Src)entry).getOutput()).getAbsolutePath() + File.pathSeparator);
 					}
 				} 
 			}
