@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -184,12 +186,12 @@ public class IrisUtils {
 			throw new IOException(packagePath + " already exists");
 		String templateIdLC = "$" + StringUtils.lcFirst(templateName) + "$";
 		String templateIdUC = "$" + StringUtils.ucFirst(templateName) + "$";
-		String templRoot = props.getProperty("templatePath");
-		for (String filen : FileFinder.findAll(templRoot)) {
+		Path templRoot = Paths.get(props.getProperty("templatePath"));
+		for (String filen : FileFinder.findAll(templRoot.toString())) {
 			File inputFile = new File(filen);
 			if (inputFile.getName().equals("template.properties"))
 				continue;
-			String entryName = filen.replace(templRoot + "\\", "");
+			String entryName = templRoot.relativize(Paths.get(filen)).toString();
 			entryName = entryName.replace(templateIdLC, StringUtils.lcFirst(name));
 			entryName = entryName.replace(templateIdUC, StringUtils.ucFirst(name));
 			File targetFile = new File(packagePath, entryName);
