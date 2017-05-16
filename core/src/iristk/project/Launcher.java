@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -392,7 +393,11 @@ public class Launcher {
 			}
 			throw new Exception("Could not find Java 32-bit runtime");
 		} else {
-			File javaexe = new File(new File(new File(System.getProperty("java.home")), "bin"), "java.exe");
+		    File javaexe = Paths.get(System.getProperty("java.home"), "bin", "java.exe").toFile();
+		    if (!javaexe.exists()) {
+		        javaexe = Paths.get(System.getProperty("java.home"), "bin", "java").toFile();
+		    }
+		    
 			if (javaexe.exists()) {
 				return javaexe.getAbsolutePath();
 			}
