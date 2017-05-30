@@ -5,7 +5,6 @@
 	xmlns:this="iristk.situated.SystemAgentFlow"
 	xsi:schemaLocation="iristk.flow flow.xsd">
 	
-	<import class="iristk.util.IIRFilter"/>
 	<import class="java.util.Random"/>
 	
 	<param name="systemAgent" type="SystemAgent"/>
@@ -13,11 +12,6 @@
 	<var name="agent" type="String" value="systemAgent.id"/>
 	<var name="gestures" type="Record" value="new Record()"/>
 	<var name="speechTextProcessor" type="iristk.speech.SpeechTextProcessor"/>
-	
-	<var name="xfilter1" type="IIRFilter" value ="IIRFilter.newLowPassFilter()"/>
-	<var name="xfilter2" type="IIRFilter" value ="IIRFilter.newLowPassFilter()"/>
-	<var name="xfilter3" type="IIRFilter" value ="IIRFilter.newLowPassFilter()"/>
-	<var name="random" type="Random" value="new Random()"/>
 	
 			
 	<state id="Base">
@@ -51,17 +45,7 @@
 			</if>
 		</onevent>
 		<ontime interval="1000-5000">
-			<if cond="systemAgent.shouldBlink()">
-				<raise event="blink"/>
-			</if>	
-		</ontime>
-		<!-- The following manages the random facial movements every about 20 ms if the random movements are enabled -->
-		<ontime interval="18-20">
-			<if cond="systemAgent.shouldPerformRandomMovements()">
-				<send event="action.face.param.adj" p:name="'BROW_UP_LEFT'" p:value="Math.max(0, 0.4 + 2*xfilter1.flow(random.nextDouble() - 0.5))" />
-				<send event="action.face.param.adj" p:name="'BROW_UP_RIGHT'" p:value="Math.max(0, 0.4 + 2*xfilter2.flow(random.nextDouble() - 0.5))" />
-				<send event="action.face.param.adj" p:name="'SMILE_CLOSED'" p:value="Math.max(0, 0.4 + 2*xfilter3.flow(random.nextDouble() - 0.5))" />
-			</if>	
+			<raise event="blink"/>
 		</ontime>
 		<onevent name="blink">
 			<send event="action.gesture" p:agent="agent" p:name="'blink'"/>

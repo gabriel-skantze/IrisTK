@@ -77,7 +77,10 @@ public class Event extends Record {
 	
 	@RecordField(name="event_name")
 	public String getName() {
-		return name;
+		if (name == null)
+			return getClass().getName();
+		else
+			return name;
 	}
 
 	@RecordField(name="event_time")
@@ -109,7 +112,7 @@ public class Event extends Record {
 	
 	public boolean triggers(String trigger) {
 		NameFilter nptrigger = NameFilter.compile(trigger);
-		return (nptrigger.accepts(name));
+		return (nptrigger.accepts(getName()));
 	}
 
 	/*
@@ -124,7 +127,7 @@ public class Event extends Record {
 	
 	@Override
 	public String toString() {
-		return name + " " + super.toString();
+		return getName() + " " + super.toString();
 	}
 	
 }

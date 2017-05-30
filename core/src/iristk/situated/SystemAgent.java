@@ -28,10 +28,7 @@ public class SystemAgent extends Agent {
 	private HashMap<String,Item> items = new HashMap<>(); 
 
 	public SystemAgentModule systemAgentModule = null;
-	
-	private boolean enableRandomMovements = false;
-	private boolean enableBlinking = false;
-	
+		
 	public SystemAgent() {
 	}
 	
@@ -522,42 +519,5 @@ public class SystemAgent extends Agent {
 		return display;
 	}
 
-	/**
-	 * Enables or disables the random movements in the face (eyebrows and lips)
-	 * 
-	 * @param enable true to enable the movements, false to disable them
-	 */
-	public void enableRandomMovements(boolean enable) {
-		enableRandomMovements = enable;
-		
-	}
-
-	/**
-	 * Enables or disables the blinking movement
-	 * 
-	 * @param enable true to enable the blinking, false to disable it
-	 */
-	public void enableBlinking(boolean enable) {
-		enableBlinking = enable;
-		
-	}
-
-	/**
-	 * Returns if the random movements are enabled or disabled in the agent
-	 * 
-	 * @return True if random movements should be performed, false otherwise
-	 */
-	public boolean shouldPerformRandomMovements() {
-		return enableRandomMovements;
-	}
-
-	/**
-	 * Returns if the agent should perform blinking or not
-	 * 
-	 * @return True if blinking should be performed, false otherwise
-	 */
-	public boolean shouldBlink() {
-		return enableBlinking;
-	}
 	
 }

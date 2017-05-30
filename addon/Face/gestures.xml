@@ -33,7 +33,7 @@
 	</gesture>
 	<gesture name="sleep">
 		<param name="BLINK_LEFT">40(1)</param>
-		<param name="BLINK_RIGHT">40(1)</param>
+        <param name="BLINK_RIGHT">40(1)</param>
 	</gesture>
 	<gesture name="wake_up">
 		<param name="BLINK_LEFT">40(0)</param>
