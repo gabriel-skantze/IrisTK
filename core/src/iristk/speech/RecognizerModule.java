@@ -227,7 +227,7 @@ public class RecognizerModule extends SensorModule implements RecognizerListener
 				logger.error("Problem start listening", e);
 			}
 		} else if (event.triggers("action.listen.stop")) {
-			if (event.getString("action", "").equals(listenActionId)) {
+			if (!event.has("action") || event.getString("action").equals(listenActionId)) {
 				try {
 					if (recognizer.stopListen())
 						monitorState();

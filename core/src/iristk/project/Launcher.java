@@ -207,11 +207,11 @@ public class Launcher {
 		String root = proj.getPath().getAbsolutePath();
 		for (Package pack : proj.getPackages()) {
 			if (pack.getSpec().getClasspath() != null) {
-				if (!pack.getPath().getAbsolutePath().startsWith(root)) {
-					//System.out.println("Skipping " + IrisUtils.getPackagePath(pack.getName()).getAbsolutePath());
+				if (!pack.getPath().getAbsolutePath().toUpperCase().startsWith(root.toUpperCase())) {
+					System.out.println("Skipping " + pack.getPath());
 					continue;
 				}
-				String path = pack.getPath().getAbsolutePath().replace(root, "").replace("\\", "/");
+				String path = pack.getPath().getAbsolutePath().substring(root.length()).replace("\\", "/");
 				if (path.startsWith("/")){
 					path = path.substring(1);
 				}
