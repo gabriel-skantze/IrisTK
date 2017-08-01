@@ -90,7 +90,9 @@ public class EventMonitorPanel extends JPanel implements EventListener {
 		if (event.getName().equals("monitor.system.start")) {
 			eventTracks.setupTracks();
 		} else if (event.getName().equals("monitor.module.state")) {
-			eventTracks.monitorState(event.getSender(), event.getList("states"));
+			@SuppressWarnings("unchecked")
+			List<String> lstates = (List<String>) event.getList("states");
+			eventTracks.monitorState(event.getSender(), lstates);
 		} else {
 			eventTracks.addEvent(event);
 		}

@@ -10,11 +10,17 @@
  ******************************************************************************/
 package iristk.util;
 
-import static iristk.util.Converters.*;
+import static iristk.util.Converters.asBoolean;
+import static iristk.util.Converters.asDouble;
+import static iristk.util.Converters.asFloat;
+import static iristk.util.Converters.asInteger;
+import static iristk.util.Converters.asList;
+import static iristk.util.Converters.asRecord;
+import static iristk.util.Converters.asString;
+import static iristk.util.Converters.asType;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +47,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.io.IOUtils;
 
@@ -48,6 +56,9 @@ import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import com.eclipsesource.json.ParseException;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.common.collect.Sets.SetView;
 
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.LocalDateTimeStringConverter;
@@ -59,23 +70,22 @@ import javafx.util.converter.LocalDateTimeStringConverter;
  * <p> There are also convenience functions for getting a value of the right type. For example, {@code myRecord.getInt("foo:bar")} will try to convert the value to an Integer. If this fails the method will return null.
  * <p> Using kleen stars (*), it is also possible to search the hierarchy using the {@code has()} method. Thus, {@code myRecord.has("*:bar")} will return true.   
  *  */
-
-public class Record {
+public class Record implements Cloneable {
 	
-	private static HashMap<Class<?>,RecordInfo> recordInfo = new HashMap<>();
+	private static final Object[] EMPTY_VARARGS_ARRAY = null;
+	
+	private static final ConcurrentMap<Class<?>,RecordInfo> RECORD_INFO = new ConcurrentHashMap<>();
+	
+	private static final char SUBFIELD_NAME_DELIM = ':';
 
 	private final HashMap<String, Object> dynamicFields = new HashMap<String,Object>();
 	
 	public Record() {
-		synchronized (Record.class) {
-			if (!recordInfo.containsKey(getClass())) {
-				recordInfo.put(getClass(), new RecordInfo(getClass()));
-			}
-		}
+		RECORD_INFO.computeIfAbsent(getClass(), cls -> new RecordInfo(getClass()));
 	}
 	
 	private RecordInfo getRecordInfo() {
-		return recordInfo.get(getClass());
+		return RECORD_INFO.get(getClass());
 	}
 	
 	private static class RecordInfo {
@@ -87,7 +97,8 @@ public class Record {
 		public RecordInfo(Class<? extends Record> clazz) {
 			final HashMap<String,Integer> order = new HashMap<>();
 			setupFields(clazz, order);
-			orderedFields = new ArrayList<String>(getMethodFields.keySet());
+			orderedFields = new ArrayList<String>(getMethodFields.size() + classFields.size());
+			orderedFields.addAll(getMethodFields.keySet());
 			orderedFields.addAll(classFields.keySet());
 			Collections.sort(orderedFields, new Comparator<String>() {
 				@Override
@@ -97,7 +108,7 @@ public class Record {
 			});
 		}
 		
-		private void setupFields(Class<? extends Record> clazz, HashMap<String, Integer> order) {
+		private void setupFields(Class<?> clazz, HashMap<String, Integer> order) {
 			for (Field field : clazz.getDeclaredFields()) {
 				if (field.isAnnotationPresent(RecordField.class)) {
 					field.setAccessible(true);
@@ -120,14 +131,14 @@ public class Record {
 					}
 				}
 			}
-			Class s = clazz.getSuperclass();
+			Class<?> s = clazz.getSuperclass();
 			if (s != null)
 				setupFields(s, order);
 		}
 
 	}
 
-	public Record(Map map) {
+	public Record(Map<?,?> map) {
 		this();
 		putAll(map);
 	}
@@ -165,7 +176,7 @@ public class Record {
 		}
 	}
 
-	public void putAll(Map map) {
+	public void putAll(Map<?,?> map) {
 		for (Object key : map.keySet()) {
 			put(key.toString(), map.get(key));
 		}
@@ -173,14 +184,17 @@ public class Record {
 
 	public synchronized Class<?> getFieldClass(String fieldName) {
 		RecordInfo info = getRecordInfo();
-		if (info.classFields.containsKey(fieldName)) {
-			return info.classFields.get(fieldName).getType();
+		Field classField = info.classFields.get(fieldName);
+		if (classField != null) {
+			return classField.getType();
 		}
-		if (info.setMethodFields.containsKey(fieldName)) {
-			return info.setMethodFields.get(fieldName).getParameterTypes()[0];
+		Method setMethod = info.setMethodFields.get(fieldName);
+		if (setMethod != null) {
+			return setMethod.getParameterTypes()[0];
 		}
-		if (info.getMethodFields.containsKey(fieldName)) {
-			return info.getMethodFields.get(fieldName).getReturnType();
+		Method getMethod = info.getMethodFields.get(fieldName);
+		if (getMethod != null) {
+			return getMethod.getReturnType();
 		}
 		Object val = dynamicFields.get(fieldName);
 		if (val != null)
@@ -194,12 +208,12 @@ public class Record {
 		} else if (obj instanceof Record) {
 			return ((Record)obj).get(field);
 		} else if (obj instanceof List) {
-			List list = (List)obj;
+			List<?> list = (List<?>)obj;
 			try {
-				if (field.contains(":")) {
-					int i = field.indexOf(":");
-					String subf = field.substring(0, i);
-					String rest = field.substring(i + 1);
+				final int subfieldNameDelimIdx = field.indexOf(SUBFIELD_NAME_DELIM);
+				if (subfieldNameDelimIdx > -1) {
+					String subf = field.substring(0, subfieldNameDelimIdx);
+					String rest = field.substring(subfieldNameDelimIdx + 1);
 					int li = Integer.parseInt(subf);
 					if (li < list.size()) {
 						Object sub = list.get(li);
@@ -220,14 +234,14 @@ public class Record {
 	public synchronized Object get(String field) {
 		if (field == null)
 			return null;
-		//if (field.contains(".")) {
+		//if (field.contains('.')) {
 		//	System.err.println("Warning: use of dots when accessing record fields is deprecated: " + field);
-		//	field = field.replace(".", ":");
+		//	field = field.replace('.', SUBFIELD_NAME_DELIM);
 		//}
-		if (field.contains(":")) {
-			int i = field.indexOf(":");
-			String subf = field.substring(0, i);
-			String rest = field.substring(i + 1);
+		final int subfieldNameDelimIdx = field.indexOf(SUBFIELD_NAME_DELIM);
+		if (subfieldNameDelimIdx > -1) {
+			String subf = field.substring(0, subfieldNameDelimIdx);
+			String rest = field.substring(subfieldNameDelimIdx + 1);
 			Object sub = get(subf);
 			return get(sub, rest);
 		} else {
@@ -274,14 +288,14 @@ public class Record {
 
 	public synchronized void put(String field, Object value) {
 		if (field != null) {
-			//if (field.contains(".")) {
+			//if (field.contains('.')) {
 			//	System.err.println("Warning: use of dots when accessing record fields is deprecated: " + field);
-			//	field = field.replace(".", ":");
+			//	field = field.replace('.', SUBFIELD_NAME_DELIM);
 			//}
-			if (field.contains(":")) {
-				int i = field.indexOf(":");
-				String fn = field.substring(0, i);
-				String rest = field.substring(i + 1);
+			final int subfieldNameDelimIdx = field.indexOf(SUBFIELD_NAME_DELIM);
+			if (subfieldNameDelimIdx > -1) {
+				String fn = field.substring(0, subfieldNameDelimIdx);
+				String rest = field.substring(subfieldNameDelimIdx + 1);
 				String[] subFields;
 				if (fn.equals("*")) {
 					subFields = dynamicFields.keySet().toArray(new String[0]);
@@ -299,8 +313,8 @@ public class Record {
 					}
 				}
 			} else if (field.equals("*")) {
-				for (String f : dynamicFields.keySet()) {
-					dynamicFields.put(f, value);
+				for (final Map.Entry<String,Object> dynamicFieldVal : dynamicFields.entrySet()) {
+					dynamicFieldVal.setValue(value);
 				}
 			} else {
 				RecordInfo info = getRecordInfo();
@@ -320,9 +334,9 @@ public class Record {
 				Field setField = info.classFields.get(field);
 				if (setField != null) {
 					try {
-						if(setField.getType().equals(java.time.LocalDate.class)) {
+						if(setField.getType().equals(LocalDate.class)) {
 							setField.set(this, new LocalDateStringConverter().fromString((String) value));
-						} else if(setField.getType().equals(java.time.LocalDateTime.class)) {
+						} else if(setField.getType().equals(LocalDateTime.class)) {
 							setField.set(this, new LocalDateTimeStringConverter().fromString((String) value));
 						} else {
 							setField.set(this, asType(value, setField.getType()));
@@ -340,14 +354,14 @@ public class Record {
 	}
 
 	public synchronized boolean has(String field) {
-		//if (field.contains(".")) {
+		//if (field.contains('.')) {
 		//	System.err.println("Warning: use of dots when accessing record fields is deprecated: " + field);
-		//	field = field.replace(".", ":");
+		//	field = field.replace('.', SUBFIELD_NAME_DELIM);
 		//}
-		if (field.contains(":")) {
-			int i = field.indexOf(":");
-			String subField = field.substring(0, i);
-			String rest = field.substring(i + 1);
+		final int subfieldNameDelimIdx = field.indexOf(SUBFIELD_NAME_DELIM);
+		if (subfieldNameDelimIdx > -1) {
+			String subField = field.substring(0, subfieldNameDelimIdx);
+			String rest = field.substring(subfieldNameDelimIdx + 1);
 			if (subField.equals("*")) {
 				for (String key : getFields()) {
 					Object sub = get(key);
@@ -438,36 +452,41 @@ public class Record {
 		return asRecord(get(field));
 	}
 
-	public List getList(String field) {
+	public List<?> getList(String field) {
 		return asList(get(field));
 	}
 
 	public synchronized List<String> getFieldsOrdered() {
-		List<String> fields = new ArrayList<>();
 		RecordInfo info = getRecordInfo();
-		fields.addAll(info.orderedFields);
-		fields.addAll(dynamicFields.keySet());
+		List<String> orderedFieldNames = info.orderedFields;
+		Set<String> dynamicFieldNames = dynamicFields.keySet();
+		List<String> fields = new ArrayList<>(orderedFieldNames.size() + dynamicFieldNames.size());
+		fields.addAll(orderedFieldNames);
+		fields.addAll(dynamicFieldNames);
 		return fields;
 	}
 
 	public synchronized Set<String> getFields() {
-		HashSet<String> fields = new HashSet<>();
-		fields.addAll(dynamicFields.keySet());
+		Set<String> dynamicFieldNames = dynamicFields.keySet();
 		RecordInfo info = getRecordInfo();
-		fields.addAll(info.classFields.keySet());
-		fields.addAll(info.getMethodFields.keySet());
+		Set<String> classFieldNames = info.classFields.keySet();
+		Set<String> getMethodFieldNames = info.getMethodFields.keySet();
+		HashSet<String> fields = Sets.newHashSetWithExpectedSize(dynamicFieldNames.size() + classFieldNames.size() + getMethodFieldNames.size());
+		fields.addAll(dynamicFieldNames);
+		fields.addAll(classFieldNames);
+		fields.addAll(getMethodFieldNames);
 		return fields;
 	}
 
 	public synchronized Set<String> getPersistentFields() {
-		HashSet<String> fields = new HashSet<>();
-		fields.addAll(dynamicFields.keySet());
+		Set<String> dynamicFieldNames = dynamicFields.keySet();
 		RecordInfo info = getRecordInfo();
-		fields.addAll(info.classFields.keySet());
-		for (String f : info.getMethodFields.keySet()) {
-			if (info.setMethodFields.containsKey(f))
-				fields.add(f);
-		}
+		Set<String> classFieldNames = info.classFields.keySet();
+		SetView<String> mutableMethodFieldNames = Sets.intersection(info.getMethodFields.keySet(), info.setMethodFields.keySet());
+		HashSet<String> fields = Sets.newHashSetWithExpectedSize(dynamicFieldNames.size() + classFieldNames.size() + mutableMethodFieldNames.size());		
+		fields.addAll(dynamicFieldNames);
+		fields.addAll(classFieldNames);
+		fields.addAll(mutableMethodFieldNames);
 		return fields;
 	}
 
@@ -486,8 +505,8 @@ public class Record {
 
 	@Override
 	public String toString() {
-		Map map = toMap();
-		for (Object key : new ArrayList<String>(map.keySet())) {
+		Map<String,Object> map = toMap();
+		for (String key : new ArrayList<String>(map.keySet())) {
 			Object val = map.get(key);
 			if (val instanceof Double || val instanceof Float) {
 				map.put(key, String.format(Locale.US, "%.2f", val));
@@ -498,8 +517,8 @@ public class Record {
 		return getClass().getSimpleName() + map.toString(); 
 	}
 
-	public Map toMap() {
-		HashMap<String,Object> map = new HashMap<String,Object>(size());
+	public Map<String,Object> toMap() {
+		HashMap<String,Object> map = Maps.newHashMapWithExpectedSize(size());
 		for (String field : getFields()) {
 			map.put(field, get(field));
 		}
@@ -548,7 +567,7 @@ public class Record {
 				} else if (val instanceof Record) {
 					json.add(key, ((Record)val).toJSON());
 				} else if (val instanceof List) {
-					json.add(key, toJsonArray((List)val));
+					json.add(key, toJsonArray((List<?>)val));
 				} else if (val instanceof LocalDateTime) {
 					json.add(key, new LocalDateTimeStringConverter().toString((LocalDateTime) val));
 				} else if (val instanceof LocalDate) {
@@ -582,7 +601,7 @@ public class Record {
 		printStream.close();
 	}
 
-	private static JsonArray toJsonArray(List list) {
+	private static JsonArray toJsonArray(List<?> list) {
 		JsonArray arr = new JsonArray();
 		for (Object val : list) {
 			if (val instanceof Float) {
@@ -600,7 +619,7 @@ public class Record {
 			} else if (val instanceof Record) {
 				arr.add(((Record)val).toJSON());
 			} else if (val instanceof List) {
-				arr.add(toJsonArray((List)val));
+				arr.add(toJsonArray((List<?>)val));
 			} else if (val instanceof LocalDateTime) {
 				arr.add(new LocalDateTimeStringConverter().toString((LocalDateTime) val));
 			} else if (val instanceof LocalDate) {
@@ -643,7 +662,7 @@ public class Record {
 	
 	public static Object fromJSONValue(String string) throws JsonToRecordException {
 		try {
-			JsonValue json = JsonValue.readFrom(string);
+			JsonValue json = JsonObject.readFrom(string);
 			return parseJsonValue(json);
 		} catch (ParseException e) {
 			throw new JsonToRecordException(e.getMessage());
@@ -657,7 +676,7 @@ public class Record {
 				try {
 					Constructor<?> constructor = Class.forName(json.get("class").asString()).getDeclaredConstructor();
 					constructor.setAccessible(true);
-					record = (Record) constructor.newInstance(null);
+					record = (Record) constructor.newInstance(EMPTY_VARARGS_ARRAY);
 				} catch (ClassNotFoundException e) {
 					record = new Record();
 				}
@@ -691,6 +710,11 @@ public class Record {
 
 	public static class JsonToRecordException extends IOException {
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6691786725241458797L;
+
 		public JsonToRecordException(String message) {
 			super(message);
 		}
@@ -709,9 +733,10 @@ public class Record {
 		} else if (value.isBoolean()) {
 			return value.asBoolean();
 		} else if (value.isArray()) {
-			ArrayList<Object> array = new ArrayList<Object>();
 			JsonArray ja = value.asArray();
-			for (int i = 0; i < ja.size(); i++) {
+			final int arraySize = ja.size();
+			ArrayList<Object> array = new ArrayList<>(arraySize);
+			for (int i = 0; i < arraySize; i++) {
 				array.add(parseJsonValue(ja.get(i)));
 			}
 			return array;
@@ -749,7 +774,7 @@ public class Record {
 
 	private static String value(Object o, int level) {
 		if (o instanceof List) {
-			return toStringIndent(((List)o), level);
+			return toStringIndent(((List<?>)o), level);
 		} else if (o instanceof Record) {
 			return ((Record)o).toStringIndent(level);
 		} else if (o instanceof Double || o instanceof Float) {
@@ -770,10 +795,10 @@ public class Record {
 		return result;
 	}
 
-	private static String toStringIndent(List list, int level) {
+	private static String toStringIndent(List<?> list, int level) {
 		String result = "[";
 		boolean multiline = false;
-		List<String> items = new ArrayList<>();
+		List<String> items = new ArrayList<>(list.size());
 		for (Object item : list) {
 			String value = value(item, level + 1);
 			items.add(value);
@@ -789,7 +814,7 @@ public class Record {
 			result += item;
 			n++;
 		}
-		result += "]";
+		result += ']';
 		return result;
 	}
 
@@ -877,7 +902,7 @@ public class Record {
 	public static Record fromProperties(Properties prop) {
 		Record rec = new Record();
 		for (Object key : prop.keySet()) {
-			rec.put(key.toString().replace(".", ":"), prop.get(key));
+			rec.put(key.toString().replace('.', SUBFIELD_NAME_DELIM), prop.get(key));
 		}
 		return rec;
 	}
@@ -898,7 +923,7 @@ public class Record {
 		try {
 			Constructor<?> constructor = getClass().getDeclaredConstructor();
 			constructor.setAccessible(true);
-			Record clone = (Record) constructor.newInstance(null);
+			Record clone = (Record) constructor.newInstance(EMPTY_VARARGS_ARRAY);
 			clone.putAll(this);
 			return clone;
 		} catch (InstantiationException e) {
@@ -921,7 +946,7 @@ public class Record {
 		try {
 			Constructor<?> constructor = getClass().getDeclaredConstructor();
 			constructor.setAccessible(true);
-			Record clone = (Record) constructor.newInstance(null);
+			Record clone = (Record) constructor.newInstance(EMPTY_VARARGS_ARRAY);
 			for (String field : this.getFields()) {
 				Object value = get(field);
 				if (value != null) {
@@ -977,7 +1002,9 @@ public class Record {
 			if (value != null) {
 				Object existing = this.get(field);
 				if (existing instanceof List) {
-					((List)existing).addAll((List)value);
+					@SuppressWarnings("unchecked")
+					final List<Object> downcast = (List<Object>)existing;
+					downcast.addAll((List<?>)value);
 				} else if (existing instanceof Record && value instanceof Record) {
 					((Record)existing).adjoin((Record)value);
 				} else {
@@ -987,9 +1014,10 @@ public class Record {
 		}
 	}
 
-	public List getValues() {
-		ArrayList values = new ArrayList();
-		for (String field : getFields()) {
+	public List<?> getValues() {
+		Set<String> fieldNames = getFields();
+		ArrayList<Object> values = new ArrayList<>(fieldNames.size());
+		for (String field : fieldNames) {
 			Object value = get(field);
 			if (value != null)
 				values.add(value);
