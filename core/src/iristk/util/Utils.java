@@ -22,6 +22,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -35,7 +37,10 @@ import java.util.regex.Matcher;
 
 import sun.misc.Unsafe;
 
+//@SuppressWarnings("restriction")
 public class Utils {
+	
+	public static final Charset IO_CHARSET = StandardCharsets.UTF_8;
 
 	public static String readTextFile(File file) throws IOException {
 		/*
@@ -53,8 +58,8 @@ public class Utils {
 	}
 
 	public static String readString(InputStream in) throws IOException {
-		//return IOUtils.toString(in, "UTF-8");
-		try(java.util.Scanner s = new java.util.Scanner(in, "UTF-8")){
+		//return IOUtils.toString(in, DEFAULT_CHARSET.name());
+		try(java.util.Scanner s = new java.util.Scanner(in, IO_CHARSET.name())){
 			s.useDelimiter("\\A");
 			return s.hasNext() ? s.next() : "";	
 		}
@@ -63,7 +68,7 @@ public class Utils {
 	public static void writeTextFile(File file, String string) throws IOException {
 		if (file.getParentFile() != null && !file.getParentFile().exists())
 			file.getParentFile().mkdirs();
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), IO_CHARSET.name()));
 		bw.write(string);
 		bw.close();
 	}

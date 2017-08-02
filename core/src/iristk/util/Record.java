@@ -35,6 +35,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -70,7 +71,10 @@ import javafx.util.converter.LocalDateTimeStringConverter;
  * <p> There are also convenience functions for getting a value of the right type. For example, {@code myRecord.getInt("foo:bar")} will try to convert the value to an Integer. If this fails the method will return null.
  * <p> Using kleen stars (*), it is also possible to search the hierarchy using the {@code has()} method. Thus, {@code myRecord.has("*:bar")} will return true.   
  *  */
+//@SuppressWarnings("restriction")
 public class Record implements Cloneable {
+	
+	public static final Charset JSON_CHARSET = Utils.IO_CHARSET;
 	
 	private static final Object[] EMPTY_VARARGS_ARRAY = null;
 	
@@ -632,7 +636,7 @@ public class Record implements Cloneable {
 	}
 
 	public static Record fromJSON(URL resource) throws IOException, JsonToRecordException {
-		return fromJSON(IOUtils.toString(resource.openStream(), "UTF-8"));
+		return fromJSON(IOUtils.toString(resource.openStream(), JSON_CHARSET.name()));
 	}
 	
 	/**
@@ -653,6 +657,7 @@ public class Record implements Cloneable {
 	 */
 	public static Record fromJSON(String string) throws JsonToRecordException {
 		try {
+//			@SuppressWarnings("deprecation")
 			JsonObject jsonObject = JsonObject.readFrom(string);
 			return parseJsonObject(jsonObject);
 		} catch (ParseException e) {
@@ -662,6 +667,7 @@ public class Record implements Cloneable {
 	
 	public static Object fromJSONValue(String string) throws JsonToRecordException {
 		try {
+//			@SuppressWarnings("deprecation")
 			JsonValue json = JsonObject.readFrom(string);
 			return parseJsonValue(json);
 		} catch (ParseException e) {
