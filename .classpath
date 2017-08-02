@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="addon/Face/bin"/>
-	<classpathentry kind="src" output="addon/Google/bin" path="addon/Google/src"/>
-	<classpathentry exported="true" kind="lib" path="addon/Google/lib/google-speech.jar"/>
-	<classpathentry kind="src" output="addon/Microsoft/bin" path="addon/Microsoft/src"/>
-	<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/jni4net.j-0.8.8.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/IrisTK.Net.Speech.j4n.jar"/>
-	<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/IrisTK.Net.Kinect.j4n.jar"/>
-	<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/IrisTK.Net.Kinect2.j4n.jar"/>
-	<classpathentry kind="src" output="addon/Nuance9/bin" path="addon/Nuance9/src"/>
-	<classpathentry kind="src" output="addon/NuanceCloud/bin" path="addon/NuanceCloud/src"/>
-	<classpathentry kind="src" output="app/chess/bin" path="app/chess/src"/>
-	<classpathentry kind="src" output="app/quiz/bin" path="app/quiz/src"/>
-	<classpathentry kind="src" output="core/bin" path="core/src"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/commons.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/platform.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/jnaerator-0.9.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/jportaudio.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/json.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/jetty.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/js-14.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/JNativeHook.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/docking-frames-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/docking-frames-common.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/freemarker.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/hat.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/turbojpeg.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/batik-gui-util-1.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/xuggle-xuggler-5.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/webcam-capture-0.3.10.jar"/>
-	<classpathentry exported="true" kind="lib" path="core/lib/bridj-0.6.2.jar"/>
-	<classpathentry kind="output" path="bin"/>
+<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+<classpathentry kind="lib" path="addon/Face/bin"/>
+<classpathentry kind="src" output="addon/Google/bin" path="addon/Google/src"/>
+<classpathentry exported="true" kind="lib" path="addon/Google/lib/google-speech.jar"/>
+<classpathentry kind="src" output="addon/Microsoft/bin" path="addon/Microsoft/src"/>
+<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/jni4net.j-0.8.8.0.jar"/>
+<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/IrisTK.Net.Speech.j4n.jar"/>
+<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/IrisTK.Net.Kinect.j4n.jar"/>
+<classpathentry exported="true" kind="lib" path="addon/Microsoft/lib/IrisTK.Net.Kinect2.j4n.jar"/>
+<classpathentry kind="src" output="addon/Nuance9/bin" path="addon/Nuance9/src"/>
+<classpathentry kind="src" output="addon/NuanceCloud/bin" path="addon/NuanceCloud/src"/>
+<classpathentry kind="src" output="app/chess/bin" path="app/chess/src"/>
+<classpathentry kind="src" output="app/quiz/bin" path="app/quiz/src"/>
+<classpathentry kind="src" output="core/bin" path="core/src"/>
+<classpathentry exported="true" kind="lib" path="core/lib/commons.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/platform.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/jnaerator-0.9.5.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/jportaudio.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/json.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/jetty.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/js-14.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/JNativeHook.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/docking-frames-core.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/docking-frames-common.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/freemarker.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/hat.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/turbojpeg.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/batik-gui-util-1.8.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/xuggle-xuggler-5.4.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/webcam-capture-0.3.10.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/bridj-0.6.2.jar"/>
+<classpathentry exported="true" kind="lib" path="core/lib/furhat-skill.jar"/>
 </classpath>
