@@ -236,53 +236,66 @@ public class Record implements Cloneable {
 	}
 
 	public synchronized Object get(String field) {
-		if (field == null)
-			return null;
-		//if (field.contains('.')) {
-		//	System.err.println("Warning: use of dots when accessing record fields is deprecated: " + field);
-		//	field = field.replace('.', SUBFIELD_NAME_DELIM);
-		//}
-		final int subfieldNameDelimIdx = field.indexOf(SUBFIELD_NAME_DELIM);
-		if (subfieldNameDelimIdx > -1) {
-			String subf = field.substring(0, subfieldNameDelimIdx);
-			String rest = field.substring(subfieldNameDelimIdx + 1);
-			Object sub = get(subf);
-			return get(sub, rest);
+		final Object result;
+		
+		if (field == null) {
+			result = null;
 		} else {
-			RecordInfo info = getRecordInfo();
-			Method getMethod = info.getMethodFields.get(field);
-			if (getMethod != null) {
-				try {
-					return getMethod.invoke(this);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
+			//if (field.contains('.')) {
+			//	System.err.println("Warning: use of dots when accessing record fields is deprecated: " + field);
+			//	field = field.replace('.', SUBFIELD_NAME_DELIM);
+			//}
+			final int subfieldNameDelimIdx = field.indexOf(SUBFIELD_NAME_DELIM);
+			if (subfieldNameDelimIdx > -1) {
+				String subf = field.substring(0, subfieldNameDelimIdx);
+				String rest = field.substring(subfieldNameDelimIdx + 1);
+				Object sub = get(subf);
+				result = get(sub, rest);
+			} else {
+				RecordInfo info = getRecordInfo();
+				Method getMethod = info.getMethodFields.get(field);
+				if (getMethod != null) {
+					Object getMethodResult = null;
+					try {
+						getMethodResult = getMethod.invoke(this);
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+					result = getMethodResult;
+				} else {
+					Field getField = info.classFields.get(field);
+					if (getField != null) {
+						Object getFieldResult = null;
+						try {
+							getFieldResult = getField.get(this);
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						}
+						result = getFieldResult;
+					} else if (dynamicFields.containsKey(field)) {
+						result = dynamicFields.get(field);
+					} else {
+						Object dynamicFieldResult = null;
+	 					try {
+							int i = Integer.parseInt(field);
+							if (i < dynamicFields.size()) {
+								dynamicFieldResult = dynamicFields.values().toArray()[i];
+							}
+						} catch (NumberFormatException e) {
+						}
+						result = dynamicFieldResult;
+					}
 				}
 			}
-			Field getField = info.classFields.get(field);
-			if (getField != null) {
-				try {
-					return getField.get(this);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} 
-			}
-			if (dynamicFields.containsKey(field)) 
-				return dynamicFields.get(field);
-			try {
-				int i = Integer.parseInt(field);
-				if (i < dynamicFields.size()) {
-					return dynamicFields.values().toArray()[i];
-				}
-			} catch (NumberFormatException e) {
-			}
-			return null;
 		}
+		
+		return result;
 	}
 
 	public synchronized void putIfNotNull(String field, Object value) {
