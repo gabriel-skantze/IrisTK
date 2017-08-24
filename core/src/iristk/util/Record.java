@@ -281,15 +281,15 @@ public class Record implements Cloneable {
 					} else if (dynamicFields.containsKey(field)) {
 						result = dynamicFields.get(field);
 					} else {
-						Object dynamicFieldResult = null;
+						Object dynamicFieldIndexLookupResult = null;
 	 					try {
 							int i = Integer.parseInt(field);
 							if (i < dynamicFields.size()) {
-								dynamicFieldResult = dynamicFields.values().toArray()[i];
+								dynamicFieldIndexLookupResult = dynamicFields.values().toArray()[i];
 							}
 						} catch (NumberFormatException e) {
 						}
-						result = dynamicFieldResult;
+						result = dynamicFieldIndexLookupResult;
 					}
 				}
 			}
