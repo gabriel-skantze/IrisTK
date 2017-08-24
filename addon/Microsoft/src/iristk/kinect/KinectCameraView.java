@@ -69,7 +69,9 @@ public class KinectCameraView implements CameraViewDecorator, KinectBodyListener
 
 	@Override
 	public synchronized void onBodiesReceived(Record bodyRec) {
-		this.bodySet = bodyRec.getList("bodies");
+		@SuppressWarnings("unchecked")
+		List<Body> downcast = (List<Body>) bodyRec.getList("bodies");
+		this.bodySet = downcast;
 		lastBodySeen = System.currentTimeMillis();
 
 		float height = kinect.getCameraViewHeight();

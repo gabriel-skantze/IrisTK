@@ -11,8 +11,9 @@
 package iristk.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.regex.Pattern;
 
 /**
@@ -31,7 +32,7 @@ import java.util.regex.Pattern;
  */
 public class NameFilter {
 
-	private static HashMap<String,NameFilter> cachedFilters = new HashMap<String,NameFilter>();
+	private static final ConcurrentMap<String,NameFilter> CACHED_FILTERS = new ConcurrentHashMap<String,NameFilter>();
 	
 	/**
 	 * A static filter that accepts anything
@@ -71,14 +72,13 @@ public class NameFilter {
 	/**
 	 * Creates a filter by parsing a pattern string
 	 */
-	public static synchronized NameFilter compile(String patt) {
-		if (cachedFilters.containsKey(patt))
-			return cachedFilters.get(patt);
-		if (!patt.matches("[A-Za-z0-9_\\!\\.\\*; ]*"))
-			throw new IllegalArgumentException("NamePattern illegal: " + patt);
-		NameFilter filter = new NameFilter(patt);
-		cachedFilters.put(patt, filter);
-		return filter;
+	public static NameFilter compile(String patt) {
+		return CACHED_FILTERS.computeIfAbsent(patt, p -> {
+			if (!patt.matches("[A-Za-z0-9_\\!\\.\\*; ]*"))
+				throw new IllegalArgumentException("NamePattern illegal: " + patt);
+			NameFilter filter = new NameFilter(patt);
+			return filter;
+		});
 	}
 
 	@Override

@@ -21,8 +21,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -36,7 +37,10 @@ import java.util.regex.Matcher;
 
 import sun.misc.Unsafe;
 
+//@SuppressWarnings("restriction")
 public class Utils {
+	
+	public static final Charset IO_CHARSET = StandardCharsets.UTF_8;
 
 	public static String readTextFile(File file) throws IOException {
 		/*
@@ -54,15 +58,17 @@ public class Utils {
 	}
 
 	public static String readString(InputStream in) throws IOException {
-		//return IOUtils.toString(in, "UTF-8");
-		java.util.Scanner s = new java.util.Scanner(in, "UTF-8").useDelimiter("\\A");
-		return s.hasNext() ? s.next() : "";
+		//return IOUtils.toString(in, DEFAULT_CHARSET.name());
+		try(java.util.Scanner s = new java.util.Scanner(in, IO_CHARSET.name())){
+			s.useDelimiter("\\A");
+			return s.hasNext() ? s.next() : "";	
+		}
 	}
 
 	public static void writeTextFile(File file, String string) throws IOException {
 		if (file.getParentFile() != null && !file.getParentFile().exists())
 			file.getParentFile().mkdirs();
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), IO_CHARSET.name()));
 		bw.write(string);
 		bw.close();
 	}
@@ -130,21 +136,13 @@ public class Utils {
 			destFile.createNewFile();
 		}
 
-		FileChannel source = null;
-		FileChannel destination = null;
-
-		try {
-			source = new FileInputStream(sourceFile).getChannel();
-			destination = new FileOutputStream(destFile).getChannel();
-			destination.transferFrom(source, 0, source.size());
-		}
-		finally {
-			if(source != null) {
-				source.close();
+		try(FileInputStream sourceIs = new FileInputStream(sourceFile)) {
+			FileChannel source = sourceIs.getChannel();
+			try(FileOutputStream destinationIs =  new FileOutputStream(destFile)){
+				FileChannel destination = destinationIs.getChannel();
+				destination.transferFrom(source, 0, source.size());	
 			}
-			if(destination != null) {
-				destination.close();
-			}
+			
 		}
 	}
 
@@ -176,7 +174,7 @@ public class Utils {
 	}
 	 */
 
-	public static String listToString(List list, String glue) {
+	public static String listToString(List<?> list, String glue) {
 		String result = "";
 		boolean first = true;
 		for (Object item : list) {
@@ -188,19 +186,14 @@ public class Utils {
 		return result;
 	}
 
-	public static String listToString(List list) {
+	public static String listToString(List<?> list) {
 		return listToString(list, " ");
 	}
 
 	public static String fetchURL(String url) {
-		String content = null;
-		URLConnection connection = null;
-		try {
-			connection =  new URL(url).openConnection();
-			Scanner scanner = new Scanner(connection.getInputStream());
+		try (Scanner scanner = new Scanner(new URL(url).openConnection().getInputStream())) {
 			scanner.useDelimiter("\\Z");
-			content = scanner.next();
-			return content;
+			return scanner.next();
 		} catch ( Exception ex ) {
 			ex.printStackTrace();
 		}
@@ -331,12 +324,12 @@ public class Utils {
 	}
 
 	public static Object[] flattenArray(Object... objects) {
-		List result = new ArrayList();
+		List<Object> result = new ArrayList<>();
 		for (Object obj : objects) {
 			if (obj instanceof Object[]) {
 				result.addAll(Arrays.asList((Object[])obj));
 			} else if (obj instanceof List) {
-				result.addAll((List)obj);
+				result.addAll((List<?>)obj);
 			} else {
 				result.add(obj);
 			}
