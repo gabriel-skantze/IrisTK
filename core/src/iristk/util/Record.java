@@ -282,7 +282,7 @@ public class Record implements Cloneable {
 						result = dynamicFields.computeIfAbsent(field, key -> {
 							Object dynamicFieldIndexLookupResult = null;
 		 					try {
-								int i = Integer.parseInt(field);
+								int i = Integer.parseInt(key);
 								if (i < dynamicFields.size()) {
 									dynamicFieldIndexLookupResult = dynamicFields.values().toArray()[i];
 								}
