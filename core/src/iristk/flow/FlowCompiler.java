@@ -11,7 +11,7 @@
 package iristk.flow;
 
 import iristk.util.FileFinder;
-import iristk.util.ListMap;
+import iristk.util.EnumMap;
 import iristk.util.RegExp;
 import iristk.util.Replacer;
 import iristk.xml.XmlUtils;
@@ -1145,7 +1145,7 @@ public class FlowCompiler {
 			result.put(name, value);
 		}
 		if (content.size() > 0) {
-			ListMap<String,String> paramList = new ListMap<>();
+			EnumMap<String,String> paramList = new EnumMap<>();
 			for (Object child : content) {
 				if (child instanceof Element) {
 					Element elem = (Element) child;

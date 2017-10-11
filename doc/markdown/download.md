@@ -16,7 +16,6 @@ The basic package includes the core package, plus addons for:
 	* Kinect
 * Google cloud-based recognizer 
 * Nuance cloud-based recognizer
-* Nuance 9 recognizer (requires Nuance 9 to be installed and 32-bit Java)
 * Facial animation
 * Chess and Quiz example applications
 

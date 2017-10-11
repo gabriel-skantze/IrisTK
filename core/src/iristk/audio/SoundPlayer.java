@@ -46,7 +46,6 @@ public class SoundPlayer {
 		if (msecPos < 0)
 			msecPos = 0;
 		playing = true;
-		audioTarget.startListening();
 		int startPos = (int) (msecPos * (audioFormat.getSampleRate() / 1000) * audioFormat.getFrameSize());
 		int endPos;
 		if (msecLength < 0)
@@ -57,6 +56,7 @@ public class SoundPlayer {
 		pos = startPos;
 		int frameSize = 320;
 		int len = frameSize;
+		audioTarget.startListening();
 		PLAYING: {
 			for (; pos < endPos; pos += frameSize) {
 				if (endPos - pos < frameSize)

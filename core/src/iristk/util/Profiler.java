@@ -4,7 +4,7 @@ public class Profiler {
 
 	private long startTime;
 	private int count = 0;
-	private ListMap<String,Long> points = new ListMap<>();
+	private EnumMap<String,Long> points = new EnumMap<>();
 	private int reportInterval;
 
 	public Profiler(int reportInterval) {

@@ -105,6 +105,21 @@ public class AudioUtil {
 			}
 		}
 	}
+	
+
+	public static void shortsToBytes(AudioFormat format, short[] source, int sourcePos, int sourceLen, byte[] target, int targetPos) {
+		if (format.getSampleSizeInBits() == 16) {
+			ByteBuffer bb = ByteBuffer.wrap(target);
+			if (format.isBigEndian())
+				bb.order(ByteOrder.BIG_ENDIAN);
+			else
+				bb.order(ByteOrder.LITTLE_ENDIAN);
+			for (int i = 0; i < sourceLen; i++) {
+				bb.putShort(i*2, source[i]);
+			}
+		}
+	}
+
 
 	public static void bytesToIntegers(AudioFormat format, byte[] source, int sourcePos, int sourceLen, int[] target, int targetPos) {
 		if (format.getSampleSizeInBits() == 16) {

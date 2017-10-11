@@ -16,6 +16,8 @@ package iristk.audio;
  */
 public abstract class AudioSource extends AudioPort implements Runnable {
 
+	public static int FRAMES_PER_SECOND = 100;
+	
 	private Thread runningThread = null;
 	private boolean contRunning;
 	private int bufferSize;
@@ -32,7 +34,7 @@ public abstract class AudioSource extends AudioPort implements Runnable {
 		startSource();
 		startListeners();
 		// 100 frames per second
-		bufferSize = (int) ((getAudioFormat().getSampleRate() * getAudioFormat().getFrameSize()) / 100);
+		bufferSize = (int) ((getAudioFormat().getSampleRate() * getAudioFormat().getFrameSize()) / FRAMES_PER_SECOND);
 		byte[] frame = new byte[bufferSize];
 		while (contRunning) {
 			int read = readSource(frame, 0, frame.length);

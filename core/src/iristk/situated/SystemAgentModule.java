@@ -2,7 +2,7 @@ package iristk.situated;
 
 import iristk.system.Event;
 import iristk.system.InitializationException;
-import iristk.util.ListMap;
+import iristk.util.EnumMap;
 import iristk.util.Utils;
 
 import java.io.File;
@@ -13,9 +13,9 @@ import java.util.List;
 public class SystemAgentModule extends SituationModule implements SituationListener {
 
 	private SystemAgent systemAgent;
-	private ListMap<String,Agent> bodyUserMap = new ListMap<>();
+	private EnumMap<String,Agent> bodyUserMap = new EnumMap<>();
 	private int userIdCount = 0;
-	private ListMap<String,String> userSpaces = new ListMap<>();
+	private EnumMap<String,String> userSpaces = new EnumMap<>();
 	private File staticFilePath;
 
 	public SystemAgentModule(String id, File staticFilePath) {

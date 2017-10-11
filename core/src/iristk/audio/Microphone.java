@@ -35,6 +35,8 @@ import com.portaudio.StreamParameters;
  */
 public class Microphone extends AudioSource {
 
+	public static double SUGGESTED_LATENCY = 0.1;
+	
 	private static Logger logger = IrisUtils.getLogger(Microphone.class);
 
 	private BlockingStream stream;
@@ -132,7 +134,7 @@ public class Microphone extends AudioSource {
 			streamParams.channelCount = channelCount;
 			streamParams.device = deviceId;
 			streamParams.sampleFormat = PortAudio.FORMAT_INT_16;
-			//streamParams.suggestedLatency = deviceInfo.defaultLowInputLatency;
+			streamParams.suggestedLatency = SUGGESTED_LATENCY ;
 			int flags = 0;
 			int framesPerBuffer = 256;
 			stream = PortAudio.openStream(streamParams, null, (int)inAudioFormat.getSampleRate(), framesPerBuffer, flags);

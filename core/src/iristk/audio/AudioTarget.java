@@ -12,10 +12,17 @@ package iristk.audio;
 
 import javax.sound.sampled.AudioFormat;
 
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+
+import iristk.util.BlockingByteQueue;
+
 /**
  * AudioTarget is an AudioListener (typically an output device) which is also an AudioPort, which means that it is possible to connect other listeners to it. 
  */
 public abstract class AudioTarget extends AudioPort implements AudioListener {
+
+	private BlockingByteQueue queue;
+	private int delay;
 
 	@Override
 	public abstract AudioFormat getAudioFormat();
@@ -26,9 +33,29 @@ public abstract class AudioTarget extends AudioPort implements AudioListener {
 
 	protected abstract void writeTarget(byte[] buffer, int pos, int len);
 	
+	public void setTargetDelay(int bytes) {
+		delay = bytes;
+		queue = new BlockingByteQueue();
+	}
+	
 	@Override
 	public void listenAudio(byte[] buffer, int pos, int len) {
-		writeTarget(buffer, pos, len);
+		if (queue != null) {
+			queue.write(buffer);
+			byte[] targetBuffer = new byte[len];
+			if (queue.available() < delay) {
+				Arrays.fill(targetBuffer, (byte)0);
+			} else {
+				try {
+					queue.read(targetBuffer);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			writeTarget(targetBuffer, pos, len);
+		} else {
+			writeTarget(buffer, pos, len);
+		}
 		writeListeners(buffer, pos, len);
 	}
 	

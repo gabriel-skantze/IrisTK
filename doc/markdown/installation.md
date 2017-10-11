@@ -2,34 +2,27 @@
 
 ### Requirements
 
-* Windows 7, 8 or 10 (32 or 64-bit)
+* Windows 7, 8 or 10 (64-bit)
 	* The core framework should be portable to other platforms (since it is Java-based), but you will have to do this on your own. Also, to take advantage of the different modules that are supported, you would need to work under Windows as most of them require a Windows operating system.
 	* IrisTK comes with support for Windows ASR and TTS (which supports any SAPI voices). For these to work, you need an English version of Windows.
-* [Java 7 or 8](https://www.java.com/en/download/)
+* [Java 8](https://www.java.com/en/download/)
 * For development, you are advised to use the [Eclipse IDE](develop_in_eclipse.html)
-* IrisTK comes with support for Nuance Recognizer 9 speech recognition system. However, if you want to use Nuance 9, it must first be properly installed on your system together with at least a US English language pack. This also requires 32-bit Java. 
 
-###	Using the Installer 
+### Using the GitHub repository
 
-To install, you can [download](download.html) and run the basic installer (an exe-file). The installation procedure will ask you in which directory you want IrisTK to be installed. To make life easier, try to avoid paths that include spaces.  
+To install IrisTK, start by cloning the IrisTK repository from GitHub: 
 
-If you have problems with the installer, you can also [download](download.html) IrisTK as a zip file. In that case, unzip IrisTK to a folder of your choice. Then open a command window, go to the installation directory, and type:
+[https://github.com/gabriel-skantze/IrisTK](https://github.com/gabriel-skantze/IrisTK)
+
+There, you can choose to either download the repository as a ZIP file, or clone it using you Git client. 
+
+NB: To avoid troubles, choose a path on your computer that does not contain spaces. 
+
+After cloning or unzipping the repository, go to the root IrisTK directory, and type:
 
 ```
 iristk install
 ``` 
-
-### Upgrading from an older version
-
-To upgrade an old version of IrisTK, you can just install the new version in the same location is the old one. This will completely replace the core, addon and apps that comes with IrisTK, but any apps or addons you have created will remain. Note that there might be compatibility issues between your old apps and addons and the updated IrisTK packages. [Check the changelog](changelog.html) for important changes to the API.
-
-### Using the GitHub repository
-
-Instead of using the installer, it is also possible to get the IrisTK repository from GitHub. This allows you to get continuous updates to the code. If you are interested in contributing to the repository, contact [Gabriel Skantze](http://www.speech.kth.se/~gabriel/contact.html).
-
-[https://github.com/gabriel-skantze/IrisTK](https://github.com/gabriel-skantze/IrisTK)
-
-Remember that if you do this, you also have to run "iristk install" as instructed above, after pulling the repository. 
 
 ### Test
 
@@ -83,5 +76,3 @@ lib          Java library files (mainly jar files, but also dll:s)
 ### Command-line tool
 
 If you have installed IrisTK properly, you can open a command window and run the iristk.exe tool from anywhere. This is a convenient command to use instead of java.exe, since it provides short names for typical actions and programs, locates the correct Java version and sets the classpath for you. To check which commands iristk.exe provides, simply run "iristk" without any parameters. The set of commands are defined in the "package.xml" files and are thus possible to extend.
-
-Note: If the command you are running needs 32-bit Java (such as Nuance 9), and your Windows is 64-bit, you should use the command "irisk32" instead. However, if you are running 32-bit Java on a 32-bit Windows, you should just use "iristk". 
