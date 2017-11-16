@@ -1,10 +1,13 @@
 package iristk.app.quiz;
 
+import java.util.List;
 import java.io.File;
 import iristk.xml.XmlMarshaller.XMLLocation;
 import iristk.system.Event;
 import iristk.flow.*;
+import iristk.util.Record;
 import static iristk.util.Converters.*;
+import static iristk.flow.State.*;
 
 public class QuizFlow extends iristk.flow.Flow {
 
@@ -16,7 +19,7 @@ public class QuizFlow extends iristk.flow.Flow {
 	private int winningScore;
 
 	private void initVariables() {
-		system = agent.getSystemAgent();
+		system = (iristk.situated.SystemAgent) agent.getSystemAgent();
 		guess = asInteger(0);
 		winningScore = asInteger(3);
 	}
@@ -100,8 +103,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 18
 			try {
 				EXECUTION: {
-					int count = getCount(1289696681) + 1;
-					incrCount(1289696681);
+					int count = getCount(1607460018) + 1;
+					incrCount(1607460018);
 					iristk.situated.SystemAgentFlow.attendNobody state0 = agent.new attendNobody();
 					if (!flowThread.callState(state0, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\quiz\\src\\iristk\\app\\quiz\\QuizFlow.xml"), 18, 12)))) {
 						eventResult = EVENT_ABORTED;
@@ -119,9 +122,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 21
 			try {
-				count = getCount(1607460018) + 1;
+				count = getCount(1588970020) + 1;
 				if (event.triggers("sense.user.enter")) {
-					incrCount(1607460018);
+					incrCount(1588970020);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						iristk.situated.SystemAgentFlow.attend state1 = agent.new attend();
@@ -173,10 +176,10 @@ public class QuizFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 28
 			try {
-				count = getCount(1407343478) + 1;
+				count = getCount(245565335) + 1;
 				if (event.triggers("sense.user.leave")) {
 					if (system.isAttending(event)) {
-						incrCount(1407343478);
+						incrCount(245565335);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 29
@@ -207,10 +210,10 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 36
 			try {
-				count = getCount(183264084) + 1;
+				count = getCount(1490180672) + 1;
 				if (event.triggers("sense.user.speech.start")) {
 					if (system.isAttending(event) && eq(event.get("speakers"), 1)) {
-						incrCount(183264084);
+						incrCount(1490180672);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							iristk.situated.SystemAgentFlow.gesture state5 = agent.new gesture();
@@ -253,8 +256,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 42
 			try {
 				EXECUTION: {
-					int count = getCount(1490180672) + 1;
-					incrCount(1490180672);
+					int count = getCount(1919892312) + 1;
+					incrCount(1919892312);
 					iristk.situated.SystemAgentFlow.say state6 = agent.new say();
 					StringCreator string7 = new StringCreator();
 					string7.append("Hi there");
@@ -305,8 +308,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 49
 			try {
 				EXECUTION: {
-					int count = getCount(1143839598) + 1;
-					incrCount(1143839598);
+					int count = getCount(358699161) + 1;
+					incrCount(358699161);
 					// Line: 50
 					if (system.hasManyUsers()) {
 						iristk.situated.SystemAgentFlow.attendAll state9 = agent.new attendAll();
@@ -340,10 +343,10 @@ public class QuizFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 56
 			try {
-				count = getCount(358699161) + 1;
+				count = getCount(914424520) + 1;
 				if (event.triggers("sense.user.speak**")) {
 					if (event.has("sem:yes")) {
-						incrCount(358699161);
+						incrCount(914424520);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							// Line: 57
@@ -360,10 +363,10 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 59
 			try {
-				count = getCount(110718392) + 1;
+				count = getCount(2143192188) + 1;
 				if (event.triggers("sense.user.speak**")) {
 					if (event.has("sem:no")) {
-						incrCount(110718392);
+						incrCount(2143192188);
 						eventResult = EVENT_CONSUMED;
 						EXECUTION: {
 							iristk.situated.SystemAgentFlow.say state14 = agent.new say();
@@ -388,9 +391,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 63
 			try {
-				count = getCount(2143192188) + 1;
+				count = getCount(204349222) + 1;
 				if (event.triggers("sense.user.silence sense.user.speak**")) {
-					incrCount(2143192188);
+					incrCount(204349222);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 64
@@ -430,8 +433,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 69
 			try {
 				EXECUTION: {
-					int count = getCount(231685785) + 1;
-					incrCount(231685785);
+					int count = getCount(2110121908) + 1;
+					incrCount(2110121908);
 					// Line: 70
 					if (system.hasManyUsers()) {
 						iristk.situated.SystemAgentFlow.say state17 = agent.new say();
@@ -501,8 +504,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 80
 			try {
 				EXECUTION: {
-					int count = getCount(1023487453) + 1;
-					incrCount(1023487453);
+					int count = getCount(515132998) + 1;
+					incrCount(515132998);
 					iristk.situated.SystemAgentFlow.say state22 = agent.new say();
 					StringCreator string23 = new StringCreator();
 					string23.append("Goodbye");
@@ -553,8 +556,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 87
 			try {
 				EXECUTION: {
-					int count = getCount(1694819250) + 1;
-					incrCount(1694819250);
+					int count = getCount(1651191114) + 1;
+					incrCount(1651191114);
 					// Line: 88
 					question = questions.next(); guess = 0;
 					// Line: 89
@@ -563,7 +566,7 @@ public class QuizFlow extends iristk.flow.Flow {
 						boolean chosen25 = false;
 						boolean matching26 = true;
 						while (!chosen25 && matching26) {
-							int rand27 = random(1586600255, 2, iristk.util.RandomList.RandomModel.DECK_RESHUFFLE_NOREPEAT);
+							int rand27 = random(932583850, 2, iristk.util.RandomList.RandomModel.DECK_RESHUFFLE_NOREPEAT);
 							matching26 = false;
 							if (true) {
 								matching26 = true;
@@ -657,8 +660,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 108
 			try {
 				EXECUTION: {
-					int count = getCount(292938459) + 1;
-					incrCount(292938459);
+					int count = getCount(1993134103) + 1;
+					incrCount(1993134103);
 					iristk.situated.SystemAgentFlow.say state37 = agent.new say();
 					state37.setText(question.getFullQuestion());
 					if (!flowThread.callState(state37, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\quiz\\src\\iristk\\app\\quiz\\QuizFlow.xml"), 108, 12)))) {
@@ -708,8 +711,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 115
 			try {
 				EXECUTION: {
-					int count = getCount(1993134103) + 1;
-					incrCount(1993134103);
+					int count = getCount(653305407) + 1;
+					incrCount(653305407);
 					iristk.situated.SystemAgentFlow.say state39 = agent.new say();
 					state39.setText(question.getOptions());
 					if (!flowThread.callState(state39, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\quiz\\src\\iristk\\app\\quiz\\QuizFlow.xml"), 115, 12)))) {
@@ -759,8 +762,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 122
 			try {
 				EXECUTION: {
-					int count = getCount(653305407) + 1;
-					incrCount(653305407);
+					int count = getCount(1404928347) + 1;
+					incrCount(1404928347);
 					iristk.situated.SystemAgentFlow.listen state41 = agent.new listen();
 					state41.setContext("default " + question.getId());
 					if (!flowThread.callState(state41, new FlowEventInfo(currentState, event, new XMLLocation(new File("C:\\Dropbox\\iristk\\app\\quiz\\src\\iristk\\app\\quiz\\QuizFlow.xml"), 122, 12)))) {
@@ -779,9 +782,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			int count;
 			// Line: 125
 			try {
-				count = getCount(1130478920) + 1;
+				count = getCount(604107971) + 1;
 				if (event.triggers("sense.user.speak.multi")) {
-					incrCount(1130478920);
+					incrCount(604107971);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 126
@@ -834,9 +837,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 137
 			try {
-				count = getCount(1101288798) + 1;
+				count = getCount(971848845) + 1;
 				if (event.triggers("sense.user.speak")) {
-					incrCount(1101288798);
+					incrCount(971848845);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 138
@@ -871,9 +874,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 147
 			try {
-				count = getCount(2104457164) + 1;
+				count = getCount(1940030785) + 1;
 				if (event.triggers("sense.user.speak.side")) {
-					incrCount(2104457164);
+					incrCount(1940030785);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						iristk.situated.SystemAgentFlow.attendOther state52 = agent.new attendOther();
@@ -917,9 +920,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 154
 			try {
-				count = getCount(1940030785) + 1;
+				count = getCount(1763847188) + 1;
 				if (event.triggers("sense.user.silence")) {
-					incrCount(1940030785);
+					incrCount(1763847188);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						// Line: 155
@@ -936,9 +939,9 @@ public class QuizFlow extends iristk.flow.Flow {
 			}
 			// Line: 157
 			try {
-				count = getCount(1763847188) + 1;
+				count = getCount(125993742) + 1;
 				if (event.triggers("skip")) {
-					incrCount(1763847188);
+					incrCount(125993742);
 					eventResult = EVENT_CONSUMED;
 					EXECUTION: {
 						iristk.situated.SystemAgentFlow.say state60 = agent.new say();
@@ -987,8 +990,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 164
 			try {
 				EXECUTION: {
-					int count = getCount(1192108080) + 1;
-					incrCount(1192108080);
+					int count = getCount(864237698) + 1;
+					incrCount(864237698);
 					// Line: 165
 					system.getCurrentUser().incrInteger("score");
 					iristk.situated.SystemAgentFlow.say state63 = agent.new say();
@@ -1053,8 +1056,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 176
 			try {
 				EXECUTION: {
-					int count = getCount(1608446010) + 1;
-					incrCount(1608446010);
+					int count = getCount(511833308) + 1;
+					incrCount(511833308);
 					iristk.situated.SystemAgentFlow.say state67 = agent.new say();
 					StringCreator string68 = new StringCreator();
 					string68.append("That was wrong");
@@ -1138,8 +1141,8 @@ public class QuizFlow extends iristk.flow.Flow {
 			// Line: 190
 			try {
 				EXECUTION: {
-					int count = getCount(1509514333) + 1;
-					incrCount(1509514333);
+					int count = getCount(1252585652) + 1;
+					incrCount(1252585652);
 					// Line: 191
 					system.putUsers("score", 0);
 					iristk.situated.SystemAgentFlow.say state76 = agent.new say();

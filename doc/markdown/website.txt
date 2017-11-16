@@ -8,6 +8,7 @@ Getting started
 	tutorial_first_app;		Tutorial 1: Your first application
 	tutorial_sitint;		Tutorial 2: Situated interaction
 	tutorial_semantics;		Tutorial 3: Semantics and dialog
+	quiz_lab;				Lab: Multi-party Quiz
 System, modules and events
 	system_overview;		System and Events
 	events;					Standardized Events

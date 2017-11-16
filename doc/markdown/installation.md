@@ -24,6 +24,8 @@ After cloning or unzipping the repository, go to the root IrisTK directory, and 
 iristk install
 ``` 
 
+[Here](develop_in_eclipse.html) you can find instructions on how to do this procedure directly in Eclipse.
+
 ### Test
 
 IrisTK comes with two example applications: Chess (speech-only interaction) and Quiz (multi-party interaction with an animated agent). To test the Chess app, open a command window and type: 

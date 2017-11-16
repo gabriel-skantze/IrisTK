@@ -4,9 +4,39 @@ The examples in this guide will assume that you are developing in Eclipse. Of co
 
 You can [download Eclipse from here](http://www.eclipse.org/downloads/). If you do not know which version to choose, we recommend "Eclipse IDE for Java Developers" (32 or 64 bit), which includes support for XML editing.
 
+### Downloading the IrisTK repository from Eclipse
+
+If you have already cloned/downloaded and installed IrisTK, you can skip this section. (Go directly to "Setting up the classpath" below). 
+
+First, make the git repository view is visible in Eclipse from the menu 'Window > Show views > Other > Git > Git Repositories'
+
+<img src="img/git_eclipse_2.png"/>
+
+Eclipse will show the view somewhere. Click on 'Clone a Git repository' to begin the process. 
+
+<img src="img/git_eclipse_1.png"/>
+
+In Location, paste the following URI: https://github.com/gabriel-skantze/IrisTK. The rest should be filled in automatically. You should see the following:
+
+<img src="img/git_eclipse_4.png"/>
+
+Click Next. In Branch Selection, only select the "master" branch. Click Next.
+
+In Local Destination, choose the directory where you want to install IrisTK, for example C:\\IrisTK
+
+<img src="img/git_eclipse_3.png"/>
+
+Click Finish and wait for the repository to be cloned.
+
+Open a command window. Go to the path where you chose to install IrisTK. Type:
+
+```
+iristk install
+```
+
 ### Setting up the classpath
 
-Open a command window and type:
+Open a command window (unless you already have one open) and type:
 
 ```
 iristk eclipse
@@ -16,9 +46,8 @@ This will create a .classpath file in the IrisTK folder which makes it possible 
 
 ### Import into Eclipse
 
-1. Open Eclipse and choose "File > Import..."
+1. Open Eclipse (or close it and re-open it if it was already open) and choose "File > Import..."
 2. Choose "Existing Projects into Workspace" select the IrisTK folder as root directory.
-3. If you are using 64 bit Windows and want to use 32-bit addon (such as Nuance9), open "Window > Preferences", then "Java > Installed JRE". Make sure that you are using 32 bit Java. Otherwise, you must add that and select it as default.
 
 ### Eclipse Plug-in
 
